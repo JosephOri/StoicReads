@@ -7,6 +7,7 @@ Foodies project
 To install the project dependencies, you can run the following command:
 
 <pre><code>npm install</code></pre>
+<pre><code>npm run install</code></pre>
 
 This will install the dependencies for both the frontend and backend applications.
 
