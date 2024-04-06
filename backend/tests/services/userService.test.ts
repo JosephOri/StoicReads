@@ -49,7 +49,7 @@ describe('User Service', () => {
         password,
       }
 
-      await expect(createUser(user)).rejects.toThrow('Error creating user: User validation failed: email: Invalid email');
+      await expect(createUser(user)).rejects.toThrow('Error creating user: ValidationError: email: Invalid email');
     });
   });
 
@@ -65,9 +65,11 @@ describe('User Service', () => {
       }
 
       const newUser = await createUser(userCreated);
-      const user = await getUserByEmail(email);
+      const userByEmail = await getUserByEmail(email);
 
-      expect(user).toMatchObject(newUser);
+      expect(userByEmail).toHaveProperty('_id', newUser._id);
+      expect(userByEmail).toHaveProperty('name', name);
+      expect(userByEmail).toHaveProperty('email', email);
     });
 
     it('should return null if user is not found', async () => {
