@@ -3,7 +3,7 @@ import validator from 'validator';
 
 const isEmail = validator.isEmail;
 
-interface IUser extends Document {
+export interface IUser extends Document {
     name: string;
     email: string;
     password: string;
@@ -18,7 +18,7 @@ const UserSchema: Schema = new Schema({
     },
     email: {
         type: String,
-        required: true,
+        required: [true,"Email is required"],
         unique: true,
         validate: [isEmail, 'Invalid email'],
     },
@@ -36,6 +36,5 @@ const UserSchema: Schema = new Schema({
     },
 });
 
-// Create and export the user model
 const UserModel = mongoose.model<IUser>('User', UserSchema);
 export default UserModel;
