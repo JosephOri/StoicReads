@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { createUser, getUserByEmail } from '../../src/services/userService';
+import { createUser, getUserByEmail,getUserByUserName } from '../../src/services/userService';
 import UserModel, { IUser } from '../../src/models/UserModel';
 import User from '../../src/types/User'
 
@@ -79,4 +79,24 @@ describe('User Service', () => {
       expect(user).toBeNull();
     });
   });
+
+  describe('getUserByUserName', () => {
+    it('should return a user by username', async () => {
+      const userName = 'John Doe';
+      const email = 'john@example.com';
+      const password = 'password123';
+      const userCreated = {
+        userName,
+        email,
+        password,
+      }
+      const newUser = await createUser(userCreated);
+      const userByUserName = await getUserByUserName(userName);
+      expect(userByUserName).toHaveProperty('_id', newUser._id);
+      expect(userByUserName).toHaveProperty('userName', userName);
+      expect(userByUserName).toHaveProperty('email', email);
+      
+    });
+  })
+  
 });
