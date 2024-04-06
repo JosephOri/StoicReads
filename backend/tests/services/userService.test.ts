@@ -20,19 +20,19 @@ describe('User Service', () => {
 
   describe('createUser', () => {
     it('should create a new user', async () => {
-      const name = 'John Doe';
+      const userName = 'John Doe';
       const email = 'john@example.com';
       const password = 'password123';
 
       const user = {
-        name,
+        userName,
         email,
         password,
       }
       const newUser = await createUser(user);
 
       expect(newUser).toHaveProperty('_id');
-      expect(newUser).toHaveProperty('name', name);
+      expect(newUser).toHaveProperty('userName', userName);
       expect(newUser).toHaveProperty('email', email);
       expect(newUser).toHaveProperty('password', expect.any(String));
       expect(newUser).toHaveProperty('createdAt', expect.any(Date));
@@ -40,11 +40,11 @@ describe('User Service', () => {
     });
 
     it('should throw an error if email is invalid', async () => {
-      const name = 'John Doe';
+      const userName = 'John Doe';
       const email = 'invalid-email';
       const password = 'password123';
       const user = {
-        name,
+        userName,
         email,
         password,
       }
@@ -55,11 +55,11 @@ describe('User Service', () => {
 
   describe('getUserByEmail', () => {
     it('should return a user by email', async () => {
-      const name = 'John Doe';
+      const userName = 'John Doe';
       const email = 'john@example.com';
       const password = 'password123';
       const userCreated = {
-        name,
+        userName,
         email,
         password,
       }
@@ -68,7 +68,7 @@ describe('User Service', () => {
       const userByEmail = await getUserByEmail(email);
 
       expect(userByEmail).toHaveProperty('_id', newUser._id);
-      expect(userByEmail).toHaveProperty('name', name);
+      expect(userByEmail).toHaveProperty('userName', userName);
       expect(userByEmail).toHaveProperty('email', email);
     });
 

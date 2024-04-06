@@ -4,7 +4,7 @@ import validator from 'validator';
 const isEmail = validator.isEmail;
 
 export interface IUser extends Document {
-    name: string;
+    userName: string;
     email: string;
     password: string;
     createdAt: Date;
@@ -12,9 +12,10 @@ export interface IUser extends Document {
 }
 
 const UserSchema: Schema = new Schema({
-    name: {
+    userName: {
         type: String,
         required: true,
+        unique: true,
     },
     email: {
         type: String,
