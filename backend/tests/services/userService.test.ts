@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { createUser, getUserByEmail,getUserByUserName } from '../../src/services/userService';
-import UserModel, { IUser } from '../../src/models/UserModel';
+import UserModel, { IUser } from '../../src/models/User';
 import 'dotenv/config'
 
 
