@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 import { createUser, getUserByEmail,getUserByUserName } from '../../src/services/userService';
 import UserModel, { IUser } from '../../src/models/UserModel';
-import User from '../../src/types/User'
+import 'dotenv/config'
+
 
 describe('User Service', () => {
-
   beforeAll(async () => {
-   await mongoose.connect('mongodb://localhost:27017/')
-  
+   const dbUri = process.env.MONGODB_URI as string;
+   await mongoose.connect(dbUri)
   });
 
   afterAll(async () => {
