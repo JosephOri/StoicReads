@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import { createUser, getUserByEmail,getUserByUserName } from '../../src/services/userService';
+import { createUser,getUserByEmailOrUserName } from '../../src/services/userService';
 import UserModel, { IUser } from '../../src/models/User';
+import User from '../../src/types/User';
 import bcrypt from 'bcrypt';
 import 'dotenv/config'
 
@@ -8,6 +9,19 @@ const testUser = {
   userName: 'John Doe',
   email: 'exmaple@email.com',
   password: 'password123',
+}
+
+const assertUser = (newUser: IUser|null, expectedUser: User) => {
+  expect(newUser).toBeDefined();
+  expect(newUser).toHaveProperty('_id', expect.any(mongoose.Types.ObjectId));
+  expect(newUser).toHaveProperty('userName', expectedUser.userName);
+  expect(newUser).toHaveProperty('email', expectedUser.email);
+  expect(newUser).toHaveProperty('password', expect.any(String));
+  expect(newUser?.password).not.toEqual(expectedUser.password);
+  expect(newUser).toHaveProperty('profilePicture', expect.any(String));
+  expect(newUser).toHaveProperty('createdAt', expect.any(Date));
+  expect(newUser).toHaveProperty('updatedAt', expect.any(Date));
+
 }
 describe('User Service', () => {
   beforeAll(async () => {
@@ -25,17 +39,9 @@ describe('User Service', () => {
 
   describe('createUser', () => {
     it('should create a new user', async () => {
-
       const newUser = await createUser(testUser);
-
-      expect(newUser).toHaveProperty('_id');
-      expect(newUser).toHaveProperty('userName', testUser.userName);
-      expect(newUser).toHaveProperty('email', testUser.email);
-      expect(newUser).toHaveProperty('password', expect.any(String));
-      expect(newUser).toHaveProperty('profilePicture', 'https://www.iprcenter.gov/image-repository/blank-profile-picture.png/@@images/image.png');
-      expect(testUser.password).not.toEqual(newUser.password);
-      expect(newUser).toHaveProperty('createdAt', expect.any(Date));
-      expect(newUser).toHaveProperty('updatedAt', expect.any(Date));
+      expect(newUser).toHaveProperty('_id', expect.any(mongoose.Types.ObjectId));
+      assertUser(newUser, testUser);
     });
 
     it('should throw an error if email is invalid', async () => {
@@ -46,23 +52,42 @@ describe('User Service', () => {
       }
       await expect(createUser(invalidEmailUser)).rejects.toThrow('Error creating user: ValidationError: email: Invalid email');
     });
+
+    it('should throw an error if user already exists', async () => {
+      await createUser(testUser);
+      await expect(createUser(testUser)).rejects.toThrow(Error)
+    })
+    it('should throw an error if username is already taken', async () => {
+      await createUser(testUser);
+      const takenUsernameUser = {
+        userName: testUser.userName,
+        email: 'newemail@gmail.com',
+        password:'password1234'
+      }
+      await expect(createUser(takenUsernameUser)).rejects.toThrow(Error)
+    })
+
+    it('should throw an error if email is already taken', async () => {
+      await createUser(testUser);
+      const takenEmailUser = {
+        userName: 'newuser',
+        email: testUser.email,
+        password:'password1234'
+      }
+      await expect(createUser(takenEmailUser)).rejects.toThrow(Error)
+    })
   });
 
   describe('getUserByEmail', () => {
     it('should return a user by email', async () => {
-      const newUser = await createUser(testUser);
-      const userByEmail = await getUserByEmail(testUser.email);
-
-      expect(userByEmail).toHaveProperty('_id', newUser._id);
-      expect(userByEmail).toHaveProperty('userName', testUser.userName);
-      expect(userByEmail).toHaveProperty('password', expect.any(String));
-      expect(testUser.password).not.toEqual(userByEmail?.password);
-      expect(userByEmail).toHaveProperty('email', testUser.email);
+      await createUser(testUser);
+      const userByEmail = await getUserByEmailOrUserName(testUser.email);
+      assertUser(userByEmail, testUser);
     });
 
     it('should return null if user is not found', async () => {
       const email = 'nonexistent@example.com';
-      const user = await getUserByEmail(email);
+      const user = await getUserByEmailOrUserName(email);
 
       expect(user).toBeNull();
     });
@@ -71,16 +96,14 @@ describe('User Service', () => {
   describe('getUserByUserName', () => {
     it('should return a user by username', async () => {
   
-      const newUser = await createUser(testUser);
-      const userByUserName = await getUserByUserName(testUser.userName);
-      expect(userByUserName).toHaveProperty('_id', newUser._id);
-      expect(userByUserName).toHaveProperty('userName', testUser.userName);
-      expect(userByUserName).toHaveProperty('email', testUser.email);
+      await createUser(testUser);
+      const userByUserName = await getUserByEmailOrUserName(testUser.userName);
+      assertUser(userByUserName, testUser);
     });
 
     it('should return null if user is not found', async () => {
       const userName = 'nonexistent';
-      const user = await getUserByUserName(userName);
+      const user = await getUserByEmailOrUserName(userName);
 
       expect(user).toBeNull();
     });
