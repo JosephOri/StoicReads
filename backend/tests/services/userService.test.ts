@@ -32,6 +32,7 @@ describe('User Service', () => {
       expect(newUser).toHaveProperty('userName', testUser.userName);
       expect(newUser).toHaveProperty('email', testUser.email);
       expect(newUser).toHaveProperty('password', expect.any(String));
+      expect(newUser).toHaveProperty('profilePicture', 'https://www.iprcenter.gov/image-repository/blank-profile-picture.png/@@images/image.png');
       expect(testUser.password).not.toEqual(newUser.password);
       expect(newUser).toHaveProperty('createdAt', expect.any(Date));
       expect(newUser).toHaveProperty('updatedAt', expect.any(Date));

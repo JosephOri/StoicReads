@@ -54,6 +54,8 @@ export const deleteUserByUserName = async(userName: string): Promise<IUser | nul
   }
 }
 
+//TODO : Add update profile picture function
+
 
 
 

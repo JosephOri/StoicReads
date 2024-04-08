@@ -7,6 +7,7 @@ export interface IUser extends Document {
     userName: string;
     email: string;
     password: string;
+    profilePicture: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -26,6 +27,10 @@ const UserSchema: Schema = new Schema({
     password: {
         type: String,
         required: true,
+    },
+    profilePicture: {
+        type: String,
+        default: "https://www.iprcenter.gov/image-repository/blank-profile-picture.png/@@images/image.png",
     },
     createdAt: {
         type: Date,
