@@ -4,23 +4,38 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts",
+    "test": "tsc && jest --detectOpenHandles --forceExit --coverage",
+    "dev": "tsc && nodemon ./src/index.ts",
+    "start": "tsc && node dist/index.js",
+    "lint": "eslint . --ext .ts",
     "build": "tsc --project ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/eslint": "^8.56.8",
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/logger": "^0.0.5",
+    "@types/supertest": "^6.0.2",
+    "bcrypt": "^5.1.1",
+    "eslint": "^9.0.0",
+    "jest": "^29.7.0",
+    "mongodb": "^6.5.0",
     "nodemon": "^3.1.0",
+    "supertest": "^6.3.4",
+    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   },
   "dependencies": {
+    "body-parser": "^1.20.2",
+    "coverage": "^0.4.1",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "pino": "^8.19.0",
-    "pino-pretty": "^11.0.0",
-    "ts-node": "^10.9.2"
+    "mongoose": "^8.3.1",
+    "pino": "^8.20.0",
+    "pino-pretty": "^11.0.0"
   }
 }
