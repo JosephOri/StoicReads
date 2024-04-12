@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import {
   createUser,
   getUserByEmailOrUserName,
-} from '../../src/services/service.users';
+} from '../../src/services/service.user';
 import UserModel, { IUser } from '../../src/models/User';
 import User from '../../src/types/User';
 import bcrypt from 'bcrypt';
