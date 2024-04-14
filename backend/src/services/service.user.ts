@@ -18,9 +18,7 @@ export const createUser = async (user: User): Promise<IUser> => {
   }
 };
 
-export const getUserByEmailOrUserName = async (
-  identifier: string
-): Promise<IUser | null> => {
+export const getUserByEmailOrUserName = async (identifier: string) => {
   try {
     const user = await UserModel.findOne({
       $or: [{ email: identifier }, { userName: identifier }],

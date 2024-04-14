@@ -14,6 +14,9 @@ const PORT = 3000;
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, Express!');
 });
+app.get('/adsasd', (req: Request, res: Response) => {
+  res.send('my router!');
+});
 
 mongoose
   .connect(process.env.MONGODB_URI as string)
