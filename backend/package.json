@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@swc-node/register": "^1.9.0",
     "@swc/cli": "^0.3.12",
     "@swc/helpers": "^0.5.9",
     "@swc/jest": "^0.2.36",
@@ -44,7 +45,9 @@
     "mongoose": "^8.3.1",
     "pino": "^8.20.0",
     "pino-pretty": "^11.0.0",
+    "ts-cache-mongoose": "^1.5.0",
     "ts-migrate-mongoose": "^3.6.4",
+    "ts-patch-mongoose": "^2.6.0",
     "validator": "^13.11.0"
   }
 }
