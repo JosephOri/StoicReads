@@ -4,7 +4,7 @@ import {
   getUserByEmailOrUserName,
 } from '../../src/services/user.service';
 import UserModel, { IUser } from '../../src/models/User';
-import User from '../../src/interfaces/User';
+import User from '@interfaces/User';
 import bcrypt from 'bcrypt';
 import 'dotenv/config';
 

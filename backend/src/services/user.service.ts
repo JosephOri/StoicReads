@@ -1,7 +1,6 @@
 import UserModel, { IUser } from '../models/User';
 import bcrypt from 'bcrypt';
-import User from '../interfaces/User';
-
+import User from '@interfaces/User';
 export const createUser = async (user: User): Promise<IUser> => {
   try {
     const salt = await bcrypt.genSalt(10);
