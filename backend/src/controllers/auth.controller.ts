@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { createUser } from '../services/service.user';
-import { getUserTokens } from '../services/service.auth';
+import { createUser } from '../services/user.service';
+import { getUserTokens } from '../services/auth.service';
 import User from '../types/User';
 
 export const register = async (req: Request, res: Response) => {

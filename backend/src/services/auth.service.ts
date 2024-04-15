@@ -1,5 +1,5 @@
 import UserModel, { IUser } from '@models/User';
-import { getUserByEmailOrUserName } from './service.user';
+import { getUserByEmailOrUserName } from './user.service';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import mongoose, { Document } from 'mongoose';

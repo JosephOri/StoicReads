@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import 'dotenv/config';
 import Logger from '@utils/logger';
-import authRouter from '@routes/route.auth';
+import authRouter from '@routes/auth.route';
 import mongoose, { mongo } from 'mongoose';
 
 const app: Express = express();

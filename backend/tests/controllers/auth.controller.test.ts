@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { register, login } from '../../src/controllers/controller.auth';
-import { createUser } from '../../src/services/service.user';
-import { getUserTokens } from '../../src/services/service.auth';
+import { register, login } from '../../src/controllers/auth.controller';
+import { createUser } from '../../src/services/user.service';
+import { getUserTokens } from '../../src/services/auth.service';
 
 jest.mock('../../src/services/service.user', () => ({
   createUser: jest.fn(),
