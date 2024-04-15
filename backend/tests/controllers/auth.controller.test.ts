@@ -3,7 +3,7 @@ import { register, login } from '../../src/controllers/auth.controller';
 import { createUser } from '../../src/services/user.service';
 import { getUserTokens } from '../../src/services/auth.service';
 
-jest.mock('../../src/services/service.user', () => ({
+jest.mock('../../src/services/user.service', () => ({
   createUser: jest.fn(),
 }));
 
@@ -79,7 +79,7 @@ describe('register', () => {
   });
 });
 
-jest.mock('../../src/services/service.auth', () => ({
+jest.mock('../../src/services/auth.service', () => ({
   getUserTokens: jest.fn(),
 }));
 
