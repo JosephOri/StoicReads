@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { createUser } from '../services/user.service';
-import { getUserTokens } from '../services/auth.service';
+import { getUserTokens, extractToken } from '../services/auth.service';
 import User from '../interfaces/User';
+import jwt from 'jsonwebtoken';
 
 export const register = async (req: Request, res: Response) => {
   try {

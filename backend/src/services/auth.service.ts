@@ -1,8 +1,10 @@
 import UserModel, { IUser } from '@models/User';
+import { Request } from 'express';
 import { getUserByEmailOrUserName } from './user.service';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import mongoose, { Document } from 'mongoose';
+import getRandomNumber from '@utils/getRandomNumber';
 
 export const generateToken = async (
   user: Document<unknown, {}, IUser> &
@@ -17,7 +19,7 @@ export const generateToken = async (
       expiresIn: process.env.ACCESS_TOKEN_EXPIRATION as string,
     }
   );
-  const random = Math.floor(Math.random() * 1000000).toString();
+  const random = getRandomNumber(1, 1000000000);
   const refreshToken = jwt.sign(
     { _id: user._id, random: random },
     process.env.TOKEN_SECRET as string,
@@ -55,4 +57,10 @@ export const getUserTokens = async (
     throw new Error('Error generating tokens');
   }
   return tokens;
+};
+
+export const extractToken = (req: Request) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  return token;
 };
