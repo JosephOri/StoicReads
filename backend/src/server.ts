@@ -9,8 +9,6 @@ const app: Express = express();
 app.use(bodyParser.json());
 app.use('/auth', authRouter);
 
-const PORT = 3000;
-
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, Express!');
 });
