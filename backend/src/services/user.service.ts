@@ -1,6 +1,6 @@
 import UserModel, { IUser } from '../models/User';
 import bcrypt from 'bcrypt';
-import User from '../types/User';
+import User from '../interfaces/User';
 
 export const createUser = async (user: User): Promise<IUser> => {
   try {
