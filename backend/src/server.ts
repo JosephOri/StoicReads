@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import 'dotenv/config';
 import Logger from '@utils/logger';
 import authRouter from '@routes/auth.route';
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 
 const app: Express = express();
 app.use(bodyParser.json());

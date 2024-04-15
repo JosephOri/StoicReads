@@ -32,8 +32,3 @@ export const login = async (req: Request, res: Response) => {
     res.status(400).json({ message: error.message });
   }
 };
-export const extractToken = (req: Request): string | undefined => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  return token;
-};
