@@ -1,7 +1,7 @@
 {
   "status": true,
   "message": "Success",
-  "timestamp": 1713625579175,
+  "timestamp": 1713626600168,
   "data": {
     "location": {
       "location_id": "8010527",
@@ -293,7 +293,7 @@
       "location": {
         "latitude": 19.10315,
         "longitude": 72.88737,
-        "directionsUrl": "bm1GX2h0dHBzOi8vbWFwcy5nb29nbGUuY29tL21hcHM/c2FkZHI9JmRhZGRyPUhvbGlkYXkrSW5uK0hvdGVsK0xvYmJ5K0xldmVsJTJDK011bWJhaSs0MDAwNzIrSW5kaWFAMTkuMTAzMTUsNzIuODg3MzdfVndJ",
+        "directionsUrl": "ZHEwX2h0dHBzOi8vbWFwcy5nb29nbGUuY29tL21hcHM/c2FkZHI9JmRhZGRyPUhvbGlkYXkrSW5uK0hvdGVsK0xvYmJ5K0xldmVsJTJDK011bWJhaSs0MDAwNzIrSW5kaWFAMTkuMTAzMTUsNzIuODg3MzdfQTNw",
         "landmark": "<b>2.0 miles</b> from Powai Lake",
         "neighborhood": "Eastern Suburbs"
       },
@@ -301,7 +301,7 @@
         "address": "Holiday Inn Hotel Lobby Level, Mumbai 400072 India",
         "email": "saptami@himia.in",
         "phone": "+91-022-40851800",
-        "website": "OGdOX2h0dHBzOi8vd3d3LmloZy5jb20vaG9saWRheWlubi9ob3RlbHMvdXMvZW4vbXVtYmFpL2JvbWFwL2hvdGVsZGV0YWlsL2RpbmluZ19HblI="
+        "website": "TmN3X2h0dHBzOi8vd3d3LmloZy5jb20vaG9saWRheWlubi9ob3RlbHMvdXMvZW4vbXVtYmFpL2JvbWFwL2hvdGVsZGV0YWlsL2RpbmluZ19ldWw="
       },
       "rating": {
         "primaryRanking": {
