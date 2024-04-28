@@ -25,7 +25,7 @@ export const login = async (req: Request, res: Response) => {
     const userIdentifier = req.body.userName || req.body.email;
     const password = req.body.password;
     if (!userIdentifier || !password) {
-      return res.status(400).send('All fields are required');
+      return res.status(400).json({ message: 'All fields are required' });
     }
     const tokens = await getUserTokens(userIdentifier, password);
     res.status(200).json(tokens);

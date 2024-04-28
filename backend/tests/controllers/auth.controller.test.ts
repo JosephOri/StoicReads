@@ -142,13 +142,15 @@ describe('login', () => {
     } as Request;
     const res = {
       status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
+      json: jest.fn(),
     } as unknown as Response;
 
     await login(req, res);
 
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.send).toHaveBeenCalledWith('All fields are required');
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'All fields are required',
+    });
     expect(getUserTokens).not.toHaveBeenCalled();
   });
 });
