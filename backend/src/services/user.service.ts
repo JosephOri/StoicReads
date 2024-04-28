@@ -1,9 +1,12 @@
 import UserModel, { IUser } from '../models/User';
 import bcrypt from 'bcrypt';
 import User from '@interfaces/User';
+import logger from '../utils/logger';
 export const createUser = async (user: User): Promise<IUser> => {
   try {
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(
+      parseInt(process.env.SALT_ROUNDS as string)
+    );
     const hashedPassword = await bcrypt.hash(user.password, salt);
     const newUser = new UserModel({
       userName: user.userName,
@@ -13,6 +16,7 @@ export const createUser = async (user: User): Promise<IUser> => {
     const savedUser = await newUser.save();
     return savedUser;
   } catch (error) {
+    logger.error(`Error creating user: ${error}`);
     throw new Error(`Error creating user: ${error}`);
   }
 };
