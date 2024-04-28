@@ -3,7 +3,7 @@ import { createUser } from '../services/user.service';
 import { getUserTokens, extractToken } from '../services/auth.service';
 import User from '../interfaces/User';
 import jwt from 'jsonwebtoken';
-import logger from '@utils/logger';
+import logger from '../utils/logger';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -34,7 +34,7 @@ export const login = async (req: Request, res: Response) => {
     const tokens = await getUserTokens(userIdentifier, password);
     res.status(200).json(tokens);
   } catch (error: any) {
-    logger.error('Registration failed: ', error);
-    return res.status(500).json({ message: 'Registration failed' });
+    logger.error('Login failed: ', error);
+    return res.status(500).json({ message: 'Login failed' });
   }
 };

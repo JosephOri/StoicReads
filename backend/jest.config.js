@@ -7,6 +7,7 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/tests/$1',
+    '^@src/(.*)': '<rootDir>/src/$1',
   },
   testMatch: ['**/*.test.ts'],
 };

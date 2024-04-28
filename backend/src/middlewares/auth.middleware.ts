@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import AuthRequest from '@interfaces/AuthRequest';
 import jwt from 'jsonwebtoken';
 import { extractToken } from '@services/auth.service';
 import logger from '../utils/logger';
 
 export const authMiddleware = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {

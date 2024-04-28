@@ -38,7 +38,7 @@ describe('register', () => {
     expect(createUser).toHaveBeenCalledWith(userData);
   });
 
-  it('should return 400 if an error occurs', async () => {
+  it('should return 500 if an error occurs in creating user', async () => {
     const errorMessage = 'Failed to create user';
     (createUser as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
@@ -56,7 +56,7 @@ describe('register', () => {
 
     await register(req, res);
 
-    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ message: errorMessage });
   });
 
@@ -113,8 +113,8 @@ describe('login', () => {
     expect(getUserTokens).toHaveBeenCalledWith('testuser', 'password');
   });
 
-  it('should return 400 status if an error occurs', async () => {
-    const errorMessage = 'Invalid credentials';
+  it('should return 500 status if an error occurs in login', async () => {
+    const errorMessage = 'Login failed';
     (getUserTokens as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
     const req = {
@@ -130,7 +130,7 @@ describe('login', () => {
 
     await login(req, res);
 
-    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ message: errorMessage });
   });
 

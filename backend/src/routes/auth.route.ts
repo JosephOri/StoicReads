@@ -4,6 +4,6 @@ import { register, login } from '@controllers/auth.controller';
 import { authMiddleware } from '@middlewares/auth.middleware';
 
 router.post('/register', register);
-router.post('/login', login);
+router.post('/login', authMiddleware, login);
 
 export default router;
