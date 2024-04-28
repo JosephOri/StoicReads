@@ -21,26 +21,27 @@ export const createUser = async (user: User): Promise<IUser> => {
   }
 };
 
-export const getUserByEmailOrUserName = async (identifier: string) => {
+export const getUser = async (identifier: string) => {
   try {
     const user = await UserModel.findOne({
       $or: [{ email: identifier }, { userName: identifier }],
     });
     return user;
   } catch (error) {
+    logger.error(`Error getting user by email or username: ${error}`);
     throw new Error(`Error getting user by email or username: ${error}`);
   }
 };
 
-export const deleteUserByEmailOrUserName = async (
-  identifier: string
-): Promise<IUser | null> => {
+export const deleteUser = async (identifier: string): Promise<IUser | null> => {
   try {
     const deletedUser = await UserModel.findOneAndDelete({
       $or: [{ email: identifier }, { userName: identifier }],
     });
+    logger.info(`Deleted user: ${deletedUser}`);
     return deletedUser;
   } catch (error) {
+    logger.error(`Error deleting user by email or username: ${error}`);
     throw new Error(`Error deleting user by email or username: ${error}`);
   }
 };

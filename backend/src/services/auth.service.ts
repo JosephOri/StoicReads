@@ -1,6 +1,6 @@
 import UserModel, { IUser } from '@models/User';
 import { Request } from 'express';
-import { getUserByEmailOrUserName } from './user.service';
+import { getUser } from './user.service';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import mongoose, { Document } from 'mongoose';
@@ -44,7 +44,7 @@ export const getUserTokens = async (
   userIdentifier: string,
   password: string
 ) => {
-  const user = await getUserByEmailOrUserName(userIdentifier);
+  const user = await getUser(userIdentifier);
   if (!user) {
     throw new Error('invalid credentials');
   }
