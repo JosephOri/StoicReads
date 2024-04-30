@@ -2,12 +2,12 @@ import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import 'dotenv/config';
 import Logger from '@utils/logger';
-import authRouter from '@routes/auth.route';
+import applicationRouter from '@routes/application.router';
 import mongoose from 'mongoose';
 
 const app: Express = express();
 app.use(bodyParser.json());
-app.use('/auth', authRouter);
+app.use(applicationRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, Express!');
