@@ -3,15 +3,13 @@ import bodyParser from 'body-parser';
 import 'dotenv/config';
 import logger from '@utils/logger';
 import applicationRouter from '@routes/application.router';
-import { connectToDB } from '@utils/dbConfig';
-
+import connectToDatabase from '@utils/dbConfig';
 const app: Express = express();
 app.use(bodyParser.json());
 app.use(applicationRouter);
 
-connectToDB()
+connectToDatabase()
   .then(() => {
-    logger.info('Connected to MongoDB');
     app.listen(process.env.PORT, () => {
       logger.info('Server is running');
     });
