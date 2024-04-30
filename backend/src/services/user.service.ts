@@ -15,9 +15,9 @@ export const createUser = async (user: User): Promise<IUser> => {
     });
     const savedUser = await newUser.save();
     return savedUser;
-  } catch (error) {
-    logger.error(`Error creating user: ${error}`);
-    throw new Error(`Error creating user: ${error}`);
+  } catch (error: any) {
+    logger.error(`Error creating user: ${error.message}`);
+    throw new Error(`failed to create user`);
   }
 };
 
@@ -27,9 +27,9 @@ export const getUser = async (identifier: string) => {
       $or: [{ email: identifier }, { userName: identifier }],
     });
     return user;
-  } catch (error) {
-    logger.error(`Error getting user by email or username: ${error}`);
-    throw new Error(`Error getting user by email or username: ${error}`);
+  } catch (error: any) {
+    logger.error(`Error getting user by identifier: ${error.message}`);
+    throw new Error(`failed to get user`);
   }
 };
 
