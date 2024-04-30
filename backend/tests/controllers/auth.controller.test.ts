@@ -8,28 +8,33 @@ jest.mock('../../src/services/user.service', () => ({
 }));
 
 describe('register', () => {
+  let req: Request;
+  let res: Response;
+  const newUser = {
+    userName: 'testuser',
+    email: 'test@example.com',
+    password: 'password',
+  };
+  const userData = {
+    userName: 'testuser',
+    email: 'test@example.com',
+    password: 'password',
+  };
+
+  beforeEach(() => {
+    req = { body: userData } as Request;
+    res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    } as unknown as Response;
+  });
+
   afterEach(() => {
     jest.resetAllMocks();
   });
 
   it('should create a new user and return 201', async () => {
-    const newUser = {
-      userName: 'testuser',
-      email: 'test@example.com',
-      password: 'password',
-    };
-    const userData = {
-      userName: 'testuser',
-      email: 'test@example.com',
-      password: 'password',
-    };
     (createUser as jest.Mock).mockResolvedValueOnce(newUser);
-
-    const req = { body: userData } as Request;
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    } as unknown as Response;
 
     await register(req, res);
 
@@ -42,18 +47,6 @@ describe('register', () => {
     const errorMessage = 'Failed to create user';
     (createUser as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
-    const req = {
-      body: {
-        userName: 'testuser',
-        email: 'test@example.com',
-        password: 'password',
-      },
-    } as Request;
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    } as unknown as Response;
-
     await register(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
@@ -61,15 +54,12 @@ describe('register', () => {
   });
 
   it('should return 400 if invalid user data is provided', async () => {
-    const req = {
-      body: { email: 'test@example.com', password: 'password' },
+    const invalidReq = {
+      ...req,
+      body: { ...req.body, email: undefined },
     } as Request;
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    } as unknown as Response;
 
-    await register(req, res);
+    await register(invalidReq, res);
 
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
@@ -84,6 +74,21 @@ jest.mock('../../src/services/auth.service', () => ({
 }));
 
 describe('login', () => {
+  let req: Request;
+  let res: Response;
+  const userData = {
+    userName: 'testuser',
+    password: 'password',
+  };
+
+  beforeEach(() => {
+    req = { body: userData } as Request;
+    res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    } as unknown as Response;
+  });
+
   afterEach(() => {
     jest.resetAllMocks();
   });
@@ -94,17 +99,6 @@ describe('login', () => {
       refreshToken: 'refresh_token',
     };
     (getUserTokens as jest.Mock).mockResolvedValueOnce(tokens);
-
-    const req = {
-      body: {
-        userName: 'testuser',
-        password: 'password',
-      },
-    } as Request;
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    } as unknown as Response;
 
     await login(req, res);
 
@@ -117,17 +111,6 @@ describe('login', () => {
     const errorMessage = 'Login failed';
     (getUserTokens as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
-    const req = {
-      body: {
-        userName: 'testuser',
-        password: 'password',
-      },
-    } as Request;
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    } as unknown as Response;
-
     await login(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
@@ -135,17 +118,12 @@ describe('login', () => {
   });
 
   it('should return 400 status if required fields are missing', async () => {
-    const req = {
-      body: {
-        userName: 'testuser',
-      },
+    const invalidReq = {
+      ...req,
+      body: { ...req.body, password: undefined },
     } as Request;
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    } as unknown as Response;
 
-    await login(req, res);
+    await login(invalidReq, res);
 
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
