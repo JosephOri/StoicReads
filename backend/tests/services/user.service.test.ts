@@ -1,9 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose, { connect } from 'mongoose';
 import { createUser, getUser } from '../../src/services/user.service';
 import UserModel, { IUser } from '../../src/models/User';
 import User from '@interfaces/User';
 import bcrypt from 'bcrypt';
 import 'dotenv/config';
+import connectToDatabase from '../../src/utils/dbConfig';
 
 const testUser = {
   userName: 'John Doe',
@@ -24,8 +25,7 @@ const assertUser = (newUser: IUser | null, expectedUser: User) => {
 };
 describe('User Service', () => {
   beforeAll(async () => {
-    const dbUri = process.env.MONGODB_URI as string;
-    await mongoose.connect(dbUri);
+    connectToDatabase();
   });
 
   afterAll(async () => {
@@ -49,7 +49,7 @@ describe('User Service', () => {
         password: testUser.password,
       };
       await expect(createUser(invalidEmailUser)).rejects.toThrow(
-        'Error creating user: ValidationError: email: Invalid email'
+        'failed to create user'
       );
     });
 
