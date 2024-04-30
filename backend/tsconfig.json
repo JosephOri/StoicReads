@@ -21,7 +21,7 @@
       "@models/*": ["src/models/*"],
       "@routes/*": ["src/routes/*"],
       "@services/*": ["src/services/*"],
-      "@types/*": ["src/types/*"],
+      "@interfaces/*": ["src/interfaces/*"],
       "@utils/*": ["src/utils/*"],
       "@validations/*": ["src/validations/*"],
       "@tests/*": ["tests/*"]
