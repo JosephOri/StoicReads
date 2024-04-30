@@ -9,7 +9,7 @@ const testUser = {
   userName: 'John Doe',
   email: 'exmaple@email.com',
   password: 'password123',
-};
+} as const;
 
 const assertUser = (newUser: IUser | null, expectedUser: User) => {
   expect(newUser).toBeDefined();
