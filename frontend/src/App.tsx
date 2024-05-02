@@ -1,9 +1,10 @@
+import { RouterProvider } from "react-router-dom"
+import { router } from "./routes/routes"
 
-import LoginPage from "./pages/LoginPage/LoginPage"
 const App= ()=> {
   return (
     <>
-     <LoginPage />
+     <RouterProvider router={router} />
     </>
   )
 }
