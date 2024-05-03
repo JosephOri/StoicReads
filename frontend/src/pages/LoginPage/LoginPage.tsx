@@ -4,7 +4,9 @@ import Button from 'react-bootstrap/Button';
 import { GoogleLoginButton } from 'react-social-login-buttons';
 import Form from 'react-bootstrap/Form';
 import './LoginPage.css';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AUTH_LOGIN_URL } from '../../constants/constants';
 
 const LoginPage = () => {
@@ -20,8 +22,8 @@ const LoginPage = () => {
   };
   
   const handleLoginSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     try{
+    e.preventDefault();
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'; 
     const tokens =await axios.post(AUTH_LOGIN_URL, {email, password})
     console.log(tokens)
@@ -29,49 +31,52 @@ const LoginPage = () => {
     setPassword('');
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        alert('no such email or password');
+        toast.error('No such user found, please check your credentials');
       }
       if (error.response && error.response.status === 500) {
-        alert('internal server error , please try again later');
-    } 
+        toast.error('Server error, please try again later');
+      } 
   }
 }
 
   return (
-    <div className="container">
-      <div className="form-container">
-        <h2 className="title">Login</h2>
-        <Form onSubmit={handleLoginSubmit}>
-          <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
-            <Form.Label className="form-label">Email address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              className="form-control"
-              value={email}
-              onChange={handleEmailChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3 form-group" controlId="formBasicPassword">
-            <Form.Label className="form-label">Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              className="form-control"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit" className="btn-primary">
-            Submit
-          </Button>
-          <div className="text-center pt-3">Or</div>
-          <GoogleLoginButton className="mt-3 mb-3" />
-          <p className="signup-link">
-            Don't have an account? <Nav.Link href="/signup">Sign up</Nav.Link>
-          </p>
-        </Form>
+    <div>
+      <div className="container">
+        <div className="form-container">
+          <h2 className="title">Login</h2>
+          <Form onSubmit={handleLoginSubmit}>
+            <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
+              <Form.Label className="form-label">Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                className="form-control"
+                value={email}
+                onChange={handleEmailChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3 form-group" controlId="formBasicPassword">
+              <Form.Label className="form-label">Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                className="form-control"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit" className="btn-primary">
+              Submit
+            </Button>
+            <div className="text-center pt-3">Or</div>
+            <GoogleLoginButton className="mt-3 mb-3" />
+            <p className="signup-link">
+              Don't have an account? <Nav.Link href="/signup">Sign up</Nav.Link>
+            </p>
+          </Form>
+        </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
