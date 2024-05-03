@@ -1,8 +1,12 @@
 import React,{ useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import { GoogleLoginButton } from 'react-social-login-buttons';
 import Form from 'react-bootstrap/Form';
 import './LoginPage.css';
+import axios, { AxiosError } from 'axios';
+import { AUTH_LOGIN_URL } from '../../constants/constants';
+
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,17 +19,29 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
   
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLoginSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
+    try{
+    axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'; 
+    const tokens =await axios.post(AUTH_LOGIN_URL, {email, password})
+    console.log(tokens)
+    setEmail('');
+    setPassword('');
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert('no such email or password');
+      }
+      if (error.response && error.response.status === 500) {
+        alert('internal server error , please try again later');
+    } 
   }
+}
 
   return (
     <div className="container">
       <div className="form-container">
         <h2 className="title">Login</h2>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleLoginSubmit}>
           <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
             <Form.Label className="form-label">Email address</Form.Label>
             <Form.Control
@@ -49,6 +65,8 @@ const LoginPage = () => {
           <Button variant="primary" type="submit" className="btn-primary">
             Submit
           </Button>
+          <div className="text-center pt-3">Or</div>
+          <GoogleLoginButton className="mt-3 mb-3" />
           <p className="signup-link">
             Don't have an account? <Nav.Link href="/signup">Sign up</Nav.Link>
           </p>
