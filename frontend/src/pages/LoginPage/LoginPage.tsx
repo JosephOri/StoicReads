@@ -1,13 +1,13 @@
 import React,{ useState } from 'react';
-import { Nav } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { GoogleLoginButton } from 'react-social-login-buttons';
 import Form from 'react-bootstrap/Form';
 import './LoginPage.css';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AUTH_LOGIN_URL } from '../../constants/constants';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -24,19 +24,25 @@ const LoginPage = () => {
   const handleLoginSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     try{
     e.preventDefault();
+    if(!email || !password) {
+      toast.error('Please fill in all fields');
+      return;
+    }
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'; 
     const tokens =await axios.post(AUTH_LOGIN_URL, {email, password})
     console.log(tokens)
     setEmail('');
     setPassword('');
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        toast.error('No such user found, please check your credentials');
+    } catch(err) {
+      const error = err as AxiosError;
+      if(error.response?.status === 400) {
+        toast.error('Please fill in all fields');
+      } else if(error.response?.status === 401) {
+        toast.error('user was not found or password is incorrect');
+      } else if(error.response?.status === 500) {
+        toast.error('server error occurred, please try again later');
       }
-      if (error.response && error.response.status === 500) {
-        toast.error('Server error, please try again later');
-      } 
-  }
+    }
 }
 
   return (
@@ -71,7 +77,7 @@ const LoginPage = () => {
             <div className="text-center pt-3">Or</div>
             <GoogleLoginButton className="mt-3 mb-3" />
             <p className="signup-link">
-              Don't have an account? <Nav.Link href="/signup">Sign up</Nav.Link>
+              Don't have an account? <Link to="/signup">Sign up</Link>
             </p>
           </Form>
         </div>
