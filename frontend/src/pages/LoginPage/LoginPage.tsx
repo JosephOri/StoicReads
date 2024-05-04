@@ -1,13 +1,13 @@
 import React,{ useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import { GoogleLoginButton } from 'react-social-login-buttons';
+import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import './LoginPage.css';
 import axios, { AxiosError,HttpStatusCode } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AUTH_LOGIN_URL } from '../../constants/constants';
-import { Link } from 'react-router-dom';
 import { allowCorsForAxios } from '../../utils/allowCorsForAxios';
 import AuthTokens from '../../interfaces/AuthTokens';
 import { saveTokens } from '../../services/auth.service';
