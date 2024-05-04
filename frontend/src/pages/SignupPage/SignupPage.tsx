@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ToastContainer, toast } from 'react-toastify';
+import { AUTH_REGISTER_URL } from '../../constants/constants';
+import axios, { AxiosError } from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import './SignupPage.css'
 
@@ -37,25 +39,48 @@ const SignupPage: React.FC = () => {
     setFormData({ ...formData, confirmPassword: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const isFormDataValidCheck = () => {
     const { username, email, password, confirmPassword } = formData;
     const isAllFieldsFilled = username && email && password && confirmPassword;
+    const isEmailValid = email.includes('@') && email.includes('.');
     if(!isAllFieldsFilled) {
       toast.error('Please fill in all fields');
-      return;
+      return false;
     }
     if(password !== confirmPassword) {
       toast.error('Passwords do not match');
-      return;
+      return false;
     }
     if(password.length < 6) {
       toast.error('Password must be at least 6 characters long');
-      return;
+      return false;
     }
-    console.log(formData);
+    if(!isEmailValid) {
+      toast.error('Please enter a valid email address');
+      return false;
+    }
+    return true;
   }
-
+  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const isFormDataValid = isFormDataValidCheck();
+    if(!isFormDataValid) return;
+    const { username, email, password } = formData;
+    try {
+      const response = await axios.post(AUTH_REGISTER_URL, { username, email, password });
+      console.log(response);
+      toast.success('User created successfully');
+      setFormData({ username: '', email: '', password: '', confirmPassword: '' });
+    } catch (err) {
+      const error = err as AxiosError;
+      if (error.response?.status === 400) {
+        toast.error('Please fill in all fields');
+      } else if (error.response?.status === 500) {
+        toast.error('Server error occurred, please try again later');
+      }
+    }  
+  }
+  
   return (
   <div>
     <div className="container">
