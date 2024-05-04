@@ -1,4 +1,5 @@
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '../constants/constants';
+import AuthTokens from '../interfaces/AuthTokens';
 
 export const getTokens = () => {
   return {
@@ -7,13 +8,7 @@ export const getTokens = () => {
   };
 };
 
-export const saveTokens = ({
-  accessToken,
-  refreshToken,
-}: {
-  accessToken: string;
-  refreshToken: string;
-}) => {
-  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-  localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+export const saveTokens = (tokens: AuthTokens) => {
+  localStorage.setItem(ACCESS_TOKEN_KEY, tokens.accessToken);
+  localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refreshToken);
 };

@@ -44,9 +44,14 @@ export const login = async (req: Request, res: Response) => {
     const tokens = await getUserTokens(userIdentifier, password);
     res.status(HttpStatusCode.Ok).json(tokens);
   } catch (error: any) {
-    logger.error('Login failed: ', error);
-    return res
+    logger.error('Error logging in: ', error.message);
+    if (error.message === 'invalid credentials') {
+      return res
+        .status(HttpStatusCode.Unauthorized)
+        .json({ message: 'User not found or password is incorrect' });
+    }
+    res
       .status(HttpStatusCode.InternalServerError)
-      .json({ message: 'Login failed' });
+      .json({ message: error.message });
   }
 };

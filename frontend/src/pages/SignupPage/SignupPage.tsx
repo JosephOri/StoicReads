@@ -9,7 +9,7 @@ import SignupFormData from '../../interfaces/SignupFormData';
 import 'react-toastify/dist/ReactToastify.css';
 import './SignupPage.css'
 
-const SignupPage: React.FC = () => {
+const SignupPage = () => {
   const [formData, setFormData] = useState<SignupFormData>({
     username: '',
     email: '',

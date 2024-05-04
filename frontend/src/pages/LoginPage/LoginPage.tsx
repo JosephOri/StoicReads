@@ -3,12 +3,14 @@ import Button from 'react-bootstrap/Button';
 import { GoogleLoginButton } from 'react-social-login-buttons';
 import Form from 'react-bootstrap/Form';
 import './LoginPage.css';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError,HttpStatusCode } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AUTH_LOGIN_URL } from '../../constants/constants';
 import { Link } from 'react-router-dom';
 import { allowCorsForAxios } from '../../utils/allowCorsForAxios';
+import AuthTokens from '../../interfaces/AuthTokens';
+import { saveTokens } from '../../services/auth.service';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -30,17 +32,18 @@ const LoginPage = () => {
       return;
     }
     allowCorsForAxios(axios)
-    const tokens =await axios.post(AUTH_LOGIN_URL, {email, password})
-    console.log(tokens)
+    const tokens = await axios.post(AUTH_LOGIN_URL, {email, password})
+    saveTokens(tokens.data as AuthTokens);
     setEmail('');
     setPassword('');
+    toast.success('Logged in successfully');
     } catch(err) {
       const error = err as AxiosError;
-      if(error.response?.status === 400) {
+      if(error.response?.status === HttpStatusCode.BadRequest) {
         toast.error('Please fill in all fields');
-      } else if(error.response?.status === 401) {
+      } else if(error.response?.status === HttpStatusCode.Unauthorized) {
         toast.error('user was not found or password is incorrect');
-      } else if(error.response?.status === 500) {
+      } else if(error.response?.status === HttpStatusCode.InternalServerError) {
         toast.error('server error occurred, please try again later');
       }
     }
