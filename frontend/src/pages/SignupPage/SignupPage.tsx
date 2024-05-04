@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ToastContainer, toast } from 'react-toastify';
 import { AUTH_REGISTER_URL } from '../../constants/constants';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError,HttpStatusCode } from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import './SignupPage.css'
 
@@ -43,6 +43,11 @@ const SignupPage: React.FC = () => {
     const { username, email, password, confirmPassword } = formData;
     const isAllFieldsFilled = username && email && password && confirmPassword;
     const isEmailValid = email.includes('@') && email.includes('.');
+    const isUsernameValid = !username.includes(' ') && username.length > 3;
+    if(!isUsernameValid) {
+      toast.error('Username must be at least 4 characters long and cannot contain spaces');
+      return false;
+    }
     if(!isAllFieldsFilled) {
       toast.error('Please fill in all fields');
       return false;
@@ -71,14 +76,16 @@ const SignupPage: React.FC = () => {
       console.log(response);
       toast.success('User created successfully');
       setFormData({ username: '', email: '', password: '', confirmPassword: '' });
-    } catch (err) {
+    } catch (err:unknown) {
       const error = err as AxiosError;
-      if (error.response?.status === 400) {
+      if(error.response?.status === HttpStatusCode.BadRequest) {
         toast.error('Please fill in all fields');
-      } else if (error.response?.status === 500) {
+      } else if(error.response?.status === HttpStatusCode.Conflict) {
+        toast.error('User already exists');
+      } else {
         toast.error('Server error occurred, please try again later');
       }
-    }  
+    }
   }
   
   return (

@@ -17,7 +17,7 @@ export const createUser = async (user: User): Promise<IUser> => {
     return savedUser;
   } catch (error: any) {
     logger.error(`Error creating user: ${error.message}`);
-    throw new Error(`failed to create user`);
+    throw new Error(`failed to create user: ${error.message}`);
   }
 };
 
