@@ -2,18 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import axios, { AxiosError,HttpStatusCode } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { AUTH_REGISTER_URL } from '../../constants/constants';
-import axios, { AxiosError,HttpStatusCode } from 'axios';
+import SignupFormData from '../../interfaces/SignupFormData';
 import 'react-toastify/dist/ReactToastify.css';
 import './SignupPage.css'
-
-interface SignupFormData {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
 
 const SignupPage: React.FC = () => {
   const [formData, setFormData] = useState<SignupFormData>({
