@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AUTH_LOGIN_URL } from '../../constants/constants';
 import { Link } from 'react-router-dom';
+import { allowCorsForAxios } from '../../utils/allowCorsForAxios';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -28,7 +29,7 @@ const LoginPage = () => {
       toast.error('Please fill in all fields');
       return;
     }
-    axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'; 
+    allowCorsForAxios(axios)
     const tokens =await axios.post(AUTH_LOGIN_URL, {email, password})
     console.log(tokens)
     setEmail('');
