@@ -89,7 +89,7 @@ const SignupPage: React.FC = () => {
   }
   
   return (
-  <div>
+  <>
     <div className="container">
       <div className="form-container">
         <h2 className="title">Sign Up</h2>
@@ -144,7 +144,7 @@ const SignupPage: React.FC = () => {
       </div>
     </div>
     <ToastContainer />
-  </div>
+  </>
   );
 };
 
