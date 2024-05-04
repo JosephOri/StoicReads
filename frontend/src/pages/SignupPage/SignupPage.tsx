@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './SignupPage.css'
 
 const SignupPage = () => {
-  const [formData, setFormData] = useState<SignupFormData>({
+  const [signupFormData, setSignupFormData] = useState<SignupFormData>({
     username: '',
     email: '',
     password: '',
@@ -18,23 +18,23 @@ const SignupPage = () => {
   });
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, username: e.target.value });
+    setSignupFormData({ ...signupFormData, username: e.target.value });
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, email: e.target.value });
+    setSignupFormData({ ...signupFormData, email: e.target.value });
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, password: e.target.value });
+    setSignupFormData({ ...signupFormData, password: e.target.value });
   };
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, confirmPassword: e.target.value });
+    setSignupFormData({ ...signupFormData, confirmPassword: e.target.value });
   };
 
   const isFormDataValidCheck = () => {
-    const { username, email, password, confirmPassword } = formData;
+    const { username, email, password, confirmPassword } = signupFormData;
     const isAllFieldsFilled = username && email && password && confirmPassword;
     const isEmailValid = email.includes('@') && email.includes('.');
     const isUsernameValid = !username.includes(' ') && username.length > 3;
@@ -64,12 +64,12 @@ const SignupPage = () => {
     e.preventDefault();
     const isFormDataValid = isFormDataValidCheck();
     if(!isFormDataValid) return;
-    const { username, email, password } = formData;
+    const { username, email, password } = signupFormData;
     try {
       const response = await axios.post(AUTH_REGISTER_URL, { username, email, password });
       console.log(response);
       toast.success('User created successfully');
-      setFormData({ username: '', email: '', password: '', confirmPassword: '' });
+      setSignupFormData({ username: '', email: '', password: '', confirmPassword: '' });
     } catch (err:unknown) {
       const error = err as AxiosError;
       if(error.response?.status === HttpStatusCode.BadRequest) {
@@ -94,7 +94,7 @@ const SignupPage = () => {
               type="text"
               placeholder="Enter username"
               className="form-control"
-              value={formData.username}
+              value={signupFormData.username}
               onChange={handleUsernameChange}
             />
           </Form.Group>
@@ -104,7 +104,7 @@ const SignupPage = () => {
               type="email"
               placeholder="Enter email"
               className="form-control"
-              value={formData.email}
+              value={signupFormData.email}
               onChange={handleEmailChange}
             />
           </Form.Group>
@@ -114,7 +114,7 @@ const SignupPage = () => {
               type="password"
               placeholder="Password"
               className="form-control"
-              value={formData.password}
+              value={signupFormData.password}
               onChange={handlePasswordChange}
             />
           </Form.Group>
@@ -124,7 +124,7 @@ const SignupPage = () => {
               type="password"
               placeholder="Confirm Password"
               className="form-control"
-              value={formData.confirmPassword}
+              value={signupFormData.confirmPassword}
               onChange={handleConfirmPasswordChange}
             />
           </Form.Group>

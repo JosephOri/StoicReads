@@ -11,22 +11,23 @@ import { Link } from 'react-router-dom';
 import { allowCorsForAxios } from '../../utils/allowCorsForAxios';
 import AuthTokens from '../../interfaces/AuthTokens';
 import { saveTokens } from '../../services/auth.service';
+import LoginFormData from '../../interfaces/LoginFormData';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+ const [loginFormData,setLoginFormData] = useState<LoginFormData>({ email: '', password: '' });
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);    
+    setLoginFormData({ ...loginFormData, email: e.target.value });
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    setLoginFormData({ ...loginFormData, password: e.target.value });
   };
   
   const handleLoginSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     try{
     e.preventDefault();
+    const { email, password } = loginFormData;
     if(!email || !password) {
       toast.error('Please fill in all fields');
       return;
@@ -34,8 +35,7 @@ const LoginPage = () => {
     allowCorsForAxios(axios)
     const tokens = await axios.post(AUTH_LOGIN_URL, {email, password})
     saveTokens(tokens.data as AuthTokens);
-    setEmail('');
-    setPassword('');
+    setLoginFormData({ email: '', password: '' });
     toast.success('Logged in successfully');
     } catch(err) {
       const error = err as AxiosError;
@@ -61,7 +61,7 @@ const LoginPage = () => {
                 type="email"
                 placeholder="Enter email"
                 className="form-control"
-                value={email}
+                value={loginFormData.email}
                 onChange={handleEmailChange}
               />
             </Form.Group>
@@ -71,7 +71,7 @@ const LoginPage = () => {
                 type="password"
                 placeholder="Password"
                 className="form-control"
-                value={password}
+                value={loginFormData.password}
                 onChange={handlePasswordChange}
               />
             </Form.Group>
