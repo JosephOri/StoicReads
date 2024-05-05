@@ -39,11 +39,12 @@ const LoginPage = () => {
     toast.success('Logged in successfully');
     } catch(err) {
       const error = err as AxiosError;
-      if(error.response?.status === HttpStatusCode.BadRequest) {
+      const errorStatusCode = error.response?.status;
+      if(errorStatusCode === HttpStatusCode.BadRequest) {
         toast.error('Please fill in all fields');
-      } else if(error.response?.status === HttpStatusCode.Unauthorized) {
+      } else if(errorStatusCode === HttpStatusCode.Unauthorized) {
         toast.error('user was not found or password is incorrect');
-      } else if(error.response?.status === HttpStatusCode.InternalServerError) {
+      } else if(errorStatusCode === HttpStatusCode.InternalServerError) {
         toast.error('server error occurred, please try again later');
       }
     }
