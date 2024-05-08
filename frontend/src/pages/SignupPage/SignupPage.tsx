@@ -17,20 +17,8 @@ const SignupPage = () => {
     confirmPassword: '',
   });
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSignupFormData({ ...signupFormData, username: e.target.value });
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSignupFormData({ ...signupFormData, email: e.target.value });
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSignupFormData({ ...signupFormData, password: e.target.value });
-  };
-
-  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSignupFormData({ ...signupFormData, confirmPassword: e.target.value });
+  const handleInputChange = (fieldName:string, value:string) => {
+    setSignupFormData({ ...signupFormData, [fieldName]: value });
   };
 
   const isFormDataValidCheck = () => {
@@ -95,7 +83,7 @@ const SignupPage = () => {
               placeholder="Enter username"
               className="form-control"
               value={signupFormData.username}
-              onChange={handleUsernameChange}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('username', e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
@@ -105,7 +93,7 @@ const SignupPage = () => {
               placeholder="Enter email"
               className="form-control"
               value={signupFormData.email}
-              onChange={handleEmailChange}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3 form-group" controlId="formBasicPassword">
@@ -115,7 +103,7 @@ const SignupPage = () => {
               placeholder="Password"
               className="form-control"
               value={signupFormData.password}
-              onChange={handlePasswordChange}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('password', e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3 form-group" controlId="formBasicConfirmPassword">
@@ -125,7 +113,7 @@ const SignupPage = () => {
               placeholder="Confirm Password"
               className="form-control"
               value={signupFormData.confirmPassword}
-              onChange={handleConfirmPasswordChange}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>{handleInputChange('confirmPassword', e.target.value)}}
             />
           </Form.Group>
           <Button variant="primary" type="submit" className="btn-primary">

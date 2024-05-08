@@ -1,7 +1,7 @@
 import React,{ useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import { GoogleLoginButton } from 'react-social-login-buttons';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import './LoginPage.css';
 import axios, { AxiosError,HttpStatusCode } from 'axios';
@@ -13,16 +13,16 @@ import AuthTokens from '../../interfaces/AuthTokens';
 import { saveTokens } from '../../services/auth.service';
 import LoginFormData from '../../interfaces/LoginFormData';
 
+
 const LoginPage = () => {
- const [loginFormData,setLoginFormData] = useState<LoginFormData>({ email: '', password: '' });
+  const navigate = useNavigate();
+  const [loginFormData,setLoginFormData] = useState<LoginFormData>({ email: '', password: '' });
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLoginFormData({ ...loginFormData, email: e.target.value });
+
+  const handleInputChange = (fieldName:string, value:string) => {
+    setLoginFormData({ ...loginFormData, [fieldName]: value });
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLoginFormData({ ...loginFormData, password: e.target.value });
-  };
   
   const handleLoginSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     try{
@@ -37,6 +37,7 @@ const LoginPage = () => {
     saveTokens(tokens.data as AuthTokens);
     setLoginFormData({ email: '', password: '' });
     toast.success('Logged in successfully');
+    navigate('/');
     } catch(err) {
       const error = err as AxiosError;
       const errorStatusCode = error.response?.status;
@@ -63,7 +64,7 @@ const LoginPage = () => {
                 placeholder="Enter email"
                 className="form-control"
                 value={loginFormData.email}
-                onChange={handleEmailChange}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3 form-group" controlId="formBasicPassword">
@@ -73,7 +74,7 @@ const LoginPage = () => {
                 placeholder="Password"
                 className="form-control"
                 value={loginFormData.password}
-                onChange={handlePasswordChange}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('password', e.target.value)}
               />
             </Form.Group>
             <Button variant="primary" type="submit" className="btn-primary">
