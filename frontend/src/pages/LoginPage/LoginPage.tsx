@@ -17,27 +17,32 @@ import isEmailValidCheck from '../../utils/isEmailValidCheck';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [loginFormData,setLoginFormData] = useState<LoginFormData>({ email: '', password: '' });
 
+  const [loginFormData,setLoginFormData] = useState<LoginFormData>({ email: '', password: '' });
 
   const handleInputChange = (fieldName:string, value:string) => {
     setLoginFormData({ ...loginFormData, [fieldName]: value });
   };
 
+  const isInputValidCheck = (email:string, password:string) => {
+    if(!email || !password) {
+      toast.error('Please fill in all fields');
+      return false;
+    }
+    const isEmailValid = isEmailValidCheck(email);
+    if(!isEmailValid) {
+      toast.error('Please enter a valid email address');
+      return false;
+    }
+    return true;
+  }
   
   const handleLoginSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     try{
     e.preventDefault();
     const { email, password } = loginFormData;
-    if(!email || !password) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-    const isEmailValid = isEmailValidCheck(email);
-    if(!isEmailValid) {
-      toast.error('Please enter a valid email address');
-      return;
-    }
+    const isInputValid = isInputValidCheck(email, password);
+    if(!isInputValid) return;
     allowCorsForAxios(axios)
     const tokens = await axios.post(AUTH_LOGIN_URL, {email, password})
     saveTokens(tokens.data as AuthTokens);
