@@ -6,7 +6,7 @@ import axios, { AxiosError,HttpStatusCode } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { AUTH_REGISTER_URL } from '../../constants/constants';
 import SignupFormData from '../../interfaces/SignupFormData';
-import * as EmailValidator from 'email-validator';
+import isEmailValidCheck from '../../utils/isEmailValidCheck';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './SignupPage.css'
@@ -26,7 +26,7 @@ const SignupPage = () => {
   const isFormDataValidCheck = () => {
     const { username, email, password, confirmPassword } = signupFormData;
     const isAllFieldsFilled = username && email && password && confirmPassword;
-    const isEmailValid = EmailValidator.validate(email);
+    const isEmailValid = isEmailValidCheck(email);
     const isUsernameValid = !username.includes(' ') && username.length > 3;
     if(!isUsernameValid) {
       toast.error('Username must be at least 4 characters long and cannot contain spaces');

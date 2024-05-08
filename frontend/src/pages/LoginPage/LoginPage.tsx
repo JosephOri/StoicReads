@@ -12,6 +12,7 @@ import { allowCorsForAxios } from '../../utils/allowCorsForAxios';
 import AuthTokens from '../../interfaces/AuthTokens';
 import { saveTokens } from '../../services/auth.service';
 import LoginFormData from '../../interfaces/LoginFormData';
+import isEmailValidCheck from '../../utils/isEmailValidCheck';
 
 
 const LoginPage = () => {
@@ -30,6 +31,11 @@ const LoginPage = () => {
     const { email, password } = loginFormData;
     if(!email || !password) {
       toast.error('Please fill in all fields');
+      return;
+    }
+    const isEmailValid = isEmailValidCheck(email);
+    if(!isEmailValid) {
+      toast.error('Please enter a valid email address');
       return;
     }
     allowCorsForAxios(axios)
