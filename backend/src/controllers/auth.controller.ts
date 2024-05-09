@@ -1,10 +1,15 @@
 import { Request, Response } from 'express';
-import { createUser } from '../services/user.service';
+import {
+  createUser,
+  getUser,
+  validatePassword,
+} from '../services/user.service';
 import { getUserTokens, extractToken } from '../services/auth.service';
 import User from '../interfaces/User';
 import { HttpStatusCode } from 'axios';
 import jwt from 'jsonwebtoken';
 import logger from '../utils/logger';
+import { errorMessages } from 'src/constants/constants';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -39,13 +44,29 @@ export const login = async (req: Request, res: Response) => {
       logger.error('All fields are required');
       return res
         .status(HttpStatusCode.BadRequest)
-        .json({ message: 'All fields are required' });
+        .json({ message: errorMessages.INVALID_CREDENTIALS });
     }
-    const tokens = await getUserTokens(userIdentifier, password);
+    const user = await getUser(userIdentifier);
+    if (!user) {
+      logger.error('User not found');
+      return res
+        .status(HttpStatusCode.Unauthorized)
+        .json({ message: 'User not found or password is incorrect' });
+    }
+    const isUserPasswordMatch = await validatePassword(password, user.password);
+    if (!isUserPasswordMatch) {
+      logger.error('Password is incorrect');
+      return res
+        .status(HttpStatusCode.Unauthorized)
+        .json({ message: 'User not found or password is incorrect' });
+    }
+    const tokens = await getUserTokens(user);
+    logger.info('User logged in successfully');
     res.status(HttpStatusCode.Ok).json(tokens);
   } catch (error: any) {
     logger.error('Error logging in: ', error.message);
-    if (error.message === 'invalid credentials') {
+    if (error.message === errorMessages.INVALID_CREDENTIALS) {
+      logger.error('User not found or password is incorrect');
       return res
         .status(HttpStatusCode.Unauthorized)
         .json({ message: 'User not found or password is incorrect' });

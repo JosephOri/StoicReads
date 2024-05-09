@@ -2,6 +2,7 @@ import UserModel, { IUser } from '../models/User';
 import bcrypt from 'bcrypt';
 import User from '@interfaces/User';
 import logger from '../utils/logger';
+import { errorMessages } from 'src/constants/constants';
 export const createUser = async (user: User): Promise<IUser> => {
   try {
     const salt = await bcrypt.genSalt(
@@ -29,7 +30,21 @@ export const getUser = async (identifier: string) => {
     return user;
   } catch (error: any) {
     logger.error(`Error getting user by identifier: ${error.message}`);
-    throw new Error(`failed to get user`);
+    throw new Error(errorMessages.ERROR_GETTING_USER);
+  }
+};
+
+export const validatePassword = async (
+  password: string,
+  userPassword: string
+) => {
+  try {
+    logger.info(password, userPassword);
+    const isMatch = await bcrypt.compare(password, userPassword);
+    return isMatch;
+  } catch (error) {
+    logger.error(`Error validating password: ${error}`);
+    throw new Error(errorMessages.INVALID_CREDENTIALS);
   }
 };
 
@@ -42,7 +57,7 @@ export const deleteUser = async (identifier: string): Promise<IUser | null> => {
     return deletedUser;
   } catch (error) {
     logger.error(`Error deleting user by email or username: ${error}`);
-    throw new Error(`Error deleting user by email or username: ${error}`);
+    throw new Error(errorMessages.ERROR_DELETING_USER);
   }
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, redirect } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios, { AxiosError,HttpStatusCode } from 'axios';
@@ -60,6 +60,7 @@ const SignupPage = () => {
       console.log(response);
       toast.success('User created successfully');
       setSignupFormData({ userName: '', email: '', password: '', confirmPassword: '' });
+      redirect('/login');
     } catch (err:unknown) {
       const error = err as AxiosError;
       if(error.response?.status === HttpStatusCode.BadRequest) {

@@ -53,6 +53,7 @@ const LoginPage = () => {
     } catch(err) {
       const error = err as AxiosError;
       const errorStatusCode = error.response?.status;
+      console.log('error response', error.response);
       if(errorStatusCode === HttpStatusCode.BadRequest) {
         toast.error('Please fill in all fields');
       } else if(errorStatusCode === HttpStatusCode.Unauthorized) {

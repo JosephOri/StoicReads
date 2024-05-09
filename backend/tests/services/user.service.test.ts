@@ -1,5 +1,5 @@
 import mongoose, { connect } from 'mongoose';
-import { createUser, getUser } from '../../src/services/user.service';
+import { createUser, getUserByEmail } from '../../src/services/user.service';
 import UserModel, { IUser } from '../../src/models/User';
 import User from '@interfaces/User';
 import bcrypt from 'bcrypt';
@@ -81,13 +81,13 @@ describe('User Service', () => {
   describe('getUserByEmail', () => {
     it('should return a user by email', async () => {
       await createUser(testUser);
-      const userByEmail = await getUser(testUser.email);
+      const userByEmail = await getUserByEmail(testUser.email);
       assertUser(userByEmail, testUser);
     });
 
     it('should return null if user is not found', async () => {
       const email = 'nonexistent@example.com';
-      const user = await getUser(email);
+      const user = await getUserByEmail(email);
 
       expect(user).toBeNull();
     });
@@ -96,13 +96,13 @@ describe('User Service', () => {
   describe('getUserByUserName', () => {
     it('should return a user by username', async () => {
       await createUser(testUser);
-      const userByUserName = await getUser(testUser.userName);
+      const userByUserName = await getUserByEmail(testUser.userName);
       assertUser(userByUserName, testUser);
     });
 
     it('should return null if user is not found', async () => {
       const userName = 'nonexistent';
-      const user = await getUser(userName);
+      const user = await getUserByEmail(userName);
 
       expect(user).toBeNull();
     });
