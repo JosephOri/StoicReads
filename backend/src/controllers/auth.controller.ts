@@ -51,14 +51,14 @@ export const login = async (req: Request, res: Response) => {
       logger.error('User not found');
       return res
         .status(HttpStatusCode.Unauthorized)
-        .json({ message: 'User not found or password is incorrect' });
+        .json({ message: errorMessages.USER_NOT_FOUND });
     }
     const isUserPasswordMatch = await validatePassword(password, user.password);
     if (!isUserPasswordMatch) {
       logger.error('Password is incorrect');
       return res
         .status(HttpStatusCode.Unauthorized)
-        .json({ message: 'User not found or password is incorrect' });
+        .json({ message: errorMessages.USER_NOT_FOUND });
     }
     const tokens = await getUserTokens(user);
     logger.info('User logged in successfully');
@@ -69,7 +69,7 @@ export const login = async (req: Request, res: Response) => {
       logger.error('User not found or password is incorrect');
       return res
         .status(HttpStatusCode.Unauthorized)
-        .json({ message: 'User not found or password is incorrect' });
+        .json({ message: errorMessages.USER_NOT_FOUND });
     }
     res
       .status(HttpStatusCode.InternalServerError)

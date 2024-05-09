@@ -39,7 +39,6 @@ export const validatePassword = async (
   userPassword: string
 ) => {
   try {
-    logger.info(password, userPassword);
     const isMatch = await bcrypt.compare(password, userPassword);
     return isMatch;
   } catch (error) {
