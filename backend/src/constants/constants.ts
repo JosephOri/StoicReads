@@ -11,4 +11,5 @@ export const errorMessages = {
   ERROR_GETTING_USER: 'Error getting user by identifier',
   ERROR_DELETING_USER: 'Error deleting user by email or username',
   USER_ALREADY_LOGGED_IN: 'User is already logged in',
+  UNAUTHORIZED: 'User is not authorized to perform this action',
 };
