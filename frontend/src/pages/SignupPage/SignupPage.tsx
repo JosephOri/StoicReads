@@ -13,7 +13,7 @@ import './SignupPage.css'
 
 const SignupPage = () => {
   const [signupFormData, setSignupFormData] = useState<SignupFormData>({
-    username: '',
+    userName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -24,10 +24,10 @@ const SignupPage = () => {
   };
 
   const isFormDataValidCheck = () => {
-    const { username, email, password, confirmPassword } = signupFormData;
-    const isAllFieldsFilled = username && email && password && confirmPassword;
+    const { userName, email, password, confirmPassword } = signupFormData;
+    const isAllFieldsFilled = userName && email && password && confirmPassword;
     const isEmailValid = isEmailValidCheck(email);
-    const isUsernameValid = !username.includes(' ') && username.length > 3;
+    const isUsernameValid = !userName.includes(' ') && userName.length > 3;
     if(!isUsernameValid) {
       toast.error('Username must be at least 4 characters long and cannot contain spaces');
       return false;
@@ -54,12 +54,12 @@ const SignupPage = () => {
     e.preventDefault();
     const isFormDataValid = isFormDataValidCheck();
     if(!isFormDataValid) return;
-    const { username, email, password } = signupFormData;
+    const {userName, email, password } = signupFormData;
     try {
-      const response = await axios.post(AUTH_REGISTER_URL, { username, email, password });
+      const response = await axios.post(AUTH_REGISTER_URL, { userName, email, password });
       console.log(response);
       toast.success('User created successfully');
-      setSignupFormData({ username: '', email: '', password: '', confirmPassword: '' });
+      setSignupFormData({ userName: '', email: '', password: '', confirmPassword: '' });
     } catch (err:unknown) {
       const error = err as AxiosError;
       if(error.response?.status === HttpStatusCode.BadRequest) {
@@ -82,10 +82,10 @@ const SignupPage = () => {
             <Form.Label className="form-label">Username</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter username"
+              placeholder="Enter userName"
               className="form-control"
-              value={signupFormData.username}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('username', e.target.value)}
+              value={signupFormData.userName}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('userName', e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
