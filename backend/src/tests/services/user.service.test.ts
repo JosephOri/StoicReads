@@ -1,10 +1,10 @@
 import mongoose, { connect } from 'mongoose';
-import { createUser, getUserByEmail } from '../../src/services/user.service';
-import UserModel, { IUser } from '../../src/models/User';
-import User from '@interfaces/User';
+import { createUser, getUserByIdentifier } from '../../services/user.service';
+import UserModel, { IUser } from '../../models/User';
+import User from '../../interfaces/User';
 import bcrypt from 'bcrypt';
 import 'dotenv/config';
-import connectToDatabase from '../../src/utils/dbConfig';
+import connectToDatabase from '../../utils/dbConfig';
 
 const testUser = {
   userName: 'John Doe',
@@ -81,13 +81,13 @@ describe('User Service', () => {
   describe('getUserByEmail', () => {
     it('should return a user by email', async () => {
       await createUser(testUser);
-      const userByEmail = await getUserByEmail(testUser.email);
+      const userByEmail = await getUserByIdentifier(testUser.email);
       assertUser(userByEmail, testUser);
     });
 
     it('should return null if user is not found', async () => {
       const email = 'nonexistent@example.com';
-      const user = await getUserByEmail(email);
+      const user = await getUserByIdentifier(email);
 
       expect(user).toBeNull();
     });
@@ -96,13 +96,13 @@ describe('User Service', () => {
   describe('getUserByUserName', () => {
     it('should return a user by username', async () => {
       await createUser(testUser);
-      const userByUserName = await getUserByEmail(testUser.userName);
+      const userByUserName = await getUserByIdentifier(testUser.userName);
       assertUser(userByUserName, testUser);
     });
 
     it('should return null if user is not found', async () => {
       const userName = 'nonexistent';
-      const user = await getUserByEmail(userName);
+      const user = await getUserByIdentifier(userName);
 
       expect(user).toBeNull();
     });

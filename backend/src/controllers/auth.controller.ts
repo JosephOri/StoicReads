@@ -10,8 +10,7 @@ import User from '../interfaces/User';
 import { HttpStatusCode } from 'axios';
 import jwt from 'jsonwebtoken';
 import logger from '../utils/logger';
-import { errorMessages } from 'src/constants/constants';
-import mongoose from 'mongoose';
+import { errorMessages } from '../constants/constants';
 
 export const register = async (req: Request, res: Response) => {
   try {

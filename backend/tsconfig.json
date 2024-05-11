@@ -24,9 +24,9 @@
       "@interfaces/*": ["src/interfaces/*"],
       "@utils/*": ["src/utils/*"],
       "@validations/*": ["src/validations/*"],
-      "@tests/*": ["tests/*"]
+      "@tests/*": ["src/tests*"]
     }
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

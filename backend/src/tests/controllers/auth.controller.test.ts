@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { register, login } from '../../src/controllers/auth.controller';
-import { createUser } from '../../src/services/user.service';
-import { getUserTokens } from '../../src/services/auth.service';
+import { login, register } from '../../controllers/auth.controller';
+import { createUser } from '../../services/user.service';
+import { getUserTokens } from '../../services/auth.service';
 
-jest.mock('../../src/services/user.service', () => ({
+jest.mock('../../services/user.service', () => ({
   createUser: jest.fn(),
 }));
 
@@ -69,7 +69,7 @@ describe('register', () => {
   });
 });
 
-jest.mock('../../src/services/auth.service', () => ({
+jest.mock('../../services/auth.service', () => ({
   getUserTokens: jest.fn(),
 }));
 

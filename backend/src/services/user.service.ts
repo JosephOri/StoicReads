@@ -2,7 +2,7 @@ import UserModel, { IUser } from '../models/User';
 import bcrypt from 'bcrypt';
 import User from '@interfaces/User';
 import logger from '../utils/logger';
-import { errorMessages } from 'src/constants/constants';
+import { errorMessages } from '../constants/constants';
 import mongoose from 'mongoose';
 export const createUser = async (user: User): Promise<IUser> => {
   try {
