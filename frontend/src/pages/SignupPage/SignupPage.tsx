@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, redirect } from 'react-router-dom';
+import { Link, redirect, useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios, { AxiosError,HttpStatusCode } from 'axios';
@@ -18,6 +18,7 @@ const SignupPage = () => {
     password: '',
     confirmPassword: '',
   });
+  const navigate = useNavigate();
 
   const handleInputChange = (fieldName:string, value:string) => {
     setSignupFormData({ ...signupFormData, [fieldName]: value });
@@ -60,7 +61,7 @@ const SignupPage = () => {
       console.log(response);
       toast.success('User created successfully');
       setSignupFormData({ userName: '', email: '', password: '', confirmPassword: '' });
-      redirect('/login');
+      navigate('/login');
     } catch (err:unknown) {
       const error = err as AxiosError;
       if(error.response?.status === HttpStatusCode.BadRequest) {

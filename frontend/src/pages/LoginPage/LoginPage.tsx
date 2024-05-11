@@ -40,27 +40,27 @@ const LoginPage = () => {
   
   const handleLoginSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     try{
-    e.preventDefault();
-    const { email, password } = loginFormData;
-    const isInputValid = isInputValidCheck(email, password);
-    if(!isInputValid) return;
-    allowCorsForAxios(axios)
-    const tokens = await axios.post(AUTH_LOGIN_URL, {email, password})
-    saveTokens(tokens.data as AuthTokens);
-    setLoginFormData({ email: '', password: '' });
-    toast.success('Logged in successfully');
-    navigate('/');
+      e.preventDefault();
+      const { email, password } = loginFormData;
+      const isInputValid = isInputValidCheck(email, password);
+      if(!isInputValid) return;
+      allowCorsForAxios(axios)
+      const tokens = await axios.post(AUTH_LOGIN_URL, {email, password})
+      saveTokens(tokens.data as AuthTokens);
+      setLoginFormData({ email: '', password: '' });
+      toast.success('Logged in successfully');
+      navigate('/');
     } catch(err) {
-      const error = err as AxiosError;
-      const errorStatusCode = error.response?.status;
-      console.log('error response', error.response);
-      if(errorStatusCode === HttpStatusCode.BadRequest) {
-        toast.error('Please fill in all fields');
-      } else if(errorStatusCode === HttpStatusCode.Unauthorized) {
-        toast.error('user was not found or password is incorrect');
-      } else if(errorStatusCode === HttpStatusCode.InternalServerError) {
-        toast.error('server error occurred, please try again later');
-      }
+        const error = err as AxiosError;
+        const errorStatusCode = error.response?.status;
+        console.log('error response', error.response);
+        if(errorStatusCode === HttpStatusCode.BadRequest) {
+          toast.error('Please fill in all fields');
+        } else if(errorStatusCode === HttpStatusCode.Unauthorized) {
+          toast.error('user was not found or password is incorrect');
+        } else if(errorStatusCode === HttpStatusCode.InternalServerError) {
+          toast.error('server error occurred, please try again later');
+        }
     }
 }
 
