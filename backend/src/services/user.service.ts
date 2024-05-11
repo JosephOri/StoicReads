@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import User from '@interfaces/User';
 import logger from '../utils/logger';
 import { errorMessages } from 'src/constants/constants';
+import mongoose from 'mongoose';
 export const createUser = async (user: User): Promise<IUser> => {
   try {
     const salt = await bcrypt.genSalt(
@@ -22,7 +23,7 @@ export const createUser = async (user: User): Promise<IUser> => {
   }
 };
 
-export const getUser = async (identifier: string) => {
+export const getUserByIdentifier = async (identifier: string) => {
   try {
     const user = await UserModel.findOne({
       $or: [{ email: identifier }, { userName: identifier }],
@@ -30,7 +31,17 @@ export const getUser = async (identifier: string) => {
     return user;
   } catch (error: any) {
     logger.error(`Error getting user by identifier: ${error.message}`);
-    throw new Error(errorMessages.ERROR_GETTING_USER);
+    throw new Error(errorMessages.NOT_FOUND_USER_IDENTIFIER);
+  }
+};
+
+export const getUserById = async (id: mongoose.Types.ObjectId) => {
+  try {
+    const user = await UserModel.findById(id);
+    return user;
+  } catch (error: any) {
+    logger.error(`Error getting user by id: ${error.message}`);
+    throw new Error(errorMessages.NOT_FOUND_USER_ID);
   }
 };
 

@@ -1,7 +1,7 @@
 import UserModel, { IUser } from '@models/User';
 import logger from '@utils/logger';
 import { Request } from 'express';
-import { getUser } from './user.service';
+import { getUserByIdentifier } from './user.service';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import mongoose, { Document, Types } from 'mongoose';

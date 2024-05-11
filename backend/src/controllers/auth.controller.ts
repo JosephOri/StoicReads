@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import {
   createUser,
-  getUser,
+  getUserByIdentifier,
   validatePassword,
+  getUserById,
 } from '../services/user.service';
 import { getUserTokens, extractToken } from '../services/auth.service';
 import User from '../interfaces/User';
@@ -10,6 +11,7 @@ import { HttpStatusCode } from 'axios';
 import jwt from 'jsonwebtoken';
 import logger from '../utils/logger';
 import { errorMessages } from 'src/constants/constants';
+import mongoose from 'mongoose';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -46,7 +48,7 @@ export const login = async (req: Request, res: Response) => {
         .status(HttpStatusCode.BadRequest)
         .json({ message: errorMessages.INVALID_CREDENTIALS });
     }
-    const user = await getUser(userIdentifier);
+    const user = await getUserByIdentifier(userIdentifier);
     if (!user) {
       logger.error('User not found');
       return res
@@ -75,4 +77,42 @@ export const login = async (req: Request, res: Response) => {
       .status(HttpStatusCode.InternalServerError)
       .json({ message: error.message });
   }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  const refreshToken = extractToken(req);
+  if (!refreshToken) {
+    return res
+      .status(HttpStatusCode.Unauthorized)
+      .json({ message: errorMessages.INVALID_TOKEN });
+  }
+  jwt.verify(
+    refreshToken,
+    process.env.TOKEN_SECRET as string,
+    async (err: any, user: any) => {
+      if (err) {
+        return res
+          .status(HttpStatusCode.Unauthorized)
+          .json({ message: errorMessages.INVALID_TOKEN });
+      }
+      try {
+        const userDb = await getUserById(user._id);
+        if (!userDb?.tokens || !userDb.tokens.includes(refreshToken)) {
+          return res
+            .status(HttpStatusCode.Unauthorized)
+            .json({ message: errorMessages.NOT_FOUND_USER_ID });
+        }
+        userDb.tokens = userDb.tokens.filter((token) => token !== refreshToken);
+        await userDb.save();
+        return res
+          .status(HttpStatusCode.Ok)
+          .json({ message: 'User logged out successfully' });
+      } catch (error: any) {
+        logger.error('Error logging out: ', error.message);
+        return res
+          .status(HttpStatusCode.InternalServerError)
+          .json({ message: error.message });
+      }
+    }
+  );
 };
