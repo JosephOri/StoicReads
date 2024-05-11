@@ -7,8 +7,9 @@ import SignupPage from "../pages/SignupPage/SignupPage";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 const authLoader = async () => {
-    const tokens = getTokens();
-    if (tokens.accessToken && tokens.refreshToken) {
+    const { accessToken, refreshToken } = getTokens();
+    const isBothTokens = accessToken && refreshToken;
+    if (!isBothTokens) {
       return null;
     }
     return redirect("/login");
