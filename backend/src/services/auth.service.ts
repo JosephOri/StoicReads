@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import mongoose, { Document, Types } from 'mongoose';
 import getRandomNumber from '@utils/getRandomNumber';
-import { errorMessages } from 'src/constants/constants';
+import { errorMessages } from '@utils/constants';
 
 export const generateToken = async (
   user: Document<unknown, {}, IUser> &

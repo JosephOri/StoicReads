@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { extractToken } from '@services/auth.service';
 import logger from '../utils/logger';
-import { errorMessages } from 'src/constants/constants';
+import { errorMessages } from '@utils/constants';
 import { HttpStatusCode } from 'axios';
 
 export const authMiddleware = async (
