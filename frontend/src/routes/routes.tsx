@@ -15,7 +15,15 @@ const authLoader = async () => {
     return redirect("/login");
 };
 
+const unauthLoader = async () => {
+    const { accessToken, refreshToken } = getTokens();
+    const isBothTokens = accessToken && refreshToken;
+    if (isBothTokens) {
+      return redirect("/");
+    }
+    return null;
 
+}
 
 export const router = createBrowserRouter([
     {
@@ -26,10 +34,12 @@ export const router = createBrowserRouter([
     },
     {
       path: "/login",
+      loader: unauthLoader,
       element: <LoginPage />,
     },
     {
       path: "/signup",
+      loader: unauthLoader,
       element: <SignupPage />,
     },
     {
