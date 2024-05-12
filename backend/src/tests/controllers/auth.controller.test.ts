@@ -127,7 +127,7 @@ describe('login', () => {
 
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
-      message: 'All fields are required',
+      message: 'Invalid credentials',
     });
     expect(getUserTokens).not.toHaveBeenCalled();
   });
