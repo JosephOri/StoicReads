@@ -14,13 +14,6 @@ const authLoader = async () => {
     }
     return redirect("/login");
 };
-const unauthenticatedAuthLoader = async () => {
-  const tokens = getTokens();
-  if (!tokens.accessToken || !tokens.refreshToken) {
-    return null;
-  }
-  return redirect("/");
-};
 
 
 export const router = createBrowserRouter([
@@ -32,12 +25,10 @@ export const router = createBrowserRouter([
     },
     {
       path: "/login",
-      loader: unauthenticatedAuthLoader,
       element: <LoginPage />,
     },
     {
       path: "/signup",
-      loader: unauthenticatedAuthLoader,
       element: <SignupPage />,
     },
     {
