@@ -9,11 +9,12 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
 const authLoader = async () => {
     const { accessToken, refreshToken } = getTokens();
     const isBothTokens = accessToken && refreshToken;
-    if (!isBothTokens) {
+    if (isBothTokens) {
       return null;
     }
     return redirect("/login");
 };
+
 
 
 export const router = createBrowserRouter([
