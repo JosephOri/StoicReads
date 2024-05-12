@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '../constants/constants';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '../utils/constants';
 import AuthTokens from '../interfaces/AuthTokens';
 
 export const getTokens = () => {

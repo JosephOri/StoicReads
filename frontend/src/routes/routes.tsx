@@ -22,7 +22,6 @@ const unauthLoader = async () => {
       return redirect("/");
     }
     return null;
-
 }
 
 export const router = createBrowserRouter([

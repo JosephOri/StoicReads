@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios, { AxiosError,HttpStatusCode } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { AUTH_REGISTER_URL } from '../../constants/constants';
+import { AUTH_REGISTER_URL } from '../../utils/constants';
 import SignupFormData from '../../interfaces/SignupFormData';
 import isEmailValidCheck from '../../utils/isEmailValidCheck';
 

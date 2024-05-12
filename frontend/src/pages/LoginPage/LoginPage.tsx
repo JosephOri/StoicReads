@@ -7,7 +7,7 @@ import './LoginPage.css';
 import axios, { AxiosError,HttpStatusCode } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AUTH_LOGIN_URL } from '../../constants/constants';
+import { AUTH_LOGIN_URL } from '../../utils/constants';
 import { allowCorsForAxios } from '../../utils/allowCorsForAxios';
 import AuthTokens from '../../interfaces/AuthTokens';
 import { saveTokens } from '../../services/auth.service';
