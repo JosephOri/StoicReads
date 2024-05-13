@@ -34,6 +34,11 @@ const UserSchema: Schema = new Schema({
     default:
       'https://www.iprcenter.gov/image-repository/blank-profile-picture.png/@@images/image.png',
   },
+  tokens: {
+    type: [String],
+    default: [],
+    required: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

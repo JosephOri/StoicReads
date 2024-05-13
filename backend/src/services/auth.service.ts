@@ -1,10 +1,12 @@
 import UserModel, { IUser } from '@models/User';
+import logger from '@utils/logger';
 import { Request } from 'express';
-import { getUser } from './user.service';
+import { getUserByIdentifier } from './user.service';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 import getRandomNumber from '@utils/getRandomNumber';
+import { errorMessages } from '@utils/constants';
 
 export const generateToken = async (
   user: Document<unknown, {}, IUser> &
@@ -31,30 +33,28 @@ export const generateToken = async (
   user.tokens.push(refreshToken);
   try {
     await user.save();
+    logger.info('Tokens generated successfully');
     return {
       accessToken: accessToken,
       refreshToken: refreshToken,
     };
   } catch (err) {
-    return null;
+    logger.error('Error generating tokens: ', err);
+    throw new Error(errorMessages.TOKENS_NOT_GENERATED);
   }
 };
 
 export const getUserTokens = async (
-  userIdentifier: string,
-  password: string
+  user:
+    | Document<unknown, {}, IUser> &
+        IUser & {
+          _id: mongoose.Types.ObjectId;
+        }
 ) => {
-  const user = await getUser(userIdentifier);
-  if (!user) {
-    throw new Error('invalid credentials');
-  }
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    throw new Error('Invalid credentials');
-  }
   const tokens = await generateToken(user);
   if (tokens == null) {
-    throw new Error('Error generating tokens');
+    logger.error('Error generating tokens');
+    throw new Error(errorMessages.TOKENS_NOT_GENERATED);
   }
   return tokens;
 };
