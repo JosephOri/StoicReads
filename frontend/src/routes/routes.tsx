@@ -1,48 +1,36 @@
-import { createBrowserRouter,redirect } from "react-router-dom";
-import { getTokens } from "../services/auth.service";
+import { createBrowserRouter } from "react-router-dom";
 import HomePage from "../pages/HomePage/HomePage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import NotFound from "../pages/NotFound/NotFound";
 import SignupPage from "../pages/SignupPage/SignupPage";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
-
-const authLoader = async () => {
-    const { accessToken, refreshToken } = getTokens();
-    const isBothTokens = accessToken && refreshToken;
-    if (isBothTokens) {
-      return null;
-    }
-    return redirect("/login");
-};
-
-const unauthLoader = async () => {
-    const { accessToken, refreshToken } = getTokens();
-    const isBothTokens = accessToken && refreshToken;
-    if (isBothTokens) {
-      return redirect("/");
-    }
-    return null;
-}
+import RouteGuard from "@components/RouteGuard";
+import { Routes } from "@interfaces/Routes.ts";
 
 export const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <HomePage />,
-      loader: authLoader,
-      errorElement: <ErrorPage/>,
-    },
-    {
-      path: "/login",
-      loader: unauthLoader,
-      element: <LoginPage />,
-    },
-    {
-      path: "/signup",
-      loader: unauthLoader,
-      element: <SignupPage />,
-    },
-    {
-      path: "*",
-      element: <NotFound/>
-    },
-  ]);
+  {
+    path: "/",
+    element: <HomePage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/login",
+    element: (
+      <RouteGuard route={Routes.LOGIN}>
+        <LoginPage />
+      </RouteGuard>
+    ),
+  },
+  {
+    path: "/signup",
+    element: (
+      <RouteGuard route={Routes.SIGNUP}>
+        <SignupPage />
+      </RouteGuard>
+    ),
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
+]);
