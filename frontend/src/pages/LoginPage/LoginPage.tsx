@@ -1,9 +1,6 @@
-import React,{ useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import React, { useState } from 'react';
 import { GoogleLoginButton } from 'react-social-login-buttons';
-import { Link,useNavigate } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import './LoginPage.css';
+import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError,HttpStatusCode } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,10 +10,20 @@ import AuthTokens from '../../interfaces/AuthTokens';
 import { saveTokens } from '../../services/auth.service';
 import LoginFormData from '../../interfaces/LoginFormData';
 import isEmailValidCheck from '../../utils/isEmailValidCheck';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const defaultTheme = createTheme();
 
   const [loginFormData,setLoginFormData] = useState<LoginFormData>({ email: '', password: '' });
 
@@ -64,46 +71,90 @@ const LoginPage = () => {
     }
 }
 
-  return (
-    <>
-      <div className="container">
-        <div className="form-container">
-          <h2 className="title">Login</h2>
-          <Form onSubmit={handleLoginSubmit}>
-            <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
-              <Form.Label className="form-label">Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                className="form-control"
-                value={loginFormData.email}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3 form-group" controlId="formBasicPassword">
-              <Form.Label className="form-label">Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                className="form-control"
-                value={loginFormData.password}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('password', e.target.value)}
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit" className="btn-primary">
-              Submit
+return (
+  <>
+  <ThemeProvider theme={defaultTheme}>
+    <Grid container component="main" sx={{ height: '100vh' }}>
+      <CssBaseline />
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
+        sx={{
+          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: (t) =>
+            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box component="form" noValidate onSubmit={handleLoginSubmit} sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              value={loginFormData.email}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              value={loginFormData.password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('password', e.target.value)}
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
             </Button>
-            <div className="text-center pt-3">Or</div>
-            <GoogleLoginButton className="mt-3 mb-3" />
-            <p className="signup-link">
-              Don't have an account? <Link to="/signup">Sign up</Link>
-            </p>
-          </Form>
-        </div>
-      </div>
-      <ToastContainer />
-    </>
-  );
+            <Grid container>
+              <Grid item>
+                <Link href="/signup" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+              {/* TODO: Add Google Login */}
+              <GoogleLoginButton> 
+                <span>Sign in with Google</span>
+              </GoogleLoginButton>
+            </Grid>
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
+  </ThemeProvider>
+  <ToastContainer />
+  </>
+);
 };
 
 export default LoginPage;
