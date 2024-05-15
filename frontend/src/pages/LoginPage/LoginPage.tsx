@@ -101,7 +101,7 @@ return (
           }}
         >
           <Typography component="h1" variant="h5">
-            Sign in
+            Login
           </Typography>
           <Box component="form" noValidate onSubmit={handleLoginSubmit} sx={{ mt: 1 }}>
             <TextField
@@ -134,7 +134,7 @@ return (
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Login
             </Button>
             <Grid container>
               <Grid item>
@@ -144,7 +144,7 @@ return (
               </Grid>
               {/* TODO: Add Google Login */}
               <GoogleLoginButton> 
-                <span>Sign in with Google</span>
+                <span>Login with Google</span>
               </GoogleLoginButton>
             </Grid>
           </Box>
