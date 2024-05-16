@@ -13,7 +13,6 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,7 +24,6 @@ const SignupPage = () => {
     password: '',
     confirmPassword: '',
   });
-  const defaultTheme = createTheme();
   const navigate = useNavigate();
 
   const handleInputChange = (fieldName:string, value:string) => {
@@ -59,7 +57,7 @@ const SignupPage = () => {
     }
     return true;
   }
-  
+
   const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const isFormDataValid = isFormDataValidCheck();
@@ -85,7 +83,6 @@ const SignupPage = () => {
   
   return (
     <>
-    <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -166,7 +163,6 @@ const SignupPage = () => {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
     <ToastContainer />
     </>
   );
