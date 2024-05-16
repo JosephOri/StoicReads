@@ -1,12 +1,13 @@
 import { Button } from "@mui/material"
 import { useNavigate } from "react-router-dom";
-import { logoutAndNavigateToLogin } from "../../utils/logoutAndNavigateToLogin";
+import { logout } from "../../utils/logout";
 
 const HomePage = () => {
   const navigate = useNavigate();
 
   const handleLogOut = async () => {
-    logoutAndNavigateToLogin(navigate);
+    await logout();
+    navigate('/login');
   };
 
   return (

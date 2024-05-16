@@ -1,4 +1,3 @@
-import { NavigateFunction } from 'react-router-dom';
 import axios from 'axios';
 import { allowCorsForAxios } from './allowCorsForAxios';
 import {
@@ -7,9 +6,8 @@ import {
   REFRESH_TOKEN_KEY,
 } from './constants';
 
-export const logoutAndNavigateToLogin = async (navigate: NavigateFunction) => {
+export const logout = async () => {
   localStorage.removeItem(ACCESS_TOKEN_KEY);
-  navigate('/login');
   allowCorsForAxios(axios);
   await axios.post(AUTH_LOGOUT_URL, {
     refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),
