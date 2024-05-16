@@ -59,6 +59,7 @@ const SignupPage = () => {
     }
     return true;
   }
+  
   const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const isFormDataValid = isFormDataValidCheck();
