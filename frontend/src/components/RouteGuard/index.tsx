@@ -2,7 +2,7 @@ import { PropsWithChildren, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useGlobal } from "@stores/globalContext";
-import { Routes } from "@interfaces/Routes";
+import { Routes } from "@root/constants/Routes.ts";
 
 type Route = (typeof Routes)[keyof typeof Routes];
 
