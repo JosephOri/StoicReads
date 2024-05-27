@@ -11,6 +11,7 @@ import { HttpStatusCode } from 'axios';
 import jwt from 'jsonwebtoken';
 import logger from '../utils/logger';
 import { errorMessages } from '../utils/constants';
+import {OAuth2Client} from 'google-auth-library';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -114,4 +115,50 @@ export const logout = async (req: Request, res: Response) => {
       }
     }
   );
+};
+
+const client = new OAuth2Client();  
+export const googleLogin = async (req: Request, res: Response) => {
+  try{
+    const ticket = await client.verifyIdToken({
+      idToken: req.body.credential,
+      audience: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const email = payload?.email;
+
+    if (!email) {
+      logger.error('Email not found in payload');
+      return res
+        .status(HttpStatusCode.BadRequest)
+        .json({ message: 'Email not found in payload' });
+    }
+
+    let user = await getUserByIdentifier(email);
+    if (!user) {
+      const newUser: User = {
+        userName: payload?.name || '',
+        email: email,
+        password: '',
+        profilePicture: payload?.picture,
+      };
+      user = await createUser(newUser);
+    }
+    
+    const tokens = await getUserTokens(user);
+    logger.info('User logged in successfully');
+    res.status(HttpStatusCode.Ok).json(tokens);
+
+  } catch(error: any) {
+    logger.error('Error logging in witn Google: ', error.message);
+    if (error.message === errorMessages.INVALID_CREDENTIALS) {
+      logger.error('User not found or password is incorrect');
+      return res
+        .status(HttpStatusCode.Unauthorized)
+        .json({ message: errorMessages.USER_NOT_FOUND });
+    }
+    res
+      .status(HttpStatusCode.InternalServerError)
+      .json({ message: error.message });
+  }
 };
