@@ -86,8 +86,9 @@ export const googleLoginService = async (req: Request, res: Response) => {
   }
 
   let user = await getUserByIdentifier(email);
-  const randPassword = getRandomNumber(1, 1000000000).toString();
   if (!user) {
+    const randPassword = getRandomNumber(1, 1000000000).toString();
+    console.log('randPassword generated successfully', randPassword); 
     const newUser: User = {
       userName: payload?.name || '',
       email: email,
@@ -97,10 +98,10 @@ export const googleLoginService = async (req: Request, res: Response) => {
     logger.info(`You've been given a random password, Please change it after logging in.`);
     
     user = await createUser(newUser);
+    console.log('user created successfully', user);
   }
 
   const tokens = await getUserTokens(user);
-  logger.info('User logged in successfully');
   res.status(HttpStatusCode.Ok).json(tokens);
   
   } catch(error: any) {
