@@ -5,6 +5,7 @@ import {
   validatePassword,
   getUserById,
 } from '../services/user.service';
+import { googleLoginService } from '../services/auth.service';
 import { getUserTokens, extractToken } from '../services/auth.service';
 import User from '../interfaces/User';
 import { HttpStatusCode } from 'axios';
@@ -117,35 +118,9 @@ export const logout = async (req: Request, res: Response) => {
   );
 };
 
-const client = new OAuth2Client();  
 export const googleLogin = async (req: Request, res: Response) => {
   try{
-    const ticket = await client.verifyIdToken({
-      idToken: req.body.credential,
-      audience: process.env.GOOGLE_OAUTH_CLIENT_ID,
-    });
-    const payload = ticket.getPayload();
-    const email = payload?.email;
-
-    if (!email) {
-      logger.error('Email not found in payload');
-      return res
-        .status(HttpStatusCode.BadRequest)
-        .json({ message: 'Email not found in payload' });
-    }
-
-    let user = await getUserByIdentifier(email);
-    if (!user) {
-      const newUser: User = {
-        userName: payload?.name || '',
-        email: email,
-        password: '',
-        profilePicture: payload?.picture,
-      };
-      user = await createUser(newUser);
-    }
-    
-    const tokens = await getUserTokens(user);
+    const tokens = await googleLoginService(req, res);
     logger.info('User logged in successfully');
     res.status(HttpStatusCode.Ok).json(tokens);
 

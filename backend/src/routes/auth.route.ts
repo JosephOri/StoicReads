@@ -4,7 +4,7 @@ import { register, login, logout, googleLogin } from '@controllers/auth.controll
 import { authMiddleware } from '@middlewares/auth.middleware';
 
 router.post('/register', register);
-router.post('/google' ,googleLogin);
+router.post('/google/login' ,googleLogin);
 router.post('/login', login);
 router.post('/logout', authMiddleware, logout);
 
