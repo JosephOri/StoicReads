@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError,HttpStatusCode } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { AUTH_REGISTER_URL } from '../../utils/constants';
 import SignupFormData from '../../interfaces/SignupFormData';
 import isEmailValidCheck from '../../utils/isEmailValidCheck';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 
 import 'react-toastify/dist/ReactToastify.css';
-import './SignupPage.css'
+
 
 const SignupPage = () => {
   const [signupFormData, setSignupFormData] = useState<SignupFormData>({
@@ -51,6 +57,7 @@ const SignupPage = () => {
     }
     return true;
   }
+
   const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const isFormDataValid = isFormDataValidCheck();
@@ -75,62 +82,89 @@ const SignupPage = () => {
   }
   
   return (
-  <>
-    <div className="container">
-      <div className="form-container">
-        <h2 className="title">Sign Up</h2>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3 form-group" controlId="formBasicUsername">
-            <Form.Label className="form-label">Username</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter userName"
-              className="form-control"
-              value={signupFormData.userName}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('userName', e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3 form-group" controlId="formBasicEmail">
-            <Form.Label className="form-label">Email address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              className="form-control"
-              value={signupFormData.email}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3 form-group" controlId="formBasicPassword">
-            <Form.Label className="form-label">Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              className="form-control"
-              value={signupFormData.password}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('password', e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3 form-group" controlId="formBasicConfirmPassword">
-            <Form.Label className="form-label">Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Confirm Password"
-              className="form-control"
-              value={signupFormData.confirmPassword}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>{handleInputChange('confirmPassword', e.target.value)}}
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit" className="btn-primary">
-            Sign Up
-          </Button>
-          <p className="login-link">
-            Already have an account? <Link to="/login">Login</Link>
-          </p>
-        </Form>
-      </div>
-    </div>
+    <>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="userName"
+                  label="Username"
+                  name="userName"
+                  value={signupFormData.userName}
+                  onChange={(e) => handleInputChange('userName', e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  value={signupFormData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  value={signupFormData.password}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="confirm password"
+                  type="password"
+                  id="confirmPassword"
+                  value={signupFormData.confirmPassword}
+                  onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
     <ToastContainer />
-  </>
+    </>
   );
 };
 
