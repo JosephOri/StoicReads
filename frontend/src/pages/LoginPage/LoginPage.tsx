@@ -2,8 +2,6 @@
 import React,{ useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Link,useNavigate } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import './LoginPage.css';
 import axios, { AxiosError,HttpStatusCode } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,10 +11,8 @@ import AuthTokens from '../../interfaces/AuthTokens';
 import { saveTokens } from '../../services/auth.service';
 import LoginFormData from '../../interfaces/LoginFormData';
 import isEmailValidCheck from '../../utils/isEmailValidCheck';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -48,13 +44,21 @@ const LoginPage = () => {
   }
   
     const onGoogleLoginSuccess = async(credentialResponse: CredentialResponse) => {
-    allowCorsForAxios(axios);
-    const credential = credentialResponse.credential;
-    const tokens = await axios.post(AUTH_GOOGLE_LOGIN_URL, {credential});
-    saveTokens(tokens.data as AuthTokens);
-    toast.success('Logged in with Google successfully');
-    toast.info(`You've been given a random password, Please change it after logging in.`);
-    navigate('/');
+    try {
+      allowCorsForAxios(axios);
+      const credential = credentialResponse.credential;
+      const tokens = await axios.post(AUTH_GOOGLE_LOGIN_URL, {credential});
+      if(!tokens){
+        console.log('no tokens received');
+        return;
+      }
+      saveTokens(tokens.data as AuthTokens);
+      toast.success('Logged in with Google successfully');
+      toast.info(`You've been given a random password, Please change it after logging in.`);
+      navigate('/');
+    } catch (error) {
+      console.log('error response', error);
+    }
   };
 
   const onGoogleLoginFailure = () => {
@@ -146,16 +150,15 @@ return (
             />
             <Button
               type="submit"
-              fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              
             >
               Login
             </Button>
             <GoogleLogin onSuccess={onGoogleLoginSuccess} onError={onGoogleLoginFailure}></GoogleLogin>
             <Grid container>
               <Grid item>
-                <Link href="/signup" variant="body2">
+                <Link to="/signup">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -167,6 +170,6 @@ return (
   <ToastContainer />
   </>
 );
-
+}
 
 export default LoginPage;
