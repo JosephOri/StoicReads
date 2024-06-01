@@ -12,7 +12,7 @@ import { HttpStatusCode } from 'axios';
 import jwt from 'jsonwebtoken';
 import logger from '../utils/logger';
 import { errorMessages } from '../utils/constants';
-import {OAuth2Client} from 'google-auth-library';
+import { OAuth2Client } from 'google-auth-library';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -87,6 +87,7 @@ export const logout = async (req: Request, res: Response) => {
       .status(HttpStatusCode.Unauthorized)
       .json({ message: errorMessages.INVALID_TOKEN });
   }
+
   jwt.verify(
     refreshToken,
     process.env.TOKEN_SECRET as string,
@@ -119,12 +120,11 @@ export const logout = async (req: Request, res: Response) => {
 };
 
 export const googleLogin = async (req: Request, res: Response) => {
-  try{
+  try {
     const tokens = await googleLoginService(req, res);
     logger.info('User logged in successfully');
     res.status(HttpStatusCode.Ok).json(tokens);
-
-  } catch(error: any) {
+  } catch (error: any) {
     logger.error('Error logging in witn Google: ', error.message);
     if (error.message === errorMessages.INVALID_CREDENTIALS) {
       logger.error('User not found or password is incorrect');
