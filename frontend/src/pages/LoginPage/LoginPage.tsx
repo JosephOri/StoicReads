@@ -1,6 +1,5 @@
 import React,{ useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import { GoogleLoginButton } from 'react-social-login-buttons';
 import { Link,useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import './LoginPage.css';
@@ -13,6 +12,8 @@ import AuthTokens from '../../interfaces/AuthTokens';
 import { saveTokens } from '../../services/auth.service';
 import LoginFormData from '../../interfaces/LoginFormData';
 import isEmailValidCheck from '../../utils/isEmailValidCheck';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { AUTH_GOOGLE_LOGIN_URL } from '../../utils/constants';
 
 
 const LoginPage = () => {
@@ -64,6 +65,21 @@ const LoginPage = () => {
     }
 }
 
+  const onGoogleLoginSuccess = async(credentialResponse: CredentialResponse) => {
+    allowCorsForAxios(axios);
+    const credential = credentialResponse.credential;
+    const tokens = await axios.post(AUTH_GOOGLE_LOGIN_URL, {credential});
+    saveTokens(tokens.data as AuthTokens);
+    toast.success('Logged in with Google successfully');
+    toast.info(`You've been given a random password, Please change it after logging in.`);
+    navigate('/');
+  };
+
+  const onGoogleLoginFailure = () => {
+    console.log('google login failure');
+    toast.error('Failed to login with Google');
+  };
+
   return (
     <>
       <div className="container">
@@ -94,7 +110,7 @@ const LoginPage = () => {
               Submit
             </Button>
             <div className="text-center pt-3">Or</div>
-            <GoogleLoginButton className="mt-3 mb-3" />
+            <GoogleLogin onSuccess={onGoogleLoginSuccess} onError={onGoogleLoginFailure}></GoogleLogin>
             <p className="signup-link">
               Don't have an account? <Link to="/signup">Sign up</Link>
             </p>

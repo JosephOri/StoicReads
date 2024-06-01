@@ -4,7 +4,7 @@ import 'dotenv/config';
 import logger from '@utils/logger';
 import applicationRouter from '@routes/application.router';
 import connectToDatabase from '@utils/dbConfig';
-const cors = require('cors');
+import cors from 'cors';
 
 const app: Express = express();
 app.use(cors());
