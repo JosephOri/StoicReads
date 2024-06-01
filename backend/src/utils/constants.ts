@@ -13,4 +13,5 @@ export const errorMessages = {
   ERROR_DELETING_USER: 'Error deleting user by email or username',
   USER_ALREADY_LOGGED_IN: 'User is already logged in',
   UNAUTHORIZED: 'User is not authorized to perform this action',
+  EMAIL_NOT_FOUND: 'Email not found in payload',
 };

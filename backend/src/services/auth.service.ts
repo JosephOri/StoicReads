@@ -2,7 +2,7 @@ import UserModel, { IUser } from '@models/User';
 import User from '../interfaces/User';
 import logger from '@utils/logger';
 import { Request, Response } from 'express';
-import { createUser ,getUserByIdentifier } from './user.service';
+import { createUser, getUserByIdentifier } from './user.service';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { HttpStatusCode } from 'axios';
@@ -70,50 +70,51 @@ export const extractToken = (req: Request) => {
 
 export const googleLoginService = async (req: Request, res: Response) => {
   const googleOAuthClient = new OAuth2Client();
-  try{
+  try {
     const authTicket = await googleOAuthClient.verifyIdToken({
       idToken: req.body.credential,
       audience: process.env.GOOGLE_OAUTH_CLIENT_ID,
-  });
-  const payload = authTicket.getPayload();
-  const email = payload?.email;
+    });
+    const payload = authTicket.getPayload();
+    const email = payload?.email;
 
-  if (!email) {
-    logger.error('Email not found in payload');
-    return res
+    if (!email) {
+      logger.error('Email not found in payload');
+      return res
+        .status(HttpStatusCode.InternalServerError)
+        .json({ message: errorMessages.EMAIL_NOT_FOUND });
+    }
+
+    let user = await getUserByIdentifier(email);
+    if (!user) {
+      const randPassword = getRandomNumber(1, 1000000000).toString();
+      console.log('randPassword generated successfully', randPassword);
+      const newUser: User = {
+        userName: payload?.name || '',
+        email: email,
+        password: randPassword,
+        profilePicture: payload?.picture,
+      };
+      logger.info(
+        `You've been given a random password, Please change it after logging in.`
+      );
+
+      user = await createUser(newUser);
+      console.log('user created successfully', user);
+    }
+
+    const tokens = await getUserTokens(user);
+    res.status(HttpStatusCode.Ok).json(tokens);
+  } catch (error: any) {
+    logger.error('Error logging in witn Google: ', error.message);
+    if (error.message === errorMessages.INVALID_CREDENTIALS) {
+      logger.error('User not found or password is incorrect');
+      return res
+        .status(HttpStatusCode.Unauthorized)
+        .json({ message: errorMessages.USER_NOT_FOUND });
+    }
+    res
       .status(HttpStatusCode.InternalServerError)
-      .json({ message: 'Email not found in payload' });
-  }
-
-  let user = await getUserByIdentifier(email);
-  if (!user) {
-    const randPassword = getRandomNumber(1, 1000000000).toString();
-    console.log('randPassword generated successfully', randPassword); 
-    const newUser: User = {
-      userName: payload?.name || '',
-      email: email,
-      password: randPassword,
-      profilePicture: payload?.picture,
-    };
-    logger.info(`You've been given a random password, Please change it after logging in.`);
-    
-    user = await createUser(newUser);
-    console.log('user created successfully', user);
-  }
-
-  const tokens = await getUserTokens(user);
-  res.status(HttpStatusCode.Ok).json(tokens);
-  
-  } catch(error: any) {
-  logger.error('Error logging in witn Google: ', error.message);
-  if (error.message === errorMessages.INVALID_CREDENTIALS) {
-    logger.error('User not found or password is incorrect');
-    return res
-      .status(HttpStatusCode.Unauthorized)
-      .json({ message: errorMessages.USER_NOT_FOUND });
-  }
-  res
-    .status(HttpStatusCode.InternalServerError)
-    .json({ message: error.message });
+      .json({ message: error.message });
   }
 };
