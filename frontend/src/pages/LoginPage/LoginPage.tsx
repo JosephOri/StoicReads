@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
+import React,{ useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import { Link,useNavigate } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import './LoginPage.css';
 import axios, { AxiosError,HttpStatusCode } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +21,8 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { AUTH_GOOGLE_LOGIN_URL } from '../../utils/constants';
 
 
 const LoginPage = () => {
@@ -41,6 +47,20 @@ const LoginPage = () => {
     return true;
   }
   
+    const onGoogleLoginSuccess = async(credentialResponse: CredentialResponse) => {
+    allowCorsForAxios(axios);
+    const credential = credentialResponse.credential;
+    const tokens = await axios.post(AUTH_GOOGLE_LOGIN_URL, {credential});
+    saveTokens(tokens.data as AuthTokens);
+    toast.success('Logged in with Google successfully');
+    toast.info(`You've been given a random password, Please change it after logging in.`);
+    navigate('/');
+  };
+
+  const onGoogleLoginFailure = () => {
+    console.log('google login failure');
+    toast.error('Failed to login with Google');
+  };
   
   const handleLoginSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     try{
@@ -132,6 +152,7 @@ return (
             >
               Login
             </Button>
+            <GoogleLogin onSuccess={onGoogleLoginSuccess} onError={onGoogleLoginFailure}></GoogleLogin>
             <Grid container>
               <Grid item>
                 <Link href="/signup" variant="body2">
@@ -146,6 +167,6 @@ return (
   <ToastContainer />
   </>
 );
-};
+
 
 export default LoginPage;

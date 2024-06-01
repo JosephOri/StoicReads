@@ -5,12 +5,14 @@ import {
   validatePassword,
   getUserById,
 } from '../services/user.service';
+import { googleLoginService } from '../services/auth.service';
 import { getUserTokens, extractToken } from '../services/auth.service';
 import User from '../interfaces/User';
 import { HttpStatusCode } from 'axios';
 import jwt from 'jsonwebtoken';
 import logger from '../utils/logger';
 import { errorMessages } from '../utils/constants';
+import {OAuth2Client} from 'google-auth-library';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -114,4 +116,24 @@ export const logout = async (req: Request, res: Response) => {
       }
     }
   );
+};
+
+export const googleLogin = async (req: Request, res: Response) => {
+  try{
+    const tokens = await googleLoginService(req, res);
+    logger.info('User logged in successfully');
+    res.status(HttpStatusCode.Ok).json(tokens);
+
+  } catch(error: any) {
+    logger.error('Error logging in witn Google: ', error.message);
+    if (error.message === errorMessages.INVALID_CREDENTIALS) {
+      logger.error('User not found or password is incorrect');
+      return res
+        .status(HttpStatusCode.Unauthorized)
+        .json({ message: errorMessages.USER_NOT_FOUND });
+    }
+    res
+      .status(HttpStatusCode.InternalServerError)
+      .json({ message: error.message });
+  }
 };
