@@ -1,28 +1,26 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { Book } from "./Book";
+import { Book } from "../interfaces/Book";
+import { Review } from "../interfaces/Review";
+import { Comment as UserComment } from "../interfaces/Comment";
 
-interface Post extends Document {
-  user: mongoose.Types.ObjectId;
+export interface Post extends Document {
+  username: string;
   book: Book;
   title: string;
   content: string;
-  comments: Array<mongoose.Types.ObjectId>;
-  reviews: Array<mongoose.Types.ObjectId>;
-  createdAt: Date;
-  updatedAt: Date;
+  comments: UserComment[];
+  review: Review;
 }
-
 const PostSchema: Schema = new Schema({
-  user: { type: mongoose.Types.ObjectId, ref: "User", required: true },
-  book: { type: mongoose.Types.ObjectId, ref: "Book", required: true },
+  username: { type: String, required: true },
+  book: { type: Object, required: true },
   title: { type: String, required: true },
   content: { type: String, required: true },
-  comments: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
-  reviews: [{ type: mongoose.Types.ObjectId, ref: "Review" }],
+  comments: [{ type: Object, required: true }],
+  review: { type: Object, required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
-
 const PostModel = mongoose.model<Post>("Post", PostSchema);
 
 export default PostModel;
