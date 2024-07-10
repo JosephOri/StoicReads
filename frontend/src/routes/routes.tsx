@@ -1,5 +1,4 @@
-import { ReactNode } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { getTokens } from "../services/auth.service";
 import HomePage from "../pages/HomePage/HomePage";
 import LoginPage from "../pages/LoginPage/LoginPage";
@@ -8,60 +7,41 @@ import SignupPage from "../pages/SignupPage/SignupPage";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import { applicationRoutes } from "../utils/constants";
 import { Layout } from "../components/Layout/Layout";
+import CreatePost from "../pages/CreatePost/CreatePost";
 
-interface AuthProps {
-  children: ReactNode;
-}
-
-const RequireAuth = ({ children }: AuthProps) => {
+const RequireAuth = () => {
   const { accessToken, refreshToken } = getTokens();
   const isBothTokens = accessToken && refreshToken;
   return isBothTokens ? (
-    children
+    <Outlet />
   ) : (
     <Navigate to={applicationRoutes.LOGIN} replace />
   );
 };
 
-const RedirectIfAuthenticated = ({ children }: AuthProps) => {
+const RedirectIfAuthenticated = () => {
   const { accessToken, refreshToken } = getTokens();
   const isBothTokens = accessToken && refreshToken;
   return isBothTokens ? (
     <Navigate to={applicationRoutes.HOME} replace />
   ) : (
-    children
+    <Outlet />
   );
 };
 
 export const AppRoutes = () => (
   <Routes>
-    <Route element={<Layout />}>
-      <Route
-        path={applicationRoutes.HOME}
-        element={
-          <RequireAuth>
-            <HomePage />
-          </RequireAuth>
-        }
-      />
+    <Route element={<RequireAuth />}>
+      <Route element={<Layout />}>
+        <Route path={applicationRoutes.HOME} element={<HomePage />} />
+        <Route path={applicationRoutes.CREATE_POST} element={<CreatePost />} />
+      </Route>
     </Route>
-    <Route
-      path={applicationRoutes.LOGIN}
-      element={
-        <RedirectIfAuthenticated>
-          <LoginPage />
-        </RedirectIfAuthenticated>
-      }
-    />
-    <Route
-      path={applicationRoutes.SIGNUP}
-      element={
-        <RedirectIfAuthenticated>
-          <SignupPage />
-        </RedirectIfAuthenticated>
-      }
-    />
 
+    <Route element={<RedirectIfAuthenticated />}>
+      <Route path={applicationRoutes.LOGIN} element={<LoginPage />} />
+      <Route path={applicationRoutes.SIGNUP} element={<SignupPage />} />
+    </Route>
     <Route path={applicationRoutes.NOT_FOUND} element={<NotFound />} />
     <Route path="*" element={<ErrorPage />} />
   </Routes>

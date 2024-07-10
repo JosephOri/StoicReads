@@ -12,8 +12,10 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../utils/logout";
+const pages = ["Home", "Create New Post"];
+const settings = ["Profile", "Logout"];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -34,11 +36,42 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+  const handleUserProfile = () => {
+    navigate("/profile");
+  };
+
+  const settingsActions: { [key: string]: () => void } = {
+    Profile: handleUserProfile,
+
+    Logout: handleLogout,
+  };
+
+  const handleSettingClick = (setting: string) => {
+    const action = settingsActions[setting];
+    if (action) {
+      action();
+    }
+    handleCloseUserMenu();
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
+            <img
+              src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-philosopher-history-flaticons-lineal-color-flat-icons-2.png"
+              alt="Logo"
+              style={{ height: "64px" }}
+            />
+          </Box>{" "}
           <Typography
             variant="h6"
             noWrap
@@ -54,9 +87,8 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            StoicReads
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -123,7 +155,6 @@ function Navbar() {
               </Button>
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -147,7 +178,10 @@ function Navbar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={() => handleSettingClick(setting)}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
