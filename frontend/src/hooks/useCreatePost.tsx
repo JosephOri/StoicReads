@@ -13,7 +13,6 @@ export const CreatePostProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [selectedBook, setSelectedBook] = useState<any>(null);
-  console.log("selectedBook", selectedBook);
 
   return (
     <CreatePostContext.Provider value={{ selectedBook, setSelectedBook }}>

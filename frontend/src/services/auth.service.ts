@@ -2,12 +2,12 @@ import {
   ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY,
   AUTH_GOOGLE_LOGIN_URL,
-} from '../utils/constants';
-import AuthTokens from '../interfaces/AuthTokens';
+} from "../utils/constants";
+import AuthTokens from "../interfaces/AuthTokens";
 
-import { User } from '../interfaces/User';
-import { CredentialResponse } from '@react-oauth/google';
-import axios, { AxiosError } from 'axios';
+import { User } from "../interfaces/User";
+import { CredentialResponse } from "@react-oauth/google";
+import axios, { AxiosError } from "axios";
 
 export const getTokens = () => {
   return {
@@ -24,17 +24,17 @@ export const saveTokens = (tokens: AuthTokens) => {
 export const googleLogin = async (
   credentialResponse: CredentialResponse
 ): Promise<User> => {
-  console.log('credentialResponse', credentialResponse);
+  console.log("credentialResponse", credentialResponse);
   try {
     const response = await axios.post<User>(
       AUTH_GOOGLE_LOGIN_URL,
       credentialResponse.credential
     );
-    console.log('google credentials', credentialResponse.credential);
+    console.log("google credentials", credentialResponse.credential);
     return response.data;
   } catch (err: unknown) {
     const error = err as AxiosError;
-    console.log('error response', error.message);
+    console.log("error response", error.message);
     throw err;
   }
 };

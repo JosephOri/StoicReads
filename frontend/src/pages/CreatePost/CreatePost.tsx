@@ -11,15 +11,15 @@ import {
   Button,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import withCreatePostContext from "../../store/withCreatePostContext ";
 import { useCreatePost } from "../../hooks/useCreatePost";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [books, setBooks] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const { selectedBook, setSelectedBook } = useCreatePost();
-
+  const navigate = useNavigate();
   const handleSearch = async (event: any) => {
     event.preventDefault();
     setLoading(true);
@@ -125,7 +125,7 @@ const CreatePost = () => {
                         sx={{ marginLeft: 2 }}
                         variant="contained"
                         onClick={() => {
-                          // Handle continue action
+                          navigate({ search: "?step=2" });
                         }}
                       >
                         Continue
@@ -147,4 +147,4 @@ const CreatePost = () => {
   );
 };
 
-export default withCreatePostContext(CreatePost);
+export default CreatePost;

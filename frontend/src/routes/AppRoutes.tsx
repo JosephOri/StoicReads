@@ -7,7 +7,7 @@ import SignupPage from "../pages/SignupPage/SignupPage";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import { applicationRoutes } from "../utils/constants";
 import { Layout } from "../components/Layout/Layout";
-import CreatePost from "../pages/CreatePost/CreatePost";
+import Post from "../pages/CreatePost/Post";
 
 const RequireAuth = () => {
   const { accessToken, refreshToken } = getTokens();
@@ -34,7 +34,7 @@ export const AppRoutes = () => (
     <Route element={<RequireAuth />}>
       <Route element={<Layout />}>
         <Route path={applicationRoutes.HOME} element={<HomePage />} />
-        <Route path={applicationRoutes.CREATE_POST} element={<CreatePost />} />
+        <Route path={applicationRoutes.CREATE_POST} element={<Post />} />
       </Route>
     </Route>
 
