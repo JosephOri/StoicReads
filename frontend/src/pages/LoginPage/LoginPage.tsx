@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { AUTH_LOGIN_URL } from "../../utils/constants";
-import { allowCorsForAxios } from "../../utils/allowCorsForAxios";
 import AuthTokens from "../../interfaces/AuthTokens";
 import { saveTokens } from "../../services/auth.service";
 import LoginFormData from "../../interfaces/LoginFormData";
@@ -42,7 +41,6 @@ const LoginPage = () => {
     credentialResponse: CredentialResponse
   ) => {
     try {
-      allowCorsForAxios(axios);
       const credential = credentialResponse.credential;
       const tokens = await axios.post(AUTH_GOOGLE_LOGIN_URL, { credential });
       if (!tokens) {
@@ -71,7 +69,6 @@ const LoginPage = () => {
       const { email, password } = loginFormData;
       const isInputValid = isInputValidCheck(email, password);
       if (!isInputValid) return;
-      allowCorsForAxios(axios);
       const tokens = await axios.post(AUTH_LOGIN_URL, { email, password });
       saveTokens(tokens.data as AuthTokens);
       setLoginFormData({ email: "", password: "" });

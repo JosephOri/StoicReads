@@ -62,8 +62,7 @@ export const getUserTokens = async (
 };
 
 export const extractToken = (req: Request) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = req.headers["authorization"];
   return token;
 };
 

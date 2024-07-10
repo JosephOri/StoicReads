@@ -1,6 +1,5 @@
 export interface Comment {
   username: string;
   content: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
 }
