@@ -1,11 +1,8 @@
 import { AppRoutes } from "./routes/AppRoutes";
+import withGlobalContext from "./store/withGlobalContext";
 
 const App = () => {
-  return (
-    <>
-      <AppRoutes />
-    </>
-  );
+  return <AppRoutes />;
 };
 
-export default App;
+export default withGlobalContext(App);

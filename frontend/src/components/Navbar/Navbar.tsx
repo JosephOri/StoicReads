@@ -61,6 +61,15 @@ function Navbar() {
     handleCloseUserMenu();
   };
 
+  const handleItemsClick = (page: string) => {
+    if (page === "Home") {
+      navigate("/");
+    } else if (page === "Create New Post") {
+      navigate("/create-post");
+    }
+    handleCloseNavMenu();
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -76,7 +85,7 @@ function Navbar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -130,7 +139,7 @@ function Navbar() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -148,7 +157,7 @@ function Navbar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handleItemsClick(page)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}

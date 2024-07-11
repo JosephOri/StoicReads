@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCreatePost } from "../../hooks/useCreatePost";
+import { useGlobal } from "../../hooks/useGlobal";
 
 const SubmitPost = () => {
   const navigate = useNavigate();
@@ -21,12 +22,13 @@ const SubmitPost = () => {
   const [rating, setRating] = useState<number | null>(3);
   const [submitting, setSubmitting] = useState(false);
   const { selectedBook, setSelectedBook } = useCreatePost();
+  const { user } = useGlobal();
 
   const handleCreatePost = async () => {
     setSubmitting(true);
 
     const postData = {
-      username: "useraccount",
+      username: user?.userName,
       book: {
         title: selectedBook?.volumeInfo.title || "Sample Book Title",
         authors:

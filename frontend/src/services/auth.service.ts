@@ -16,7 +16,8 @@ export const getTokens = () => {
   };
 };
 
-export const saveTokens = (tokens: AuthTokens) => {
+export const saveTokens = (tokens: AuthTokens, userIdentifier?: string) => {
+  if (userIdentifier) localStorage.setItem("UserIdentifier", userIdentifier);
   localStorage.setItem(ACCESS_TOKEN_KEY, tokens.accessToken);
   localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refreshToken);
 };

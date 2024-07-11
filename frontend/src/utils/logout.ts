@@ -19,5 +19,6 @@ export const logout = async () => {
       }
     );
   }
+  localStorage.removeItem("UserIdentifier");
   localStorage.removeItem(REFRESH_TOKEN_KEY);
 };

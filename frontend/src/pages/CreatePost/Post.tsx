@@ -16,7 +16,7 @@ const Post = () => {
     } else {
       setConfirmPost(false);
     }
-  }, [location.search]); // Include location.search in the dependency array
+  }, [location.search]);
 
   return confirmPost ? <SubmitPost /> : <CreatePost />;
 };

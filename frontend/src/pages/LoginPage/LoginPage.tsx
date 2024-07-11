@@ -11,10 +11,10 @@ import SendIcon from "@mui/icons-material/Send";
 import { Button, TextField, Paper, Box, Grid, Typography } from "@mui/material";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { AUTH_GOOGLE_LOGIN_URL } from "../../utils/constants";
+import { useGlobal } from "../../hooks/useGlobal";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
     email: "",
     password: "",
@@ -70,7 +70,7 @@ const LoginPage = () => {
       const isInputValid = isInputValidCheck(email, password);
       if (!isInputValid) return;
       const tokens = await axios.post(AUTH_LOGIN_URL, { email, password });
-      saveTokens(tokens.data as AuthTokens);
+      saveTokens(tokens.data as AuthTokens, email);
       setLoginFormData({ email: "", password: "" });
       toast.success("Logged in successfully");
       navigate("/");
