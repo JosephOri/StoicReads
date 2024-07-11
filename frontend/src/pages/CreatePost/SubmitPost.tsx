@@ -21,7 +21,7 @@ const SubmitPost = () => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState<number | null>(3);
   const [submitting, setSubmitting] = useState(false);
-  const { selectedBook, setSelectedBook } = useCreatePost();
+  const { selectedBook } = useCreatePost();
   const { user } = useGlobal();
 
   const handleCreatePost = async () => {

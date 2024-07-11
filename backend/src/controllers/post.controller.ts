@@ -26,8 +26,6 @@ export async function getPostById(req: Request, res: Response): Promise<void> {
 }
 
 export async function createPost(req: Request, res: Response): Promise<void> {
-  console.log("req.body", req.body);
-
   const postData: Post = req.body;
   try {
     const newPost = await postService.createPost(postData);
