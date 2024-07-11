@@ -41,13 +41,9 @@ export const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const fetchUser = async () => {
       if (tokens.accessToken && tokens.refreshToken && userIdentifier) {
         try {
-          console.log("userIdentifier", userIdentifier);
-
           const userAPI = await axios.get(
             `${AUTH_URL}/user?username=${userIdentifier}`
           );
-          console.log("userAPI", userAPI.data);
-
           setUser(userAPI.data);
         } catch (error) {
           console.error("Failed to fetch user", error);
