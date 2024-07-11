@@ -21,7 +21,8 @@
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.21.3",
     "react-social-login-buttons": "^4.1.0",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "swr": "^2.2.5"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",

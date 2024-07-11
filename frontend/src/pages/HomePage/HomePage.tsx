@@ -11,57 +11,33 @@ import {
   DialogTitle,
   IconButton,
   Box,
+  CircularProgress,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import useSWR from "swr";
+import axios from "axios";
 
-interface Book {
-  title: string;
-  authors: string;
-  image: string;
-}
+type Post = Record<string, any>;
 
-const dummyBooks: Book[] = [
-  {
-    title: "Book 1",
-    authors: "Author 1",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    title: "Book 2",
-    authors: "Author 2",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    title: "Book 3",
-    authors: "Author 3",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    title: "Book 4",
-    authors: "Author 4",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    title: "Book 5",
-    authors: "Author 5",
-    image: "https://via.placeholder.com/150",
-  },
-];
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const HomePage = () => {
-  const [books] = useState<Book[]>(dummyBooks);
+  const { data: posts, error } = useSWR("http://localhost:3000/post", fetcher);
   const [open, setOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
-  const handleClickOpen = (book: Book) => {
-    setSelectedBook(book);
+  const handleClickOpen = (post: Post) => {
+    setSelectedPost(post);
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setSelectedBook(null);
+    setSelectedPost(null);
   };
+
+  if (error) return <div>Failed to load posts</div>;
+  if (!posts) return <CircularProgress />;
 
   return (
     <>
@@ -73,21 +49,24 @@ const HomePage = () => {
         justifyContent="center"
         style={{ marginTop: 20 }}
       >
-        {books.map((book, index) => (
+        {posts.map((post: Post, index: number) => (
           <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
-            <Card onClick={() => handleClickOpen(book)}>
+            <Card onClick={() => handleClickOpen(post)}>
               <CardMedia
                 component="img"
                 height="140"
-                image={book.image}
-                alt={book.title}
+                image={post?.book.image}
+                alt={post?.book.title}
               />
               <CardContent>
                 <Typography variant="h5" component="div">
-                  {book.title}
+                  {post?.title}
                 </Typography>
                 <Typography variant="subtitle1" color="text.secondary">
-                  {book.authors}
+                  {post?.book.authors}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {post?.content}
                 </Typography>
               </CardContent>
             </Card>
@@ -96,10 +75,10 @@ const HomePage = () => {
       </Grid>
 
       <Dialog open={open} onClose={handleClose} maxWidth="xl" fullWidth>
-        {open && (
+        {open && selectedPost && (
           <>
             <DialogTitle>
-              {selectedBook?.title}
+              {selectedPost?.book.title}
               <IconButton
                 aria-label="close"
                 onClick={handleClose}
@@ -117,14 +96,29 @@ const HomePage = () => {
               <Box display="flex" flexDirection="row">
                 <Box>
                   <img
-                    src={selectedBook?.image}
-                    alt={selectedBook?.title}
+                    src={selectedPost?.book.image}
+                    alt={selectedPost?.book.title}
                     style={{ maxWidth: "200px", marginRight: "20px" }}
                   />
                 </Box>
                 <Box flexGrow={1}>
                   <Typography variant="h6">Authors</Typography>
-                  <DialogContentText>{selectedBook?.authors}</DialogContentText>
+                  <DialogContentText>
+                    {selectedPost?.book.authors}
+                  </DialogContentText>
+                  <Typography variant="h6">Review</Typography>
+                  <DialogContentText>
+                    Rating: {selectedPost?.review.rating}
+                  </DialogContentText>
+                  <DialogContentText>
+                    {selectedPost?.review.description}
+                  </DialogContentText>
+                  <Typography variant="h6">Comments</Typography>
+                  {selectedPost?.comments.map((comment: any, index: number) => (
+                    <DialogContentText key={index}>
+                      <strong>{comment?.username}:</strong> {comment?.content}
+                    </DialogContentText>
+                  ))}
                 </Box>
               </Box>
             </DialogContent>
