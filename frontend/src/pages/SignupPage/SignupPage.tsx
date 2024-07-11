@@ -1,32 +1,31 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios, { AxiosError,HttpStatusCode } from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import { AUTH_REGISTER_URL } from '../../utils/constants';
-import SignupFormData from '../../interfaces/SignupFormData';
-import isEmailValidCheck from '../../utils/isEmailValidCheck';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios, { AxiosError, HttpStatusCode } from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { AUTH_REGISTER_URL } from "../../utils/constants";
+import SignupFormData from "../../interfaces/SignupFormData";
+import isEmailValidCheck from "../../utils/isEmailValidCheck";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
-import 'react-toastify/dist/ReactToastify.css';
-
+import "react-toastify/dist/ReactToastify.css";
 
 const SignupPage = () => {
   const [signupFormData, setSignupFormData] = useState<SignupFormData>({
-    userName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    userName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const navigate = useNavigate();
 
-  const handleInputChange = (fieldName:string, value:string) => {
+  const handleInputChange = (fieldName: string, value: string) => {
     setSignupFormData({ ...signupFormData, [fieldName]: value });
   };
 
@@ -34,71 +33,86 @@ const SignupPage = () => {
     const { userName, email, password, confirmPassword } = signupFormData;
     const isAllFieldsFilled = userName && email && password && confirmPassword;
     const isEmailValid = isEmailValidCheck(email);
-    const isUsernameValid = !userName.includes(' ') && userName.length > 3;
-    if(!isUsernameValid) {
-      toast.error('Username must be at least 4 characters long and cannot contain spaces');
+    const isUsernameValid = !userName.includes(" ") && userName.length > 3;
+    if (!isUsernameValid) {
+      toast.error(
+        "Username must be at least 4 characters long and cannot contain spaces"
+      );
       return false;
     }
-    if(!isAllFieldsFilled) {
-      toast.error('Please fill in all fields');
+    if (!isAllFieldsFilled) {
+      toast.error("Please fill in all fields");
       return false;
     }
-    if(password !== confirmPassword) {
-      toast.error('Passwords do not match');
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
       return false;
     }
-    if(password.length < 6) {
-      toast.error('Password must be at least 6 characters long');
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
       return false;
     }
-    if(!isEmailValid) {
-      toast.error('Please enter a valid email address');
+    if (!isEmailValid) {
+      toast.error("Please enter a valid email address");
       return false;
     }
     return true;
-  }
+  };
 
-  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const isFormDataValid = isFormDataValidCheck();
-    if(!isFormDataValid) return;
-    const {userName, email, password } = signupFormData;
+    if (!isFormDataValid) return;
+    const { userName, email, password } = signupFormData;
     try {
-      const response = await axios.post(AUTH_REGISTER_URL, { userName, email, password });
+      const response = await axios.post(AUTH_REGISTER_URL, {
+        userName,
+        email,
+        password,
+      });
       console.log(response);
-      toast.success('User created successfully');
-      setSignupFormData({ userName: '', email: '', password: '', confirmPassword: '' });
-      navigate('/login');
-    } catch (err:unknown) {
+      toast.success("User created successfully");
+      setSignupFormData({
+        userName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      navigate("/login");
+    } catch (err: unknown) {
       const error = err as AxiosError;
-      if(error.response?.status === HttpStatusCode.BadRequest) {
-        toast.error('Please fill in all fields');
-      } else if(error.response?.status === HttpStatusCode.Conflict) {
-        toast.error('User already exists');
+      if (error.response?.status === HttpStatusCode.BadRequest) {
+        toast.error("Please fill in all fields");
+      } else if (error.response?.status === HttpStatusCode.Conflict) {
+        toast.error("User already exists");
       } else {
-        toast.error('Server error occurred, please try again later');
+        toast.error("Server error occurred, please try again later");
       }
     }
-  }
-  
+  };
+
   return (
     <>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
-            <Grid item xs={12}>
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -106,7 +120,9 @@ const SignupPage = () => {
                   label="Username"
                   name="userName"
                   value={signupFormData.userName}
-                  onChange={(e) => handleInputChange('userName', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("userName", e.target.value)
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -117,7 +133,7 @@ const SignupPage = () => {
                   label="Email Address"
                   name="email"
                   value={signupFormData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -129,7 +145,9 @@ const SignupPage = () => {
                   type="password"
                   id="password"
                   value={signupFormData.password}
-                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -141,7 +159,9 @@ const SignupPage = () => {
                   type="password"
                   id="confirmPassword"
                   value={signupFormData.confirmPassword}
-                  onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("confirmPassword", e.target.value)
+                  }
                 />
               </Grid>
             </Grid>
@@ -163,7 +183,7 @@ const SignupPage = () => {
           </Box>
         </Box>
       </Container>
-    <ToastContainer />
+      <ToastContainer />
     </>
   );
 };

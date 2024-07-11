@@ -1,8 +1,9 @@
-import authRouter from './auth.route';
-import express from 'express';
+import authRouter from "./auth.route";
+import postRouter from "./post.route";
+import express from "express";
 
 const applicationRouter = express.Router();
 
-applicationRouter.use('/auth', authRouter);
-
+applicationRouter.use("/auth", authRouter);
+applicationRouter.use("/post", postRouter);
 export default applicationRouter;

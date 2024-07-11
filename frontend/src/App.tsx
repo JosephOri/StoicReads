@@ -1,12 +1,8 @@
-import { RouterProvider } from "react-router-dom"
-import { router } from "./routes/routes"
+import { AppRoutes } from "./routes/AppRoutes";
+import withGlobalContext from "./store/withGlobalContext";
 
-const App= ()=> {
-  return (
-    <>
-     <RouterProvider router={router} />
-    </>
-  )
-}
+const App = () => {
+  return <AppRoutes />;
+};
 
-export default App
+export default withGlobalContext(App);

@@ -1,15 +1,14 @@
-import UserModel, { IUser } from '@models/User';
-import User from '../interfaces/User';
-import logger from '@utils/logger';
-import { Request, Response } from 'express';
-import { createUser, getUserByIdentifier } from './user.service';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import { HttpStatusCode } from 'axios';
-import { errorMessages } from '@utils/constants';
-import mongoose, { Document, Types } from 'mongoose';
-import getRandomNumber from '@utils/getRandomNumber';
-import { OAuth2Client } from 'google-auth-library';
+import UserModel, { IUser } from "@models/User";
+import User from "../interfaces/User";
+import logger from "@utils/logger";
+import { Request, Response } from "express";
+import { createUser, getUserByIdentifier } from "./user.service";
+import jwt from "jsonwebtoken";
+import { HttpStatusCode } from "axios";
+import { errorMessages } from "@utils/constants";
+import mongoose, { Document, Types } from "mongoose";
+import getRandomNumber from "@utils/getRandomNumber";
+import { OAuth2Client } from "google-auth-library";
 
 export const generateToken = async (
   user: Document<unknown, {}, IUser> &
@@ -36,13 +35,13 @@ export const generateToken = async (
   user.tokens.push(refreshToken);
   try {
     await user.save();
-    logger.info('Tokens generated successfully');
+    logger.info("Tokens generated successfully");
     return {
       accessToken: accessToken,
       refreshToken: refreshToken,
     };
   } catch (err) {
-    logger.error('Error generating tokens: ', err);
+    logger.error("Error generating tokens: ", err);
     throw new Error(errorMessages.TOKENS_NOT_GENERATED);
   }
 };
@@ -56,15 +55,14 @@ export const getUserTokens = async (
 ) => {
   const tokens = await generateToken(user);
   if (tokens == null) {
-    logger.error('Error generating tokens');
+    logger.error("Error generating tokens");
     throw new Error(errorMessages.TOKENS_NOT_GENERATED);
   }
   return tokens;
 };
 
 export const extractToken = (req: Request) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const token = req.headers["authorization"];
   return token;
 };
 
@@ -79,7 +77,7 @@ export const googleLoginService = async (req: Request, res: Response) => {
     const email = payload?.email;
 
     if (!email) {
-      logger.error('Email not found in payload');
+      logger.error("Email not found in payload");
       return res
         .status(HttpStatusCode.InternalServerError)
         .json({ message: errorMessages.EMAIL_NOT_FOUND });
@@ -88,9 +86,9 @@ export const googleLoginService = async (req: Request, res: Response) => {
     let user = await getUserByIdentifier(email);
     if (!user) {
       const randPassword = getRandomNumber(1, 1000000000).toString();
-      console.log('randPassword generated successfully', randPassword);
+      console.log("randPassword generated successfully", randPassword);
       const newUser: User = {
-        userName: payload?.name || '',
+        userName: payload?.name || "",
         email: email,
         password: randPassword,
         profilePicture: payload?.picture,
@@ -100,15 +98,15 @@ export const googleLoginService = async (req: Request, res: Response) => {
       );
 
       user = await createUser(newUser);
-      console.log('user created successfully', user);
+      console.log("user created successfully", user);
     }
 
     const tokens = await getUserTokens(user);
-    res.status(HttpStatusCode.Ok).json(tokens);
+    res.status(HttpStatusCode.Ok).json({ tokens, user });
   } catch (error: any) {
-    logger.error('Error logging in witn Google: ', error.message);
+    logger.error("Error logging in witn Google: ", error.message);
     if (error.message === errorMessages.INVALID_CREDENTIALS) {
-      logger.error('User not found or password is incorrect');
+      logger.error("User not found or password is incorrect");
       return res
         .status(HttpStatusCode.Unauthorized)
         .json({ message: errorMessages.USER_NOT_FOUND });
