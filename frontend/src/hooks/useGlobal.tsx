@@ -27,6 +27,7 @@ export const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [userIdentifier, setUserIdentifier] = useState<string | null>(
     localStorage.getItem("UserIdentifier")
   );
+
   const rawTokens = getTokens();
 
   const tokens = useMemo(

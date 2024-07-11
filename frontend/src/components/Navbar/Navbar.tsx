@@ -14,6 +14,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../utils/logout";
+import { useGlobal } from "../../hooks/useGlobal";
 const pages = ["Home", "Create New Post"];
 const settings = ["Profile", "Logout"];
 
@@ -69,6 +70,8 @@ function Navbar() {
     }
     handleCloseNavMenu();
   };
+
+  const { user } = useGlobal();
 
   return (
     <AppBar position="static">
@@ -167,7 +170,7 @@ function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar src={user?.profilePicture} />
               </IconButton>
             </Tooltip>
             <Menu

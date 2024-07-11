@@ -102,7 +102,7 @@ export const googleLoginService = async (req: Request, res: Response) => {
     }
 
     const tokens = await getUserTokens(user);
-    res.status(HttpStatusCode.Ok).json(tokens);
+    res.status(HttpStatusCode.Ok).json({ tokens, user });
   } catch (error: any) {
     logger.error("Error logging in witn Google: ", error.message);
     if (error.message === errorMessages.INVALID_CREDENTIALS) {

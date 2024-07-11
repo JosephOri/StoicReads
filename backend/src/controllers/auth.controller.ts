@@ -121,9 +121,9 @@ export const logout = async (req: Request, res: Response) => {
 
 export const googleLogin = async (req: Request, res: Response) => {
   try {
-    const tokens = await googleLoginService(req, res);
+    const user = await googleLoginService(req, res);
     logger.info("User logged in successfully");
-    res.status(HttpStatusCode.Ok).json(tokens);
+    res.status(HttpStatusCode.Ok).json(user);
   } catch (error: any) {
     logger.error("Error logging in witn Google: ", error.message);
     if (error.message === errorMessages.INVALID_CREDENTIALS) {

@@ -13,5 +13,6 @@ export const applicationRoutes = {
   LOGIN: "/login",
   SIGNUP: "/signup",
   CREATE_POST: "/create-post",
+  USER: "/user",
   NOT_FOUND: "*",
 };

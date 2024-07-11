@@ -21,6 +21,8 @@ const SubmitPost = () => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState<number | null>(3);
   const [submitting, setSubmitting] = useState(false);
+  const [postTitle, setPostTitle] = useState("");
+  const [postContent, setPostContent] = useState("");
   const { selectedBook } = useCreatePost();
   const { user } = useGlobal();
 
@@ -37,18 +39,9 @@ const SubmitPost = () => {
           selectedBook?.volumeInfo.imageLinks.thumbnail ||
           "https://example.com/sample-image.jpg",
       },
-      title: "Sample Post Title",
-      content: "This is a sample post content.",
-      comments: [
-        {
-          username: "commenter1",
-          content: "This is a sample comment.",
-        },
-        {
-          username: "commenter2",
-          content: "This is another sample comment.",
-        },
-      ],
+      title: postTitle || "Sample Post Title",
+      content: postContent || "This is a sample post content.",
+      comments: [],
       review: {
         rating: rating || 3,
         description: review || "This is a sample review.",
@@ -118,6 +111,16 @@ const SubmitPost = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    label="Post Title"
+                    variant="outlined"
+                    value={postTitle}
+                    onChange={(e) => setPostTitle(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
                   <FormControl component="fieldset">
                     <FormLabel component="legend">Rating</FormLabel>
                     <Rating
@@ -139,6 +142,19 @@ const SubmitPost = () => {
                     variant="outlined"
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    multiline
+                    rows={4}
+                    inputProps={{ maxLength: 50 }}
+                    label="Post Content"
+                    variant="outlined"
+                    value={postContent}
+                    onChange={(e) => setPostContent(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
