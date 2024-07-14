@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -22,7 +22,7 @@ import axios from "axios";
 import { useGlobal } from "../../hooks/useGlobal";
 import { text } from "stream/consumers";
 import { POSTS_URL } from "../../utils/constants";
-type Post = Record<string, any>;
+type Post = Record<string, unknown>;
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -54,12 +54,13 @@ const HomePage = () => {
       ],
     };
     await axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
-    
     setSelectedPost(updatedPost);
     setNewComment("");
   };
 
    const handleDeleteComment = async (index:number) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this comment?");
+    if (!isConfirmed) return;
     const updatedPost = {
       ...selectedPost,
       comments: selectedPost?.comments.filter((comment:any,i:number)=>i!==index),
@@ -68,7 +69,9 @@ const HomePage = () => {
     setSelectedPost(updatedPost);
   }
 
-  const handleDeletePost = async (id:any) => {
+  const handleDeletePost = async (id:unknown) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this post?");
+    if (!isConfirmed) return;
     await axios.delete(`${POSTS_URL}/${id}`);
   }
 
@@ -77,48 +80,58 @@ const HomePage = () => {
   if (!posts) return <CircularProgress />;
 
   return (
-    <>
-<h1 style={{ textAlign: "center" }}>{`Welcome Back ${user?.userName}`}</h1>
-<Grid
-        container
-        spacing={4}
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        style={{ marginTop: 20 }}
-      >
-        
-        {posts.map((post: Post, index: number) => (
-          <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
-            <Card
-              onClick={() => handleClickOpen(post)}
-              style={{ width: "100%", height: "100%" }}
+<>
+  <h1 style={{ textAlign: "center" }}>{`Welcome Back ${user?.userName}`}</h1>
+  <Grid container spacing={4} direction="row" alignItems="center" justifyContent="center" style={{ marginTop: 20 }}>
+     {posts.map((post: Post, index: number) => (
+      <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
+        <Card
+          onClick={() => handleClickOpen(post)}
+          style={{ width: "100%", height: "100%", position: "relative" }}>
+
+          {user?.userName === post?.userName && (
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeletePost(post?._id);
+              }}
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                zIndex: 1,
+                color: 'white',
+              }}
             >
-              <CardMedia
-                component="img"
-                height="200"
-                image={post?.book.image}
-                alt={post?.book.title}
-              />
-              <CardContent>
-                <Typography variant="h5" component="div">
-                  {post?.title}
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
-                  Posted by {post?.username}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {post?.content}
-                </Typography>
-                <Rating value={post?.review.rating} readOnly />
-                
-            {user?.userName===post?.userName && <Button onClick={()=>handleDeletePost(post?._id)}>delete</Button>}
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-        
+              <CloseIcon style={{fontSize: 30}}/>
+            </IconButton>
+          )}
+
+          <CardMedia
+            component="img"
+            height="200"
+            image={post?.book.image}
+            alt={post?.book.title}
+          />
+
+          <CardContent>
+            <Typography variant="h5" component="div">
+              {post?.title}
+            </Typography>
+            <Typography variant="subtitle1" color="text.secondary">
+              Posted by {post?.userName}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {post?.content}
+            </Typography>
+            <Rating value={post?.review.rating} readOnly />
+          </CardContent>
+
+        </Card>
       </Grid>
+  ))}
+        
+</Grid>
 
       <Dialog
         open={open}
@@ -159,6 +172,7 @@ const HomePage = () => {
                     style={{ maxWidth: "200px", marginRight: "20px" }}
                   />
                 </Box>
+
                 <Box flexGrow={1}>
                   <Typography variant="h6">Posted by</Typography>
                   <DialogContentText>
@@ -177,14 +191,21 @@ const HomePage = () => {
                   </DialogContentText>
                 </Box>
               </Box>
+
               <Typography variant="h6">Comments</Typography>
               {selectedPost?.comments.map((comment: any, index: number) => (
-                <DialogContentText key={index} sx={{ marginBottom: 1 }}>
-                  <strong>{comment?.username}:</strong> {comment?.content}
-                  {comment?.username===user?.userName && <Button onClick={()=>handleDeleteComment(index)}>delete</Button>}
-                  
-                </DialogContentText>
+                <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 1 }}>
+                  <DialogContentText>
+                    <strong>{comment?.username}:</strong> {comment?.content}
+                  </DialogContentText>
+                  {comment?.username === user?.userName && (
+                    <Button onClick={() => handleDeleteComment(index)} sx={{ marginLeft: 1 }}>
+                      <CloseIcon style={{ color: 'red', fontSize: 24 }} />
+                    </Button>
+                  )}
+                </Box>
               ))}
+
               <Box mt={2}>
                 <TextField
                   label="Add a comment"
@@ -205,8 +226,8 @@ const HomePage = () => {
             </DialogContent>
           </>
         )}
-      </Dialog>
-    </>
+    </Dialog>
+</>
   );
 };
 
