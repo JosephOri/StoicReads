@@ -40,6 +40,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    setUser(null);
     logout();
     navigate("/login");
   };
@@ -71,7 +72,7 @@ function Navbar() {
     handleCloseNavMenu();
   };
 
-  const { user } = useGlobal();
+  const { user, setUser } = useGlobal();
 
   return (
     <AppBar position="static">
