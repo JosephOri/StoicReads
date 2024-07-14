@@ -105,6 +105,10 @@ const SignupPage = () => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+          {/* text box that says "upload image" */}
+          <Button component="h1">
+            Upload Image
+          </Button>
           <Box
             component="form"
             noValidate
