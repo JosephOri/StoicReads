@@ -44,7 +44,7 @@ const HomePage = () => {
     setNewComment("");
   };
 
-  const handleAddComment = () => {
+  const handleAddComment = async() => {
     if (newComment.trim() === "") return;
     const updatedPost = {
       ...selectedPost,
@@ -53,20 +53,25 @@ const HomePage = () => {
         { username:user?.userName , content: newComment },
       ],
     };
-    axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
+    await axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
     
     setSelectedPost(updatedPost);
     setNewComment("");
   };
 
-  const handleDeleteComment = (index:number) => {
+   const handleDeleteComment = async (index:number) => {
     const updatedPost = {
       ...selectedPost,
       comments: selectedPost?.comments.filter((comment:any,i:number)=>i!==index),
     };
-    axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
+    await axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
     setSelectedPost(updatedPost);
   }
+
+  const handleDeletePost = async (id:any) => {
+    await axios.delete(`${POSTS_URL}/${id}`);
+  }
+
 
   if (error) return <div>Failed to load posts</div>;
   if (!posts) return <CircularProgress />;
@@ -106,10 +111,13 @@ const HomePage = () => {
                   {post?.content}
                 </Typography>
                 <Rating value={post?.review.rating} readOnly />
+                
+            {user?.userName===post?.userName && <Button onClick={()=>handleDeletePost(post?._id)}>delete</Button>}
               </CardContent>
             </Card>
           </Grid>
         ))}
+        
       </Grid>
 
       <Dialog
@@ -173,7 +181,7 @@ const HomePage = () => {
               {selectedPost?.comments.map((comment: any, index: number) => (
                 <DialogContentText key={index} sx={{ marginBottom: 1 }}>
                   <strong>{comment?.username}:</strong> {comment?.content}
-                  {comment?.username===user?.userName && <button onClick={()=>handleDeleteComment(index)}>delete</button>}
+                  {comment?.username===user?.userName && <Button onClick={()=>handleDeleteComment(index)}>delete</Button>}
                   
                 </DialogContentText>
               ))}
