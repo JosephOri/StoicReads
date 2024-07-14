@@ -14,4 +14,5 @@ export const errorMessages = {
   USER_ALREADY_LOGGED_IN: 'User is already logged in',
   UNAUTHORIZED: 'User is not authorized to perform this action',
   EMAIL_NOT_FOUND: 'Email not found in payload',
+  INVALID_PASSWORD: 'Invalid password',
 };

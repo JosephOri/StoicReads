@@ -43,7 +43,7 @@ export const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
       if (tokens.accessToken && tokens.refreshToken && userIdentifier) {
         try {
           const userAPI = await axios.get(
-            `${AUTH_URL}/user?username=${userIdentifier}`
+            `${AUTH_URL}/user?userName=${userIdentifier}`
           );
           setUser(userAPI.data);
         } catch (error) {

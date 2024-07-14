@@ -1,10 +1,10 @@
-import mongoose, { Schema, Document } from "mongoose";
-import { Book } from "../interfaces/Book";
-import { Review } from "../interfaces/Review";
-import { Comment as UserComment } from "../interfaces/Comment";
+import mongoose, { Schema, Document } from 'mongoose';
+import { Book } from '../interfaces/Book';
+import { Review } from '../interfaces/Review';
+import { Comment as UserComment } from '../interfaces/Comment';
 
 export interface Post extends Document {
-  username: string;
+  userName: string;
   book: Book;
   title: string;
   content: string;
@@ -12,7 +12,7 @@ export interface Post extends Document {
   review: Review;
 }
 const PostSchema: Schema = new Schema({
-  username: { type: String, required: true },
+  userName: { type: String, required: true },
   book: { type: Object, required: true },
   title: { type: String, required: true },
   content: { type: String, required: true },
@@ -21,6 +21,6 @@ const PostSchema: Schema = new Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
-const PostModel = mongoose.model<Post>("Post", PostSchema);
+const PostModel = mongoose.model<Post>('Post', PostSchema);
 
 export default PostModel;

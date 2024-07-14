@@ -19,16 +19,19 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import useSWR from "swr";
 import axios from "axios";
-
+import { useGlobal } from "../../hooks/useGlobal";
+import { text } from "stream/consumers";
+import { POSTS_URL } from "../../utils/constants";
 type Post = Record<string, any>;
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const HomePage = () => {
-  const { data: posts, error } = useSWR("http://localhost:3000/post", fetcher);
+  const { data: posts, error } = useSWR(POSTS_URL, fetcher);
   const [open, setOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [newComment, setNewComment] = useState("");
+  const { user } = useGlobal();
 
   const handleClickOpen = (post: Post) => {
     setSelectedPost(post);
@@ -43,24 +46,35 @@ const HomePage = () => {
 
   const handleAddComment = () => {
     if (newComment.trim() === "") return;
-    // TODO: update post in backend
     const updatedPost = {
       ...selectedPost,
       comments: [
         ...selectedPost?.comments,
-        { username: "current_user", content: newComment },
+        { username:user?.userName , content: newComment },
       ],
     };
+    axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
+    
     setSelectedPost(updatedPost);
     setNewComment("");
   };
+
+  const handleDeleteComment = (index:number) => {
+    const updatedPost = {
+      ...selectedPost,
+      comments: selectedPost?.comments.filter((comment:any,i:number)=>i!==index),
+    };
+    axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
+    setSelectedPost(updatedPost);
+  }
 
   if (error) return <div>Failed to load posts</div>;
   if (!posts) return <CircularProgress />;
 
   return (
     <>
-      <Grid
+<h1 style={{ textAlign: "center" }}>{`Welcome Back ${user?.userName}`}</h1>
+<Grid
         container
         spacing={4}
         direction="row"
@@ -68,6 +82,7 @@ const HomePage = () => {
         justifyContent="center"
         style={{ marginTop: 20 }}
       >
+        
         {posts.map((post: Post, index: number) => (
           <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
             <Card
@@ -109,6 +124,7 @@ const HomePage = () => {
           },
         }}
       >
+        
         {open && selectedPost && (
           <>
             <DialogTitle>
@@ -157,6 +173,8 @@ const HomePage = () => {
               {selectedPost?.comments.map((comment: any, index: number) => (
                 <DialogContentText key={index} sx={{ marginBottom: 1 }}>
                   <strong>{comment?.username}:</strong> {comment?.content}
+                  {comment?.username===user?.userName && <button onClick={()=>handleDeleteComment(index)}>delete</button>}
+                  
                 </DialogContentText>
               ))}
               <Box mt={2}>

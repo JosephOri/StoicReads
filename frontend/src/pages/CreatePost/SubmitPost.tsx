@@ -15,6 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useCreatePost } from "../../hooks/useCreatePost";
 import { useGlobal } from "../../hooks/useGlobal";
+import { POSTS_URL } from "../../utils/constants";
 
 const SubmitPost = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const SubmitPost = () => {
     setSubmitting(true);
 
     const postData = {
-      username: user?.userName,
+      userName: user?.userName,
       book: {
         title: selectedBook?.volumeInfo.title || "Sample Book Title",
         authors:
@@ -49,7 +50,7 @@ const SubmitPost = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/post", {
+      const response = await fetch(POSTS_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
