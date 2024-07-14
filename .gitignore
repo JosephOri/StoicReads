@@ -1,2 +1,6 @@
 node_modules/
 .idea
+
+.github/workflows/pr_workflows/*
+.github/workflows/pr_workflows/
+.github/PR_DESCRIPTION.md
