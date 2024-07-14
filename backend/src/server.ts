@@ -21,6 +21,7 @@ connectToDatabase()
   .then(() => {
     app.listen(process.env.PORT, () => {
       logger.info("Server is running");
+      console.log(`Server is running on port ${process.env.PORT}`);
     });
   })
   .catch((error) => {
