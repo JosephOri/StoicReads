@@ -11,6 +11,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { Button, TextField, Paper, Box, Grid, Typography } from "@mui/material";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { AUTH_GOOGLE_LOGIN_URL } from "../../utils/constants";
+import { useGlobal } from "../../hooks/useGlobal";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -48,7 +49,8 @@ const LoginPage = () => {
         console.log("no tokens received");
         return;
       }
-      saveTokens(tokens as AuthTokens, user.email);
+      saveTokens(tokens as AuthTokens);
+      setUser(user);
       toast.success("Logged in with Google successfully");
       toast.info(
         `You've been given a random password, Please change it after logging in.`
@@ -64,14 +66,18 @@ const LoginPage = () => {
     toast.error("Failed to login with Google");
   };
 
+  const { setUser } = useGlobal();
+
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
       const { email, password } = loginFormData;
       const isInputValid = isInputValidCheck(email, password);
       if (!isInputValid) return;
-      const tokens = await axios.post(AUTH_LOGIN_URL, { email, password });
-      saveTokens(tokens.data as AuthTokens, email);
+      const res = await axios.post(AUTH_LOGIN_URL, { email, password });
+      const { user, tokens } = res.data;
+      saveTokens(tokens as AuthTokens);
+      setUser(user);
       setLoginFormData({ email: "", password: "" });
       toast.success("Logged in successfully");
       navigate("/");
