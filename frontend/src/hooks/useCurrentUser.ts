@@ -1,11 +1,7 @@
 import { User } from '../interfaces/User';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-  ACCESS_TOKEN_KEY,
-  USER_IDENTIFIER_KEY,
-  USERS_URL,
-} from '../utils/constants';
+import { ACCESS_TOKEN_KEY, USERS_URL } from '../utils/constants';
 
 interface UseCurrentUserResult {
   user: User | null;
