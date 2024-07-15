@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -114,18 +114,19 @@ const HomePage = () => {
             alt={post?.book.title}
           />
 
-          <CardContent>
-            <Typography variant="h5" component="div">
-              {post?.title}
-            </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
-              Posted by {post?.userName}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {post?.content}
-            </Typography>
-            <Rating value={post?.review.rating} readOnly />
-          </CardContent>
+        <CardContent>
+        <Typography variant="h5" component="div">
+          {post?.title}
+        </Typography>
+        <Typography variant="subtitle1" color="text.secondary">
+          Posted by {post?.userName}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {post?.comments?.length} Comments
+        </Typography>
+        <Rating value={post?.review.rating} readOnly />
+      </CardContent>
+
 
         </Card>
       </Grid>
