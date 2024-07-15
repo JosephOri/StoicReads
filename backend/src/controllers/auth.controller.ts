@@ -65,7 +65,7 @@ export const login = async (req: Request, res: Response) => {
     }
     const tokens = await getUserTokens(user);
     logger.info('User logged in successfully');
-    res.status(HttpStatusCode.Ok).json(tokens);
+    res.status(HttpStatusCode.Ok).json({ user, tokens });
   } catch (error: any) {
     logger.error('Error logging in: ', error.message);
     if (error.message === errorMessages.INVALID_CREDENTIALS) {
