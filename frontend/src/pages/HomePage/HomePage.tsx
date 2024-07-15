@@ -22,6 +22,7 @@ import axios from "axios";
 import { useGlobal } from "../../hooks/useGlobal";
 import { text } from "stream/consumers";
 import { POSTS_URL } from "../../utils/constants";
+import useCurrentUser from "../../hooks/useCurrentUser";
 type Post = Record<string, unknown>;
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
@@ -31,7 +32,7 @@ const HomePage = () => {
   const [open, setOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [newComment, setNewComment] = useState("");
-  const { user } = useGlobal();
+  const {user} = useCurrentUser();
 
   const handleClickOpen = (post: Post) => {
     setSelectedPost(post);

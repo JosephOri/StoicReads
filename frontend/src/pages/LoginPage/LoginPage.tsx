@@ -49,7 +49,7 @@ const LoginPage = () => {
         console.log("no tokens received");
         return;
       }
-      saveTokens(tokens as AuthTokens);
+      saveTokens(tokens as AuthTokens,user.userName);
       setUser(user);
       toast.success("Logged in with Google successfully");
       toast.info(
@@ -77,7 +77,7 @@ const LoginPage = () => {
       const res = await axios.post(AUTH_LOGIN_URL, { email, password });
       const { user, tokens } = res.data;
       console.log(`user: ${JSON.stringify(user)} \n tokens:  ${JSON.stringify(tokens)}`);      
-      saveTokens(tokens as AuthTokens);
+      saveTokens(tokens as AuthTokens,user.userName);
       setUser(user);
       setLoginFormData({ email: "", password: "" });
       toast.success("Logged in successfully");

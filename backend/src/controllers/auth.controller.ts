@@ -139,17 +139,35 @@ export const googleLogin = async (req: Request, res: Response) => {
 };
 
 export async function getUser(req: Request, res: Response) {
-  try {
-    const userName = req.query.userName as string;
-    if (!userName) {
-      return res.status(400).send('User query parameter is required');
-    }
-    const user = await getUserByIdentifier(userName);
-    if (!userName) {
-      return res.status(404).send('User not found');
-    }
-    res.json(user);
-  } catch (error) {
-    res.status(500).send({ message: 'Error getting user' });
+  const accessToken = extractToken(req);
+  if (!accessToken) {
+    return res
+      .status(HttpStatusCode.Unauthorized)
+      .json({ message: errorMessages.INVALID_TOKEN });
   }
+  jwt.verify(
+    accessToken,
+    process.env.TOKEN_SECRET as string,
+    async (err: any, user: any) => {
+      if (err) {
+        return res
+          .status(HttpStatusCode.Unauthorized)
+          .json({ message: errorMessages.INVALID_TOKEN });
+      }
+      try {
+        const userDb = await getUserById(user._id);
+        if (!userDb) {
+          return res
+            .status(HttpStatusCode.NotFound)
+            .json({ message: errorMessages.NOT_FOUND_USER_ID });
+        }
+        return res.status(HttpStatusCode.Ok).json(userDb);
+      } catch (error: any) {
+        logger.error('Error getting user: ', error.message);
+        return res
+          .status(HttpStatusCode.InternalServerError)
+          .json({ message: error.message });
+      }
+    }
+  );
 }
