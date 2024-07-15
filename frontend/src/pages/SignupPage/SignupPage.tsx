@@ -106,7 +106,7 @@ const SignupPage = () => {
             Sign up
           </Typography>
           {/* text box that says "upload image" */}
-          <Button component="h1">
+          <Button component="h1" variant="text" color="secondary">
             Upload Image
           </Button>
           <Box
