@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { useCreatePost } from "../../hooks/useCreatePost";
 import { POSTS_URL } from "../../utils/constants";
 import useCurrentUser from "../../hooks/useCurrentUser";
-import { Post } from "../../interfaces/Post";
 
 const SubmitPost = () => {
   const navigate = useNavigate();
@@ -24,14 +23,13 @@ const SubmitPost = () => {
   const [rating, setRating] = useState<number | null>(3);
   const [submitting, setSubmitting] = useState(false);
   const [postTitle, setPostTitle] = useState("");
-  const [postContent, setPostContent] = useState("");
   const { selectedBook } = useCreatePost();
   const { user } =useCurrentUser();
 
   const handleCreatePost = async () => {
     setSubmitting(true);
 
-    const postData : Post = {
+    const postData  = {
       userName: user?.userName,
       book: {
         title: selectedBook?.volumeInfo.title || "Sample Book Title",
@@ -42,7 +40,7 @@ const SubmitPost = () => {
           "https://example.com/sample-image.jpg",
       },
       title: postTitle || "Sample Post Title",
-      content: postContent || "This is a sample post content.",
+      content: "This is a sample post content.",
       comments: [],
       review: {
         rating: rating || 3,
@@ -144,19 +142,6 @@ const SubmitPost = () => {
                     variant="outlined"
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    multiline
-                    rows={4}
-                    inputProps={{ maxLength: 50 }}
-                    label="Post Content"
-                    variant="outlined"
-                    value={postContent}
-                    onChange={(e) => setPostContent(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
