@@ -15,6 +15,7 @@ import {
   TextField,
   Button,
   Rating,
+  Divider,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import useSWR from "swr";
@@ -191,12 +192,16 @@ const HomePage = () => {
                   <DialogContentText>
                     <Rating value={selectedPost?.review.rating} readOnly />
                   </DialogContentText>
-                  <DialogContentText>
-                    {selectedPost?.review.description}
-                  </DialogContentText>
                 </Box>
               </Box>
-              <Typography variant="h6">Comments</Typography>
+              <Typography variant="h5">Content</Typography>
+              <DialogContentText 
+                color="black"
+                fontSize="1.25rem" 
+                sx={{ ml: 2 }}>
+                {selectedPost?.review.description}</DialogContentText>
+                <Divider sx={{ my: 2 }} />
+              <Typography variant="h5">Comments</Typography>
               {selectedPost?.comments.map((comment: any, index: number) => (
                 <Box key={index} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 1 }}>
                   <DialogContentText>
