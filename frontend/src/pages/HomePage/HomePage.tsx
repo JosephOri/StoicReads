@@ -194,14 +194,18 @@ const HomePage = () => {
                   </DialogContentText>
                 </Box>
               </Box>
-              <Typography variant="h5">Content</Typography>
-              <DialogContentText 
-                color="black"
-                fontSize="1.25rem" 
-                sx={{ ml: 2 }}>
-                {selectedPost?.review.description}</DialogContentText>
+              <Divider sx={{my:2}}/>
+            <Box mb={2}> 
+                <DialogContentText 
+                  color="black"
+                  fontSize="1.25rem" 
+                  sx={{ ml: 2 }}>
+                  {selectedPost?.review.description}
+                </DialogContentText>
                 <Divider sx={{ my: 2 }} />
-              <Typography variant="h5">Comments</Typography>
+            </Box>
+              <Typography variant="h5">Comments:</Typography>
+              <Divider sx={{ my: 2 }} />
               {selectedPost?.comments.map((comment: any, index: number) => (
                 <Box key={index} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 1 }}>
                   <DialogContentText>
