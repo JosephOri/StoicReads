@@ -23,6 +23,7 @@ import { useGlobal } from "../../hooks/useGlobal";
 import { text } from "stream/consumers";
 import { POSTS_URL } from "../../utils/constants";
 import useCurrentUser from "../../hooks/useCurrentUser";
+import { useNavigate } from "react-router-dom";
 type Post = Record<string, unknown>;
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
@@ -33,6 +34,7 @@ const HomePage = () => {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [newComment, setNewComment] = useState("");
   const {user} = useCurrentUser();
+  const navigate = useNavigate();
 
   const handleClickOpen = (post: Post) => {
     setSelectedPost(post);
@@ -164,6 +166,21 @@ const HomePage = () => {
               >
                 <CloseIcon />
               </IconButton>
+
+              {user?.userName===selectedPost?.userName && <Button
+                onClick={() => navigate(`/edit-post/${selectedPost._id}`)}
+                sx={{
+                  position: "absolute",
+                  right: 50,
+                  top: 8,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+                variant="outlined"
+                color="primary"
+              >
+                Edit
+              </Button>}
+              
             </DialogTitle>
             <DialogContent dividers>
               <Box display="flex" flexDirection="row" mb={2}>
