@@ -128,14 +128,22 @@ const SignupPage = () => {
             Sign up
           </Typography>
 
-          <Button component="label" variant="text" color="secondary">
+          <Button component="label" variant="contained" color="success" sx={{ mt: 2, mb: 2 }}>
             Upload Image
-            <input type="file" accept="image/*" hidden onChange={handleImageUpload} />
+            <input 
+            type="file" 
+            accept="image/*" 
+            hidden 
+            onChange={handleImageUpload} 
+            />
           </Button>
           {signupFormData.profileImage && (
-            <img src={signupFormData.profileImage} alt="Profile Preview" style={{ maxHeight: '200px', maxWidth: '200px' }} />
+            <img src={signupFormData.profileImage} 
+            alt="Profile Preview" 
+            style={{ maxHeight: '150px', maxWidth: '150px' }}
+             />
           )}
-          
+
           <Box
             component="form"
             noValidate
