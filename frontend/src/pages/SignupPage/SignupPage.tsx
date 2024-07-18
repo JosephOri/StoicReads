@@ -91,6 +91,10 @@ const SignupPage = () => {
     }
   };
 
+  const uploadImage = () => {
+    alert("Upload image");
+  };
+
   return (
     <>
       <Container component="main" maxWidth="xs">
@@ -106,7 +110,7 @@ const SignupPage = () => {
             Sign up
           </Typography>
           {/* text box that says "upload image" */}
-          <Button component="h1" variant="text" color="secondary">
+          <Button component="h1" variant="text" color="secondary" onClick={uploadImage}>
             Upload Image
           </Button>
           <Box
