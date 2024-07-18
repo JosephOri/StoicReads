@@ -13,6 +13,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import defaultImage from '../../assets/image.jpg';
+
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -22,7 +24,7 @@ const SignupPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    profileImage: "",
+    profileImage: defaultImage,
   });
   const navigate = useNavigate();
 
