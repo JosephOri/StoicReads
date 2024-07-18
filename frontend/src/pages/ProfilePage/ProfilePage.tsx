@@ -39,6 +39,22 @@ const ProfilePage = () => {
                 <Grid item>
                     <Typography variant="h4">Profile</Typography>
                 </Grid>
+                {/* items for displaying: username, email, profileImage and createdAt */}
+                <Grid item>
+                    <Card>
+                        <CardMedia
+                            component="img"
+                            height="140"
+                            image="https://www.w3schools.com/howto/img_avatar.png"
+                            alt="green iguana"
+                        />
+                        <CardContent>
+                            <Typography variant="h5">Username: </Typography>
+                            <Typography variant="h6">Email: </Typography>
+                            <Typography variant="h6">Created At: </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
             </Grid>
         </>
     );
