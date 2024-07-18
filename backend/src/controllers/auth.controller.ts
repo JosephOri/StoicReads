@@ -16,14 +16,14 @@ import { OAuth2Client } from "google-auth-library";
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { userName, email, password } = req.body;
-    if (!userName || !email || !password) {
+    const { userName, email, password, profileImage } = req.body;
+    if (!userName || !email || !password || !profileImage) {
       logger.error("Required fields werent provided.");
       return res
         .status(HttpStatusCode.BadRequest)
         .json({ message: "Please provide all required fields" });
     }
-    const user: User = { userName, email, password };
+    const user: User = { userName, email, password, profileImage };
     const newUser = await createUser(user);
     res.status(HttpStatusCode.Created).json(newUser);
   } catch (error: any) {

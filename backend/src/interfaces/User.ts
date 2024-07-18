@@ -2,7 +2,7 @@ interface User {
   userName: string;
   email: string;
   password: string;
-  profilePicture?: string;
+  profileImage?: string;
 }
 
 export default User;

@@ -14,6 +14,7 @@ export const createUser = async (user: User): Promise<IUser> => {
       userName: user.userName,
       email: user.email,
       password: hashedPassword,
+      profileImage: user.profileImage,
     });
     const savedUser = await newUser.save();
     return savedUser;
