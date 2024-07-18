@@ -22,6 +22,7 @@ const SignupPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    profileImage: "",
   });
   const navigate = useNavigate();
 
@@ -30,9 +31,10 @@ const SignupPage = () => {
   };
 
   const isFormDataValidCheck = () => {
-    const { userName, email, password, confirmPassword } = signupFormData;
-    const isAllFieldsFilled = userName && email && password && confirmPassword;
+    const { userName, email, password, confirmPassword, profileImage } = signupFormData;
+    const isAllFieldsFilled = userName && email && password && confirmPassword && profileImage;
     const isEmailValid = isEmailValidCheck(email);
+    const isProfileImageValid = profileImage !== "";
     const isUsernameValid = !userName.includes(" ") && userName.length > 3;
     if (!isUsernameValid) {
       toast.error(
@@ -56,6 +58,10 @@ const SignupPage = () => {
       toast.error("Please enter a valid email address");
       return false;
     }
+    if (!isProfileImageValid) {
+      toast.error("Please upload a profile image");
+      return false;
+    }
     return true;
   };
 
@@ -63,12 +69,13 @@ const SignupPage = () => {
     e.preventDefault();
     const isFormDataValid = isFormDataValidCheck();
     if (!isFormDataValid) return;
-    const { userName, email, password } = signupFormData;
+    const { userName, email, password, profileImage } = signupFormData;
     try {
       const response = await axios.post(AUTH_REGISTER_URL, {
         userName,
         email,
         password,
+        profileImage,
       });
       console.log(response);
       toast.success("User created successfully");
@@ -77,6 +84,7 @@ const SignupPage = () => {
         email: "",
         password: "",
         confirmPassword: "",
+        profileImage: "",
       });
       navigate("/login");
     } catch (err: unknown) {
@@ -91,8 +99,16 @@ const SignupPage = () => {
     }
   };
 
-  const uploadImage = () => {
-    alert("Upload image");
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSignupFormData({ ...signupFormData, profileImage: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+    toast.success("Image uploaded successfully");
   };
 
   return (
@@ -109,10 +125,15 @@ const SignupPage = () => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          {/* text box that says "upload image" */}
-          <Button component="h1" variant="text" color="secondary" onClick={uploadImage}>
+
+          <Button component="label" variant="text" color="secondary">
             Upload Image
+            <input type="file" accept="image/*" hidden onChange={handleImageUpload} />
           </Button>
+          {signupFormData.profileImage && (
+            <img src={signupFormData.profileImage} alt="Profile Preview" style={{ maxHeight: '200px', maxWidth: '200px' }} />
+          )}
+          
           <Box
             component="form"
             noValidate
@@ -144,6 +165,7 @@ const SignupPage = () => {
                   onChange={(e) => handleInputChange("email", e.target.value)}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -158,6 +180,7 @@ const SignupPage = () => {
                   }
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
