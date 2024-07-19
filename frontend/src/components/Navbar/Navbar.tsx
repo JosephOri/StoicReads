@@ -14,7 +14,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../utils/logout";
-import { useGlobal } from "../../hooks/useGlobal";
+import useCurrentUser from "../../hooks/useCurrentUser";
 const pages = ["Home", "Create New Post"];
 const settings = ["Profile", "Logout"];
 
@@ -40,7 +40,6 @@ function Navbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    setUser(null);
     logout();
     navigate("/login");
   };
@@ -72,7 +71,7 @@ function Navbar() {
     handleCloseNavMenu();
   };
 
-  const { user, setUser } = useGlobal();
+  const { user } = useCurrentUser();
 
   return (
     <AppBar position="static">
