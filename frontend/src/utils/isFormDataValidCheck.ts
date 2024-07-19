@@ -1,7 +1,6 @@
 import isEmailValidCheck from "./isEmailValidCheck";
 import ProfileFormData from "../interfaces/ProfileFormData";
-import { ToastContainer, toast } from "react-toastify";
-
+import { toast } from "react-toastify";
 
 const isFormDataValidCheck = (profileData: ProfileFormData): boolean => {
 
