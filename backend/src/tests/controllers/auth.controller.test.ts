@@ -98,6 +98,7 @@ describe('login', () => {
       accessToken: 'access_token',
       refreshToken: 'refresh_token',
     };
+
     (getUserTokens as jest.Mock).mockResolvedValueOnce(tokens);
 
     await login(req, res);
@@ -106,7 +107,6 @@ describe('login', () => {
     expect(res.json).toHaveBeenCalledWith(tokens);
     expect(getUserTokens).toHaveBeenCalledWith('testuser', 'password');
   });
-
   it('should return 500 status if an error occurs in login', async () => {
     const errorMessage = 'Login failed';
     (getUserTokens as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));

@@ -1,4 +1,19 @@
-import PostModel, { Post } from "../models/Post";
+import PostModel, { Post } from '../models/Post';
+import path from 'path';
+
+interface CreatePostParams {
+  userName: string;
+  book: {
+    title: string;
+    authors: string;
+    image: string;
+  };
+  title: string;
+  content: string;
+  rating: number;
+  description: string;
+  image?: string;
+}
 
 export async function getAllPosts(): Promise<Post[]> {
   const posts = await PostModel.find().exec();
@@ -10,13 +25,25 @@ export async function getPostById(postId: string): Promise<Post | null> {
   return post;
 }
 
-export async function createPost(post: Post): Promise<Post> {
+export async function createPost(postData: CreatePostParams): Promise<Post> {
   try {
-    const newPost = await PostModel.create(post);
-    return newPost;
+    const newPost = new PostModel({
+      userName: postData.userName,
+      book: postData.book,
+      title: postData.title,
+      content: postData.content,
+      comments: [],
+      review: {
+        rating: postData.rating,
+        description: postData.description,
+      },
+      image: postData.image,
+    });
+
+    return await newPost.save();
   } catch (err) {
-    console.log("err", err);
-    throw new Error("Error creating post");
+    console.log('err', err);
+    throw new Error('Error creating post');
   }
 }
 

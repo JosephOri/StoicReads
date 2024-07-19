@@ -9,6 +9,7 @@ import { applicationRoutes } from "../utils/constants";
 import { Layout } from "../components/Layout/Layout";
 import Post from "../pages/CreatePost/Post";
 import User from "../pages/User/User";
+import EditPost from "../pages/EditPost/EditPost";
 
 const RequireAuth = () => {
   const { accessToken, refreshToken } = getTokens();
@@ -37,6 +38,7 @@ export const AppRoutes = () => (
         <Route path={applicationRoutes.HOME} element={<HomePage />} />
         <Route path={applicationRoutes.CREATE_POST} element={<Post />} />
         <Route path={applicationRoutes.USER} element={<User />} />
+        <Route path={applicationRoutes.EDIT_POST} element={<EditPost />} />
       </Route>
     </Route>
 
