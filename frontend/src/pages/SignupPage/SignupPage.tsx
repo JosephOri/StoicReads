@@ -4,9 +4,8 @@ import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { AUTH_REGISTER_URL } from "../../utils/constants";
 import SignupFormData from "../../interfaces/SignupFormData";
-import isEmailValidCheck from "../../utils/isEmailValidCheck";
+import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -32,44 +31,9 @@ const SignupPage = () => {
     setSignupFormData({ ...signupFormData, [fieldName]: value });
   };
 
-  const isFormDataValidCheck = () => {
-    const { userName, email, password, confirmPassword, profileImage } = signupFormData;
-    const isAllFieldsFilled = userName && email && password && confirmPassword && profileImage;
-    const isEmailValid = isEmailValidCheck(email);
-    const isProfileImageValid = profileImage !== "";
-    const isUsernameValid = !userName.includes(" ") && userName.length > 3;
-    if (!isUsernameValid) {
-      toast.error(
-        "Username must be at least 4 characters long and cannot contain spaces"
-      );
-      return false;
-    }
-    if (!isAllFieldsFilled) {
-      toast.error("Please fill in all fields");
-      return false;
-    }
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
-      return false;
-    }
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
-      return false;
-    }
-    if (!isEmailValid) {
-      toast.error("Please enter a valid email address");
-      return false;
-    }
-    if (!isProfileImageValid) {
-      toast.error("Please upload a profile image");
-      return false;
-    }
-    return true;
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isFormDataValid = isFormDataValidCheck();
+    const isFormDataValid = isFormDataValidCheck(signupFormData);
     if (!isFormDataValid) return;
     const { userName, email, password, profileImage } = signupFormData;
     try {
