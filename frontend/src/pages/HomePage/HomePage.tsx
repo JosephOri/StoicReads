@@ -98,7 +98,7 @@ const HomePage = () => {
                 <CardMedia
                   component="img"
                   height="200"
-                  image={imageUrl}
+                  image={post?.book.image}
                   alt={post?.book.title}
                 />
                 <CardContent>
