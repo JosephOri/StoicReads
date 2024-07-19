@@ -10,7 +10,9 @@ export interface Post extends Document {
   content: string;
   comments: UserComment[];
   review: Review;
+  image?: string;
 }
+
 const PostSchema: Schema = new Schema({
   userName: { type: String, required: true },
   book: { type: Object, required: true },
@@ -18,9 +20,11 @@ const PostSchema: Schema = new Schema({
   content: { type: String, required: true },
   comments: [{ type: Object, required: true }],
   review: { type: Object, required: true },
+  image: { type: String }, // New field for storing image path
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
+
 const PostModel = mongoose.model<Post>('Post', PostSchema);
 
 export default PostModel;

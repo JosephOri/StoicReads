@@ -1,5 +1,5 @@
 import UserModel, { IUser } from '../models/User';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import User from '@interfaces/User';
 import logger from '../utils/logger';
 import { errorMessages } from '../utils/constants';

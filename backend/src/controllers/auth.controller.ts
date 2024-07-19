@@ -138,7 +138,7 @@ export const googleLogin = async (req: Request, res: Response) => {
   }
 };
 
-export async function getUser(req: Request, res: Response) {
+export const getUser = async (req: Request, res: Response) => {
   const accessToken = extractToken(req);
   if (!accessToken) {
     return res
@@ -170,4 +170,4 @@ export async function getUser(req: Request, res: Response) {
       }
     }
   );
-}
+};

@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  IconButton,
   Box,
   CircularProgress,
   TextField,
@@ -20,7 +19,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import useSWR from "swr";
 import axios from "axios";
-import { POSTS_URL } from "../../utils/constants";
+import { POSTS_URL, BACKEND_URL } from "../../utils/constants";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { useNavigate } from "react-router-dom";
 
@@ -86,34 +85,38 @@ const HomePage = () => {
     <>
       <h1 style={{ textAlign: "center" }}>{`Welcome Back ${user?.userName}`}</h1>
       <Grid container spacing={4} direction="row" alignItems="center" justifyContent="center" style={{ marginTop: 20 }}>
-        {posts.map((post: Post, index: number) => (
-          <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
-            <Card
-              onClick={() => handleClickOpen(post)}
-              style={{ width: "100%", height: "100%", position: "relative" }}
-            >
-         
-              <CardMedia
-                component="img"
-                height="200"
-                image={post?.book.image}
-                alt={post?.book.title}
-              />
-              <CardContent>
-                <Typography variant="h5" component="div">
-                  {post?.title}
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
-                  Posted by {post?.userName}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {post?.comments?.length} Comments
-                </Typography>
-                <Rating value={post?.review.rating} readOnly />
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+        {posts.map((post: Post, index: number) => {
+          const imageUrl = post?.image ? `${BACKEND_URL}${post.image}` : post?.book.image;
+          console.log('Image URL:', imageUrl);
+
+          return (
+            <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
+              <Card
+                onClick={() => handleClickOpen(post)}
+                style={{ width: "100%", height: "100%", position: "relative" }}
+              >
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image={imageUrl}
+                  alt={post?.book.title}
+                />
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    {post?.title}
+                  </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    Posted by {post?.userName}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {post?.comments?.length} Comments
+                  </Typography>
+                  <Rating value={post?.review.rating} readOnly />
+                </CardContent>
+              </Card>
+            </Grid>
+          );
+        })}
       </Grid>
       <Dialog
         open={open}
@@ -131,79 +134,69 @@ const HomePage = () => {
           <>
             <DialogTitle>
               {selectedPost?.book.title}
-          
               {user?.userName === selectedPost?.userName && (
-                  <Box
+                <Box
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                    display: "flex",
+                    gap: 1,
+                  }}
+                >
+                  <Button
+                    onClick={() => navigate(`/edit-post/${selectedPost._id}`)}
                     sx={{
-                      position: "absolute",
-                      right: 8,
-                      top: 8,
-                      display: "flex",
-                      gap: 1,
+                      color: (theme) => theme.palette.grey[500],
                     }}
+                    variant="outlined"
+                    color="primary"
                   >
-                    <Button
-                      onClick={() => navigate(`/edit-post/${selectedPost._id}`)}
-                      sx={{
-                        color: (theme) => theme.palette.grey[500],
-                      }}
-                      variant="outlined"
-                      color="primary"
-                    >
-                      Edit
-                    </Button>
-                    
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeletePost(selectedPost?._id);
-                      }}
-                      sx={{
-                        color: (theme) => theme.palette.grey[500],
-                      }}
-                      variant="outlined"
-                      color="error"
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                  )}                  
-            
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeletePost(selectedPost?._id);
+                    }}
+                    sx={{
+                      color: (theme) => theme.palette.grey[500],
+                    }}
+                    variant="outlined"
+                    color="error"
+                  >
+                    Delete
+                  </Button>
+                </Box>
+              )}
             </DialogTitle>
             <DialogContent dividers>
               <Box display="flex" flexDirection="row" mb={2}>
                 <Box>
                   <img
-                    src={selectedPost?.book.image}
+                    src={selectedPost?.image ? `${BACKEND_URL}${selectedPost.image}` : selectedPost?.book.image}
                     alt={selectedPost?.book.title}
                     style={{ maxWidth: "200px", marginRight: "20px" }}
                   />
                 </Box>
                 <Box flexGrow={1}>
                   <Typography variant="h6">Posted by</Typography>
-                  <DialogContentText>
-                    {selectedPost?.username}
-                  </DialogContentText>
+                  <DialogContentText>{selectedPost?.username}</DialogContentText>
                   <Typography variant="h6">Authors</Typography>
-                  <DialogContentText>
-                    {selectedPost?.book.authors}
-                  </DialogContentText>
+                  <DialogContentText>{selectedPost?.book.authors}</DialogContentText>
                   <Typography variant="h6">Review</Typography>
                   <DialogContentText>
                     <Rating value={selectedPost?.review.rating} readOnly />
                   </DialogContentText>
                 </Box>
               </Box>
-              <Divider sx={{my:2}}/>
-            <Box mb={2}> 
-                <DialogContentText 
-                  color="black"
-                  fontSize="1.25rem" 
-                  sx={{ ml: 2 }}>
+              <Divider sx={{ my: 2 }} />
+              <Box mb={2}>
+                <DialogContentText color="black" fontSize="1.25rem" sx={{ ml: 2 }}>
                   {selectedPost?.review.description}
                 </DialogContentText>
                 <Divider sx={{ my: 2 }} />
-            </Box>
+              </Box>
               <Typography variant="h5">Comments:</Typography>
               <Divider sx={{ my: 2 }} />
               {selectedPost?.comments.map((comment: any, index: number) => (
@@ -226,12 +219,7 @@ const HomePage = () => {
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                 />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleAddComment}
-                  sx={{ marginTop: 1 }}
-                >
+                <Button variant="contained" color="primary" onClick={handleAddComment} sx={{ marginTop: 1 }}>
                   Submit
                 </Button>
               </Box>

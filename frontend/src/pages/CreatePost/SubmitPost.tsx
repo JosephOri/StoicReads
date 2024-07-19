@@ -23,38 +23,36 @@ const SubmitPost = () => {
   const [rating, setRating] = useState<number | null>(3);
   const [submitting, setSubmitting] = useState(false);
   const [postTitle, setPostTitle] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const { selectedBook } = useCreatePost();
-  const { user } =useCurrentUser();
+  const { user } = useCurrentUser();
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  };
 
   const handleCreatePost = async () => {
     setSubmitting(true);
 
-    const postData  = {
-      userName: user?.userName,
-      book: {
-        title: selectedBook?.volumeInfo.title || "Sample Book Title",
-        authors:
-          selectedBook?.volumeInfo.authors?.join(", ") || "Sample Author",
-        image:
-          selectedBook?.volumeInfo.imageLinks.thumbnail ||
-          "https://example.com/sample-image.jpg",
-      },
-      title: postTitle || "Sample Post Title",
-      content: "This is a sample post content.",
-      comments: [],
-      review: {
-        rating: rating || 3,
-        description: review || "This is a sample review.",
-      },
-    };
+    const formData = new FormData();
+    formData.append("userName", user?.userName || "");
+    formData.append("bookTitle", selectedBook?.volumeInfo.title || "Sample Book Title");
+    formData.append("bookAuthors", selectedBook?.volumeInfo.authors?.join(", ") || "Sample Author");
+    formData.append("bookImage", selectedBook?.volumeInfo.imageLinks.thumbnail || "https://example.com/sample-image.jpg");
+    formData.append("title", postTitle || "Sample Post Title");
+    formData.append("content", "This is a sample post content.");
+    formData.append("rating", (rating || 3).toString());
+    formData.append("description", review || "This is a sample review.");
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
 
     try {
       const response = await fetch(POSTS_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
+        body: formData,
       });
 
       if (response.ok) {
@@ -76,10 +74,9 @@ const SubmitPost = () => {
   useEffect(() => {
     if (!selectedBook && !submitting) {
       console.log("No book selected");
-
       navigate("/");
     }
-  }, [selectedBook]);
+  }, [selectedBook, submitting, navigate]);
 
   return (
     <Container>
@@ -143,6 +140,24 @@ const SubmitPost = () => {
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <input
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="contained-button-file"
+                    type="file"
+                    onChange={handleImageChange}
+                  />
+                  <label htmlFor="contained-button-file">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component="span"
+                    >
+                      Upload Image
+                    </Button>
+                  </label>
                 </Grid>
                 <Grid item xs={12}>
                   <Button
