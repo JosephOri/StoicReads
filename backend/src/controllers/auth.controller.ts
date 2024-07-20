@@ -16,15 +16,9 @@ import { OAuth2Client } from 'google-auth-library';
 
 export const register = async (req: Request, res: Response) => {
   try {
-<<<<<<< HEAD
     const { userName, email, password, profileImage } = req.body;
     if (!userName || !email || !password || !profileImage) {
       logger.error("Required fields werent provided.");
-=======
-    const { userName, email, password } = req.body;
-    if (!userName || !email || !password) {
-      logger.error('Required fields werent provided.');
->>>>>>> master
       return res
         .status(HttpStatusCode.BadRequest)
         .json({ message: 'Please provide all required fields' });
