@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,6 +6,7 @@ import SignupFormData from "../../interfaces/SignupFormData";
 import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
 import { applicationRoutes } from "../../utils/constants"
 import { useGlobal } from "../../hooks/useGlobal";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 import {Card, CardContent, CardMedia, Grid, Typography, Box, Button }  from "@mui/material";
   import defaultImage from '../../assets/image.jpg';
@@ -20,6 +21,7 @@ const ProfilePage = () => {
         profileImage: defaultImage,
     });
     const navigate = useNavigate();
+    const { user } = useCurrentUser();
 
     const handleInputChange = (fieldName: string, value: string) => {
         setProfileData({ ...profileData, [fieldName]: value });
@@ -27,59 +29,23 @@ const ProfilePage = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // const isFormDataValid = isFormDataValidCheck(profileData);
-        // if (isFormDataValid){
-        //     toast.success("Form data is valid " + isFormDataValid);
-        // } else {
-        //     toast.error("Form data is invalid " + isFormDataValid);
-        //     return;
-        // }
-
-        // const {userName, email, password, profileImage} = profileData;
-        try{
-            // const response = await axios.post(applicationRoutes.USER, {
-            //     userName,
-            //     email,
-            //     password,
-            //     profileImage,
-            // });
-            // console.log(response);
-            const {user} = useGlobal();
-            console.log(user);
-            toast.success("User fetched successfully");
-
-        } catch (err: unknown) {
-            const error = err as AxiosError;
-            if (error.response?.status === HttpStatusCode.BadRequest) {
-                toast.error("Please fill in all fields");
-            } else if (error.response?.status === HttpStatusCode.Conflict) {
-                toast.error("User already exists");
-            } else {
-                toast.error("An error occurred. Please try again later");
-            }
+        console.log("Profile Data before update: ", profileData);
+        if (user) {
+            setProfileData({
+                userName: user.userName || "",
+                email: user.email || "",
+                password: user.password || "",
+                confirmPassword: user.password || "",
+                profileImage: user.profileImage || defaultImage,
+            });
         }
-
     };
+    useEffect(() => {
+        console.log("Profile Data after update: ", profileData);
+    }, [profileData]);
 
-    const fetchUser = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            const response = await axios.get(applicationRoutes.USER);
-            console.log(response);
-        } catch (err: unknown) {
-            const error = err as AxiosError;
-            if (error.response?.status === HttpStatusCode.BadRequest) {
-                toast.error("Please fill in all fields");
-            } else if (error.response?.status === HttpStatusCode.Conflict) {
-                toast.error("User already exists");
-            } else {
-                toast.error("An error occurred. Please try again later");
-            }
-        }
-    }
-
-
-
+    
+    
     return (
         <>
             <Grid
@@ -114,7 +80,7 @@ const ProfilePage = () => {
                 <Box
                     component="form"
                     noValidate
-                    onSubmit={fetchUser}
+                    onSubmit={handleSubmit}
                     sx={{ mt: 3 }} 
                     >
                         <Button
