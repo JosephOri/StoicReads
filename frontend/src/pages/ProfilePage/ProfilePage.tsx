@@ -28,8 +28,7 @@ const ProfilePage = () => {
         setProfileData({ ...profileData, [fieldName]: value });
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    useEffect (() => {
         if (user) {
             const formattedDate = user.createdAt
             ? new Date(user.createdAt).toLocaleDateString('en-GB')
@@ -44,7 +43,8 @@ const ProfilePage = () => {
                 createdAt: formattedDate,
             });
         }
-    };
+    }, [user]);
+
     useEffect(() => {
         console.log("Profile Data after update: ", profileData);
     }, [profileData]);
@@ -90,20 +90,6 @@ const ProfilePage = () => {
                     </Card>
                 </Grid>
 
-                <Box
-                    component="form"
-                    noValidate
-                    onSubmit={handleSubmit}
-                    sx={{ mt: 3 }} 
-                    >
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            sx={{ mt: 3, mb: 2 }} >
-                                Edit Profile
-                        </Button>
-                </Box>
             </Grid>
             <ToastContainer />
         </>
