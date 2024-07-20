@@ -2,23 +2,24 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import SignupFormData from "../../interfaces/SignupFormData";
+import ProfileFormData from "../../interfaces/ProfileFormData";
 import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
 import { applicationRoutes } from "../../utils/constants"
 import { useGlobal } from "../../hooks/useGlobal";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 import {Card, CardContent, CardMedia, Grid, Typography, Box, Button }  from "@mui/material";
-  import defaultImage from '../../assets/image.jpg';
+import defaultImage from '../../assets/image.jpg';
 
 
 const ProfilePage = () => {
-    const [profileData, setProfileData] = useState<SignupFormData>({
+    const [profileData, setProfileData] = useState<ProfileFormData>({
         userName: "",
         email: "",
         password: "",
         confirmPassword: "",
         profileImage: defaultImage,
+        createdAt: ""
     });
     const navigate = useNavigate();
     const { user } = useCurrentUser();
@@ -29,14 +30,18 @@ const ProfilePage = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Profile Data before update: ", profileData);
         if (user) {
+            const formattedDate = user.createdAt
+            ? new Date(user.createdAt).toLocaleDateString('en-GB')
+            : new Date().toLocaleDateString('en-GB');
+
             setProfileData({
                 userName: user.userName || "",
                 email: user.email || "",
                 password: user.password || "",
                 confirmPassword: user.password || "",
                 profileImage: user.profileImage || defaultImage,
+                createdAt: formattedDate,
             });
         }
     };
@@ -44,6 +49,16 @@ const ProfilePage = () => {
         console.log("Profile Data after update: ", profileData);
     }, [profileData]);
 
+
+    const renderUserDetails = () => {
+        return (
+            <>
+                <Typography variant="h5">Username: {profileData.userName}</Typography>
+                <Typography variant="h6">Email: {profileData.email}</Typography>
+                <Typography variant="h6">Created At: {profileData.createdAt}</Typography>
+            </>
+        );
+    };
     
     
     return (
@@ -70,9 +85,7 @@ const ProfilePage = () => {
                             alt="green iguana"
                         />
                         <CardContent>
-                            <Typography variant="h5">Username: </Typography>
-                            <Typography variant="h6">Email: </Typography>
-                            <Typography variant="h6">Created At: </Typography>
+                            {renderUserDetails()}
                         </CardContent>
                     </Card>
                 </Grid>
