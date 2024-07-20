@@ -4,5 +4,6 @@ interface ProfileFormData {
     password: string;
     confirmPassword: string;
     profileImage: string;
+    createdAt: string;
 }
 export default ProfileFormData;

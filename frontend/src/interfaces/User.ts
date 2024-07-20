@@ -7,4 +7,5 @@ export interface User {
   _id?: mongoose.Types.ObjectId;
   accessToken?: string;
   refreshToken?: string;
+  createdAt: string;
 }
