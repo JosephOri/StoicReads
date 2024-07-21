@@ -5,13 +5,15 @@ import { ToastContainer, toast } from "react-toastify";
 import { AUTH_REGISTER_URL } from "../../utils/constants";
 import SignupFormData from "../../interfaces/SignupFormData";
 import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import {
+  Button,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from "@mui/material";
 import defaultImage from '../../assets/image.jpg';
 
 

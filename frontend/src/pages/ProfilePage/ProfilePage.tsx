@@ -10,6 +10,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 import {Card, CardContent, CardMedia, Grid, Typography, Box, Button }  from "@mui/material";
 import defaultImage from '../../assets/image.jpg';
+import { compareSync } from "bcryptjs";
 
 
 const ProfilePage = () => {
@@ -23,10 +24,6 @@ const ProfilePage = () => {
     });
     const navigate = useNavigate();
     const { user } = useCurrentUser();
-
-    const handleInputChange = (fieldName: string, value: string) => {
-        setProfileData({ ...profileData, [fieldName]: value });
-    };
 
     useEffect (() => {
         if (user) {
@@ -45,9 +42,7 @@ const ProfilePage = () => {
         }
     }, [user]);
 
-    useEffect(() => {
-        console.log("Profile Data after update: ", profileData);
-    }, [profileData]);
+    useEffect(() => {}, [profileData]);
 
 
     const renderUserDetails = () => {
@@ -58,6 +53,13 @@ const ProfilePage = () => {
                 <Typography variant="h6">Created At: {profileData.createdAt}</Typography>
             </>
         );
+    };
+
+
+    const editProfile = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log("Edit Profile of User: " + user?._id);
+        navigate(`/edit-profile/${user?._id}`);
     };
     
     
@@ -90,6 +92,20 @@ const ProfilePage = () => {
                     </Card>
                 </Grid>
 
+                <Box
+                    component="form"
+                    noValidate
+                    onSubmit={editProfile}
+                    sx={{ mt: 3 }} 
+                    >
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            sx={{ mt: 3, mb: 2 }} >
+                                Edit Profile
+                        </Button>
+                </Box>
             </Grid>
             <ToastContainer />
         </>
