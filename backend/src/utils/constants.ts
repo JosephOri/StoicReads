@@ -11,6 +11,7 @@ export const errorMessages = {
   NOT_FOUND_USER_IDENTIFIER: 'Error getting user by identifier',
   NOT_FOUND_USER_ID: 'Error getting user by id',
   ERROR_DELETING_USER: 'Error deleting user by email or username',
+  ERROR_UPDATING_USER: 'Error updating user by email or username',
   USER_ALREADY_LOGGED_IN: 'User is already logged in',
   UNAUTHORIZED: 'User is not authorized to perform this action',
   EMAIL_NOT_FOUND: 'Email not found in payload',

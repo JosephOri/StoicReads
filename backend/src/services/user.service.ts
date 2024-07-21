@@ -59,6 +59,16 @@ export const validatePassword = async (
   }
 };
 
+export const updateUser = async (
+  identifier: string, 
+  updatedUser: User
+): Promise<User | null> => {
+  const updated = await UserModel.findByIdAndUpdate( identifier, updatedUser, {
+    new: true,
+  }).exec();
+  return updated;
+};
+
 export const deleteUser = async (identifier: string): Promise<IUser | null> => {
   try {
     const deletedUser = await UserModel.findOneAndDelete({
@@ -72,4 +82,3 @@ export const deleteUser = async (identifier: string): Promise<IUser | null> => {
   }
 };
 
-//TODO : Add update profile picture function
