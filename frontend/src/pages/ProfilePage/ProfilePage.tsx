@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import ProfileFormData from "../../interfaces/ProfileFormData";
-import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
-import { applicationRoutes } from "../../utils/constants"
-import { useGlobal } from "../../hooks/useGlobal";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 import {Card, CardContent, CardMedia, Grid, Typography, Box, Button }  from "@mui/material";
 import defaultImage from '../../assets/image.jpg';
-import { compareSync } from "bcryptjs";
-
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState<ProfileFormData>({
@@ -82,7 +76,8 @@ const ProfilePage = () => {
                     <Card>
                         <CardMedia
                             component="img"
-                            height="140"
+                            height="300"
+                            width="300"
                             image= {profileData.profileImage}
                             alt="green iguana"
                         />

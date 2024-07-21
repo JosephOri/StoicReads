@@ -5,19 +5,19 @@ import { ToastContainer, toast } from "react-toastify";
 
 import {Card, CardContent, CardMedia,TextField, Grid, 
   Typography, Box, Button }  from "@mui/material";
-
-import { LoadingButton } from "@mui/lab";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import EditProfileFormData from "../../interfaces/EditProfileFormData";
 import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
-import { UPDATE_URL, USERS_URL } from "../../utils/constants";
+import { UPDATE_URL } from "../../utils/constants";
+import { User } from "../../interfaces/User";
 
 
 const EditProfilePage = () => {
   const [loading, setLoading] = useState(false);
+  const [userLoading, setUserLoading] = useState(true)
   const { userId } = useParams();
   const navigate = useNavigate();
-  const { user } = useCurrentUser();
+  const { user, setUser } = useCurrentUser();
 
   const [editProfileFormData, setEditProfileFormData] = useState<EditProfileFormData>({
       userName: "",
@@ -36,14 +36,13 @@ const EditProfilePage = () => {
         confirmPassword: "",
         profileImage: user?.profileImage || "",
       });
+      setUserLoading(false); 
     }
   }, [user]);
-  // j123456
 
   const handleInputChange = (fieldName: string, value: string) => {
     setEditProfileFormData({ ...editProfileFormData, [fieldName]: value });
   };
-  console.log("editProfileFormData", editProfileFormData);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,11 +50,13 @@ const EditProfilePage = () => {
     if (!isFormDataValid) return;
     setLoading(true);
 
-    try{
-      console.log("editProfileFormData", editProfileFormData);
-      const response = await axios.post(`${UPDATE_URL}`, editProfileFormData);
+    try{      
+      const updatedUser: User = await axios.put(`${UPDATE_URL}/${userId}`, editProfileFormData);
+      setUser(updatedUser);
       setLoading(false);
       toast.success("User updated successfully");
+      navigate("/profile");
+      window.location.reload();
     } catch (err: unknown) {
       const error = err as AxiosError;
       setLoading(false);
@@ -84,6 +85,7 @@ const EditProfilePage = () => {
 
   return (
     <>
+      <ToastContainer />
       <Button component="label" variant="contained" color="success" sx={{ mt: 2, mb: 2 }}>
         Upload Image
         <input 
@@ -92,6 +94,12 @@ const EditProfilePage = () => {
         hidden 
         onChange={handleImageUpload} />
       </Button>
+      {editProfileFormData.profileImage && (
+            <img src={editProfileFormData.profileImage} 
+            alt="Profile Preview" 
+            style={{ maxHeight: '150px', maxWidth: '150px' }}
+             />
+          )}
 
       <Grid item xs={12}>
               <Typography variant="h4">Edit Profile</Typography>
