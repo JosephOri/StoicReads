@@ -1,14 +1,15 @@
 import isEmailValidCheck from "./isEmailValidCheck";
 import ProfileFormData from "../interfaces/ProfileFormData";
+import SignupFormData from "../interfaces/SignupFormData";
 import { toast } from "react-toastify";
 
-const isFormDataValidCheck = (profileData: ProfileFormData): boolean => {
+const isFormDataValidCheck = (data: ProfileFormData | SignupFormData): boolean => {
 
-    const userName = profileData.userName;
-    const email = profileData.email;
-    const password = profileData.password;
-    const confirmPassword = profileData.confirmPassword;
-    const profileImage = profileData.profileImage;
+    const userName = data.userName;
+    const email = data.email;
+    const password = data.password;
+    const confirmPassword = data.confirmPassword;
+    const profileImage = data.profileImage;
 
     const isUsernameValid = !userName.includes(" ") && userName.length > 3;
     const isEmailValid = isEmailValidCheck(email);
