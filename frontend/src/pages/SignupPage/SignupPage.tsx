@@ -4,15 +4,18 @@ import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { AUTH_REGISTER_URL } from "../../utils/constants";
 import SignupFormData from "../../interfaces/SignupFormData";
-import isEmailValidCheck from "../../utils/isEmailValidCheck";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
+import {
+  Button,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from "@mui/material";
+import defaultImage from '../../assets/image.jpg';
+
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -22,6 +25,7 @@ const SignupPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    profileImage: defaultImage,
   });
   const navigate = useNavigate();
 
@@ -29,46 +33,17 @@ const SignupPage = () => {
     setSignupFormData({ ...signupFormData, [fieldName]: value });
   };
 
-  const isFormDataValidCheck = () => {
-    const { userName, email, password, confirmPassword } = signupFormData;
-    const isAllFieldsFilled = userName && email && password && confirmPassword;
-    const isEmailValid = isEmailValidCheck(email);
-    const isUsernameValid = !userName.includes(" ") && userName.length > 3;
-    if (!isUsernameValid) {
-      toast.error(
-        "Username must be at least 4 characters long and cannot contain spaces"
-      );
-      return false;
-    }
-    if (!isAllFieldsFilled) {
-      toast.error("Please fill in all fields");
-      return false;
-    }
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
-      return false;
-    }
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
-      return false;
-    }
-    if (!isEmailValid) {
-      toast.error("Please enter a valid email address");
-      return false;
-    }
-    return true;
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isFormDataValid = isFormDataValidCheck();
+    const isFormDataValid = isFormDataValidCheck(signupFormData);
     if (!isFormDataValid) return;
-    const { userName, email, password } = signupFormData;
+    const { userName, email, password, profileImage } = signupFormData;
     try {
       const response = await axios.post(AUTH_REGISTER_URL, {
         userName,
         email,
         password,
+        profileImage,
       });
       console.log(response);
       toast.success("User created successfully");
@@ -77,6 +52,7 @@ const SignupPage = () => {
         email: "",
         password: "",
         confirmPassword: "",
+        profileImage: "",
       });
       navigate("/login");
     } catch (err: unknown) {
@@ -89,6 +65,18 @@ const SignupPage = () => {
         toast.error("Server error occurred, please try again later");
       }
     }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSignupFormData({ ...signupFormData, profileImage: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+    toast.success("Image uploaded successfully");
   };
 
   return (
@@ -105,6 +93,23 @@ const SignupPage = () => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+
+          <Button component="label" variant="contained" color="success" sx={{ mt: 2, mb: 2 }}>
+            Upload Image
+            <input 
+            type="file" 
+            accept="image/*" 
+            hidden 
+            onChange={handleImageUpload} 
+            />
+          </Button>
+          {signupFormData.profileImage && (
+            <img src={signupFormData.profileImage} 
+            alt="Profile Preview" 
+            style={{ maxHeight: '150px', maxWidth: '150px' }}
+             />
+          )}
+
           <Box
             component="form"
             noValidate
@@ -136,6 +141,7 @@ const SignupPage = () => {
                   onChange={(e) => handleInputChange("email", e.target.value)}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -150,6 +156,7 @@ const SignupPage = () => {
                   }
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required

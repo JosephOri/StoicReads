@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { getTokens } from "../services/auth.service";
 import HomePage from "../pages/HomePage/HomePage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import EditProfilePage from "../pages/ProfilePage/EditProfilePage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import NotFound from "../pages/NotFound/NotFound";
 import SignupPage from "../pages/SignupPage/SignupPage";
@@ -36,6 +38,8 @@ export const AppRoutes = () => (
     <Route element={<RequireAuth />}>
       <Route element={<Layout />}>
         <Route path={applicationRoutes.HOME} element={<HomePage />} />
+        <Route path={applicationRoutes.PROFILE} element={<ProfilePage />} />
+        <Route path={applicationRoutes.EDIT_PROFILE} element={<EditProfilePage />} />
         <Route path={applicationRoutes.CREATE_POST} element={<Post />} />
         <Route path={applicationRoutes.USER} element={<User />} />
         <Route path={applicationRoutes.EDIT_POST} element={<EditPost />} />
