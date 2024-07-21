@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../utils/logout";
 import useCurrentUser from "../../hooks/useCurrentUser";
+import { toast } from "react-toastify";
 const pages = ["Home", "Create New Post"];
 const settings = ["Profile", "Logout"];
 
@@ -40,6 +41,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    toast.success("Logged out successfully");
     logout();
     navigate("/login");
   };

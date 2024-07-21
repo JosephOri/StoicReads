@@ -7,6 +7,7 @@ interface UseCurrentUserResult {
   user: User | null;
   loading: boolean;
   error: string | null;
+  setUser: (user: User | null) => void;
 }
 
 export const useCurrentUser = (): UseCurrentUserResult => {
@@ -38,7 +39,7 @@ export const useCurrentUser = (): UseCurrentUserResult => {
     fetchUser();
   }, []);
 
-  return { user, loading, error };
+  return { user, setUser, loading, error };
 };
 
 export default useCurrentUser;
