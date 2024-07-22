@@ -7,10 +7,9 @@ export const AUTH_LOGIN_URL = `${AUTH_URL}/login`;
 export const AUTH_REGISTER_URL = `${AUTH_URL}/register`;
 export const AUTH_LOGOUT_URL = `${AUTH_URL}/logout`;
 export const AUTH_GOOGLE_URL = `${AUTH_URL}/google`;
-export const USERS_URL = `${AUTH_URL}/user`;
-export const UPDATE_URL = `${AUTH_URL}/update`;
 export const AUTH_GOOGLE_LOGIN_URL = `${AUTH_URL}/google/login`;
 export const POSTS_URL = `${BACKEND_URL}/post`;
+export const USERS_URL = `${AUTH_URL}/user`;
 export const COMMENTS_URL = `${BACKEND_URL}/comment`;
 
 export const applicationRoutes = {
@@ -20,8 +19,5 @@ export const applicationRoutes = {
   CREATE_POST: '/create-post',
   USER: '/user',
   EDIT_POST: '/edit-post/:postId',
-  EDIT_PROFILE: '/edit-profile/:userId',
   NOT_FOUND: '*',
-  PROFILE: "/profile",
-
 };

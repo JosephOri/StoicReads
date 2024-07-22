@@ -6,8 +6,6 @@ import {
   logout,
   googleLogin,
   getUser,
-  updateUser,
-  deleteUser,
 } from "@controllers/auth.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 
@@ -16,7 +14,5 @@ router.post("/google/login", googleLogin);
 router.post("/login", login);
 router.post("/logout", authMiddleware, logout);
 router.get("/user", getUser);
-router.put("/update/:userId", updateUser);
-router.delete("/delete/:userId", deleteUser);
 
 export default router;

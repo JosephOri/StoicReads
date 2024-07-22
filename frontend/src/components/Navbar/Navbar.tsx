@@ -15,7 +15,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../utils/logout";
 import useCurrentUser from "../../hooks/useCurrentUser";
-import { toast } from "react-toastify";
 const pages = ["Home", "Create New Post"];
 const settings = ["Profile", "Logout"];
 
@@ -41,7 +40,6 @@ function Navbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    toast.success("Logged out successfully");
     logout();
     navigate("/login");
   };
@@ -172,7 +170,7 @@ function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src={user?.profileImage} />
+                <Avatar src={user?.profilePicture} />
               </IconButton>
             </Tooltip>
             <Menu

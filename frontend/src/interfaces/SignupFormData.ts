@@ -3,7 +3,6 @@ interface SignupFormData {
   email: string;
   password: string;
   confirmPassword: string;
-  profileImage: string;
 }
 
 export default SignupFormData;

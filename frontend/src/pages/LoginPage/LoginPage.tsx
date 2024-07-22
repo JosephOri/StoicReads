@@ -76,6 +76,7 @@ const LoginPage = () => {
       if (!isInputValid) return;
       const res = await axios.post(AUTH_LOGIN_URL, { email, password });
       const { user, tokens } = res.data;
+      console.log(`user: ${JSON.stringify(user)} \n tokens:  ${JSON.stringify(tokens)}`);      
       saveTokens(tokens as AuthTokens,user.userName);
       setUser(user);
       setLoginFormData({ email: "", password: "" });

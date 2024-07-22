@@ -14,7 +14,6 @@ export const createUser = async (user: User): Promise<IUser> => {
       userName: user.userName,
       email: user.email,
       password: hashedPassword,
-      profileImage: user.profileImage,
     });
     const savedUser = await newUser.save();
     return savedUser;
@@ -59,16 +58,6 @@ export const validatePassword = async (
   }
 };
 
-export const updateUser = async (
-  identifier: string, 
-  updatedUser: User
-): Promise<User | null> => {
-  const updated = await UserModel.findByIdAndUpdate( identifier, updatedUser, {
-    new: true,
-  }).exec();
-  return updated;
-};
-
 export const deleteUser = async (identifier: string): Promise<IUser | null> => {
   try {
     const deletedUser = await UserModel.findOneAndDelete({
@@ -82,3 +71,4 @@ export const deleteUser = async (identifier: string): Promise<IUser | null> => {
   }
 };
 
+//TODO : Add update profile picture function

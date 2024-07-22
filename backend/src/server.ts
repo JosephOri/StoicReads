@@ -25,7 +25,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 connectToDatabase()
   .then(() => {
     app.listen(process.env.PORT, () => {
-      logger.info(`Server is running in port ${process.env.PORT}`);
+      logger.info('Server is running');
     });
   })
   .catch((error) => {

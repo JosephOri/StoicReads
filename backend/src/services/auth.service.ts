@@ -91,7 +91,7 @@ export const googleLoginService = async (req: Request, res: Response) => {
         userName: payload?.name || '',
         email: email,
         password: randPassword,
-        profileImage: payload?.picture,
+        profilePicture: payload?.picture,
       };
       logger.info(
         `You've been given a random password, Please change it after logging in.`

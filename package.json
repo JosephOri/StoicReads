@@ -8,7 +8,6 @@
     "frontend": "cd frontend && npm run dev",
     "backend": "cd backend && npm run dev",
     "install": "cd frontend && npm install && cd ../backend && npm install",
-    "update": "cd frontend && npm update && cd ../backend && npm update",
     "dev": "concurrently \"npm run frontend\" \"npm run backend\""
   },
   "keywords": [],
