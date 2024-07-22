@@ -61,12 +61,28 @@ export const validatePassword = async (
 
 export const updateUser = async (
   identifier: string, 
-  updatedUser: User
+  user: User
 ): Promise<User | null> => {
-  const updated = await UserModel.findByIdAndUpdate( identifier, updatedUser, {
-    new: true,
-  }).exec();
-  return updated;
+  const salt = await bcrypt.genSalt(
+    parseInt(process.env.SALT_ROUNDS as string)
+  );
+  const hashedPassword = await bcrypt.hash(user.password, salt);
+  try {
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { $or: [{ email: identifier }, { userName: identifier }] },
+      {
+        userName: user.userName,
+        email: user.email,
+        password: hashedPassword,
+        profileImage: user.profileImage,
+      },
+      { new: true }
+    );
+    return updatedUser;
+  } catch (error: any) {
+    logger.error(`Error updating user by email or username: ${error.message}`);
+    throw new Error(errorMessages.ERROR_UPDATING_USER);
+  }
 };
 
 export const deleteUser = async (identifier: string): Promise<IUser | null> => {
