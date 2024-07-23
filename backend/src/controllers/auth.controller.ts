@@ -173,8 +173,7 @@ export const updateUser = async (req: Request, res: Response)=> {
   const updatedUserData: User = req.body;
 
   try {
-    const { userName, email, password, profileImage } = req.body;
-
+    const { userName, email, password, profileImage } = updatedUserData;
     if (!userName || !email || !password || !profileImage) {
       logger.error("Required fields werent provided.");
       return res
@@ -186,6 +185,8 @@ export const updateUser = async (req: Request, res: Response)=> {
     res.status(HttpStatusCode.Created).json(newUser);
 
   } catch (error: any) {
+    console.log(error.message);
+    console.log(error);
     logger.error('Error updating user: ', error.message);
     if (error.message.includes('duplicate key error')) {
       logger.error('Username already in use');

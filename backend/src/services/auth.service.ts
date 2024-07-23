@@ -1,4 +1,4 @@
-import UserModel, { IUser } from '@models/User';
+import { IUser } from '@models/User';
 import User from '../interfaces/User';
 import logger from '@utils/logger';
 import { Request, Response } from 'express';
@@ -6,9 +6,12 @@ import { createUser, getUserByIdentifier } from './user.service';
 import jwt from 'jsonwebtoken';
 import { HttpStatusCode } from 'axios';
 import { errorMessages } from '@utils/constants';
-import mongoose, { Document, Types } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import getRandomNumber from '@utils/getRandomNumber';
-import { OAuth2Client } from 'google-auth-library';
+import { OAuth2Client, TokenPayload } from 'google-auth-library';
+import axios from 'axios';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export const generateToken = async (
   user: Document<unknown, {}, IUser> &
@@ -84,6 +87,10 @@ export const googleLoginService = async (req: Request, res: Response) => {
     }
 
     let user = await getUserByIdentifier(email);
+    let profileImagePath = payload?.picture || '';
+    saveGoogleProfileImage(payload, profileImagePath);
+    
+
     if (!user) {
       const randPassword = getRandomNumber(1, 1000000000).toString();
       console.log('randPassword generated successfully', randPassword);
@@ -115,4 +122,26 @@ export const googleLoginService = async (req: Request, res: Response) => {
       .status(HttpStatusCode.InternalServerError)
       .json({ message: error.message });
   }
+};
+
+const saveGoogleProfileImage = async (payload: TokenPayload, profileImagePath: string) => {
+  console.log('profileImagePath:', profileImagePath);
+    if (payload?.picture) {
+      try {
+        const response = await axios.get(payload.picture, { responseType: 'arraybuffer' });
+        const imageBuffer = Buffer.from(response.data, 'binary');
+        const uploadFolder = path.join(__dirname, '..', 'uploads');
+        const imageName = `${payload.email?.replace(/[^a-zA-Z0-9]/g, '_')}.jpg`;
+        profileImagePath = path.join(uploadFolder, imageName);
+  
+        if (!fs.existsSync(uploadFolder)) {
+          fs.mkdirSync(uploadFolder);
+        }
+  
+        fs.writeFileSync(profileImagePath, imageBuffer);
+        console.log('Profile image downloaded and saved successfully');
+      } catch (error) {
+        console.error('Error downloading profile image:', error);
+      }
+    }
 };
