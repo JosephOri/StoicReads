@@ -43,7 +43,7 @@ export async function createPost(postData: CreatePostParams): Promise<Post> {
     return await newPost.save();
   } catch (err) {
     console.log('err', err);
-    throw new Error('Error creating post');
+    throw new Error('Error creating post ' + err);
   }
 }
 
