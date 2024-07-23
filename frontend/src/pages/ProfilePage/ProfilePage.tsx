@@ -5,7 +5,7 @@ import ProfileFormData from "../../interfaces/ProfileFormData";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 import {Card, CardContent, CardMedia, Grid, Typography, Box, Button }  from "@mui/material";
-import defaultImage from '../../assets/image.jpg';
+import { BACKEND_URL, DEFAULT_IMAGE } from "../../utils/constants";
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState<ProfileFormData>({
@@ -13,7 +13,7 @@ const ProfilePage = () => {
         email: "",
         password: "",
         confirmPassword: "",
-        profileImage: defaultImage,
+        profileImage: DEFAULT_IMAGE,
         createdAt: ""
     });
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ const ProfilePage = () => {
                 email: user.email || "",
                 password: user.password || "",
                 confirmPassword: user.password || "",
-                profileImage: user.profileImage || defaultImage,
+                profileImage: user.profileImage || DEFAULT_IMAGE,
                 createdAt: formattedDate,
             });
         }
@@ -78,7 +78,7 @@ const ProfilePage = () => {
                             component="img"
                             height="300"
                             width="300"
-                            image= {profileData.profileImage}
+                            image= {profileData.profileImage.includes("googleusercontent")? profileData.profileImage: `${BACKEND_URL}${profileData.profileImage}`}
                             alt="green iguana"
                         />
                         <CardContent>

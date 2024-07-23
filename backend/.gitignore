@@ -1,5 +1,4 @@
 src/uploads/*
-
 # Logs
 logs
 *.log
@@ -131,3 +130,4 @@ dist
 .pnp.*
 
 
+src/uploads/*
