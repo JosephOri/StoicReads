@@ -61,15 +61,14 @@ export const validatePassword = async (
 
 export const updateUser = async (
   _id: string,
-  user: any
+  user: User
 ): Promise<User | null> => {
   const salt = await bcrypt.genSalt(
     parseInt(process.env.SALT_ROUNDS as string)
   );
   const hashedPassword = await bcrypt.hash(user.password, salt);
   try {
-    const updatedUser = await UserModel.findOneAndUpdate(
-      { $or: [{ _id: _id }, { userName: _id }] },
+    const updatedUser = await UserModel.findByIdAndUpdate({ _id },
       {
         userName: user.userName,
         email: user.email,
