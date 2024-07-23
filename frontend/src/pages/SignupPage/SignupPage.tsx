@@ -14,7 +14,6 @@ import {
   Typography,
   Container,
 } from "@mui/material";
-import defaultImage from '../../assets/image.jpg';
 
 
 import "react-toastify/dist/ReactToastify.css";
@@ -25,7 +24,8 @@ const SignupPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    profileImage: defaultImage,
+    profileImage: "/uploads/defaultImage.jpg",
+    profileImageFile: null,
   });
   const navigate = useNavigate();
 
@@ -37,14 +37,16 @@ const SignupPage = () => {
     e.preventDefault();
     const isFormDataValid = isFormDataValidCheck(signupFormData);
     if (!isFormDataValid) return;
-    const { userName, email, password, profileImage } = signupFormData;
+    const formData = new FormData();
+    formData.append("userName", signupFormData.userName);
+    formData.append("email", signupFormData.email);
+    formData.append("password", signupFormData.password);
+    formData.append("profileImage", signupFormData.profileImage);
+    if(signupFormData.profileImageFile) {
+      formData.append("image", signupFormData.profileImageFile);
+    }
     try {
-      const response = await axios.post(AUTH_REGISTER_URL, {
-        userName,
-        email,
-        password,
-        profileImage,
-      });
+      const response = await axios.post(AUTH_REGISTER_URL, formData);
       console.log(response);
       toast.success("User created successfully");
       setSignupFormData({
@@ -68,15 +70,9 @@ const SignupPage = () => {
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSignupFormData({ ...signupFormData, profileImage: reader.result as string });
-      };
-      reader.readAsDataURL(file);
+    if (e.target.files && e.target.files[0]) {
+      setSignupFormData({ ...signupFormData, profileImageFile: e.target.files[0] });
     }
-    toast.success("Image uploaded successfully");
   };
 
   return (

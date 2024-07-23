@@ -8,7 +8,7 @@ import {Card, CardContent, CardMedia,TextField, Grid,
 import useCurrentUser from "../../hooks/useCurrentUser";
 import EditProfileFormData from "../../interfaces/EditProfileFormData";
 import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
-import { UPDATE_URL } from "../../utils/constants";
+import { BACKEND_URL, UPDATE_URL } from "../../utils/constants";
 import { User } from "../../interfaces/User";
 
 
@@ -25,6 +25,7 @@ const EditProfilePage = () => {
       password: "",
       confirmPassword: "",
       profileImage: "",
+      profileImageFile: null,
   });
 
   useEffect(() => {
@@ -35,6 +36,7 @@ const EditProfilePage = () => {
         password: "",
         confirmPassword: "",
         profileImage: user?.profileImage || "",
+        profileImageFile: null,
       });
       setUserLoading(false); 
     }
@@ -51,7 +53,16 @@ const EditProfilePage = () => {
     setLoading(true);
 
     try{      
-      const updatedUser: User = await axios.put(`${UPDATE_URL}/${userId}`, editProfileFormData);
+      const formData = new FormData();
+      formData.append("userName", editProfileFormData.userName);
+      formData.append("email", editProfileFormData.email);
+      formData.append("password", editProfileFormData.password);
+      formData.append("confirmPassword", editProfileFormData.confirmPassword);
+      formData.append("profileImage", editProfileFormData.profileImage);
+      if (editProfileFormData.profileImageFile) {
+        formData.append("image", editProfileFormData.profileImageFile);
+      }
+      const updatedUser: User = await axios.put(`${UPDATE_URL}/${userId}`, formData);
       setUser(updatedUser);
       setLoading(false);
       toast.success("User updated successfully");
@@ -71,15 +82,9 @@ const EditProfilePage = () => {
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setEditProfileFormData({ ...editProfileFormData, profileImage: reader.result as string });
-      };
-      reader.readAsDataURL(file);
+    if (e.target.files && e.target.files[0]) {
+      setEditProfileFormData({ ...editProfileFormData, profileImageFile: e.target.files[0] });
     }
-    toast.success("Image uploaded successfully");
   };
 
 
@@ -95,7 +100,7 @@ const EditProfilePage = () => {
         onChange={handleImageUpload} />
       </Button>
       {editProfileFormData.profileImage && (
-            <img src={editProfileFormData.profileImage} 
+            <img src={`${BACKEND_URL}${editProfileFormData.profileImage}`} 
             alt="Profile Preview" 
             style={{ maxHeight: '150px', maxWidth: '150px' }}
              />

@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../utils/logout";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { toast } from "react-toastify";
+import { BACKEND_URL } from "../../utils/constants";
 const pages = ["Home", "Create New Post"];
 const settings = ["Profile", "Logout"];
 
@@ -81,7 +82,7 @@ function Navbar() {
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
             <img
-              src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-philosopher-history-flaticons-lineal-color-flat-icons-2.png"
+              src= {"https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-philosopher-history-flaticons-lineal-color-flat-icons-2.png"}
               alt="Logo"
               style={{ height: "64px" }}
             />
@@ -172,7 +173,7 @@ function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src={user?.profileImage} />
+                <Avatar src={user?.profileImage?.includes('googleusercontent')?  user.profileImage:`${BACKEND_URL}${user?.profileImage}`} />
               </IconButton>
             </Tooltip>
             <Menu
