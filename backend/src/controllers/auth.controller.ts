@@ -14,12 +14,13 @@ export const register = async (req: Request, res: Response) => {
   try {
     const { userName, email, password, profileImage } = req.body;
     if (!userName || !email || !password || !profileImage) {
-      logger.error("Required fields werent provided.");
+      logger.error('Required fields werent provided.');
       return res
         .status(HttpStatusCode.BadRequest)
         .json({ message: 'Please provide all required fields' });
     }
-    const user: User = { userName, email, password, profileImage };
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : profileImage;
+    const user: User = { userName, email, password, profileImage: imagePath };
     const newUser = await userService.createUser(user);
     res.status(HttpStatusCode.Created).json(newUser);
   } catch (error: any) {
@@ -52,7 +53,10 @@ export const login = async (req: Request, res: Response) => {
         .status(HttpStatusCode.Unauthorized)
         .json({ message: errorMessages.USER_NOT_FOUND });
     }
-    const isUserPasswordMatch = await userService.validatePassword(password, user.password);
+    const isUserPasswordMatch = await userService.validatePassword(
+      password,
+      user.password
+    );
     if (!isUserPasswordMatch) {
       logger.error('Password is incorrect');
       return res
@@ -168,22 +172,30 @@ export const getUser = async (req: Request, res: Response) => {
   );
 };
 
-export const updateUser = async (req: Request, res: Response)=> {
+export const updateUser = async (req: Request, res: Response) => {
   const userid = req.params.userId;
-  const updatedUserData: User = req.body;
-
+  const updatedUserData = req.body;
+  console.log('updated user data:', updatedUserData);
+  const imagePath = req.file
+    ? `/uploads/${req.file.filename}`
+    : updatedUserData.profileImage;
+  console.log('image path:', imagePath);
   try {
     const { userName, email, password, profileImage } = updatedUserData;
     if (!userName || !email || !password || !profileImage) {
-      logger.error("Required fields werent provided.");
+      logger.error('Required fields werent provided.');
       return res
         .status(HttpStatusCode.BadRequest)
         .json({ message: 'Please provide all required fields' });
     }
 
-    const newUser = await userService.updateUser(userid, updatedUserData);
+    const newUser = await userService.updateUser(userid, {
+      userName,
+      email,
+      password,
+      profileImage: imagePath,
+    });
     res.status(HttpStatusCode.Created).json(newUser);
-
   } catch (error: any) {
     console.log(error.message);
     console.log(error);
@@ -198,7 +210,7 @@ export const updateUser = async (req: Request, res: Response)=> {
       .status(HttpStatusCode.InternalServerError)
       .json({ message: error.message });
   }
-}
+};
 
 export const deleteUser = async (req: Request, res: Response) => {
   const userId = req.params.userId;
@@ -209,11 +221,13 @@ export const deleteUser = async (req: Request, res: Response) => {
         .status(HttpStatusCode.NotFound)
         .json({ message: 'User not found' });
     }
-    return res.status(HttpStatusCode.Ok).json({ message: 'User deleted successfully' });
+    return res
+      .status(HttpStatusCode.Ok)
+      .json({ message: 'User deleted successfully' });
   } catch (error: any) {
     logger.error('Error deleting user: ', error.message);
     return res
       .status(HttpStatusCode.InternalServerError)
       .json({ message: error.message });
   }
-}
+};
