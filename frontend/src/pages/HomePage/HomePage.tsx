@@ -87,7 +87,7 @@ const HomePage = () => {
       <Grid container spacing={4} direction="row" alignItems="center" justifyContent="center" style={{ marginTop: 20 }}>
         {posts.map((post: Post, index: number) => {
           const imageUrl = post?.image ? `${BACKEND_URL}${post.image}` : post?.book.image;
-          console.log('Image URL:', imageUrl);
+          // console.log('Image URL:', imageUrl);
 
           return (
             <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
