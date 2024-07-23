@@ -57,6 +57,7 @@ export async function createPost(req: Request, res: Response): Promise<void> {
 
     res.status(201).json(newPost);
   } catch (error) {
+    console.log(error, 'createPost error');
     res.status(500).json('Error creating post');
   }
 }
