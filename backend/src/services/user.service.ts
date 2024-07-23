@@ -68,8 +68,7 @@ export const updateUser = async (
   );
   const hashedPassword = await bcrypt.hash(user.password, salt);
   try {
-    const updatedUser = await UserModel.findOneAndUpdate(
-      { $or: [{ email: identifier }, { userName: identifier }] },
+    const updatedUser = UserModel.findByIdAndUpdate( identifier,
       {
         userName: user.userName,
         email: user.email,
