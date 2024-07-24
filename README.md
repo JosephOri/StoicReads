@@ -1,28 +1,22 @@
-# Foodies
-
-Foodies project
+# StoicReads
 
 ## Installation
 
 To install the project dependencies, you can run the following command:
+1. Clone the repo - In your terminal: <pre><code>git clone https://github.com/nitzanto/Foodies-WebApp.git</code></pre>
 
-<pre><code>npm install</code></pre>
+2. Set up MongoDB instance and Configure environment variables.
 
-This will install the dependencies for both the frontend and backend applications.
+3. Navigate to the root dir.                                                
 
-## Usage
+4. Install the dependencies for both the frontend and backend:  <pre><code>npm run install</code></pre>
 
-To run the project in development mode, you can use the following command:
+5. Run the app - This command will start both the frontend and backend servers concurrently: <pre><code>npm run start</code></pre>
 
-<pre><code>npm run dev</code></pre>
-
-
-This command will start both the frontend and backend servers concurrently.
-
-### Foodies App
+## StoicReads App
 
 #### Overview
-Foodies is a restaurant rating and sharing application. This repository contains both the backend and frontend code for the application.
+StoicReads is a book rating and sharing application. This repository contains both the backend and frontend code for the application.
 
 #### Technologies Used
 
@@ -37,13 +31,15 @@ Foodies is a restaurant rating and sharing application. This repository contains
 
 ##### Frontend
 - React with Vite
-- TripAdvisor API for restaurant data
+- Google client O2Auth
+- Google Books API for books data
+- Material UI
 
 #### Features
 
 1. **Authentication**
     - User registration and login by username and password
-    - Registration via Google or Facebook
+    - Registration via Google
     - JWT authentication with Refresh token
     - Persistent login sessions
     - Logout functionality
@@ -53,7 +49,7 @@ Foodies is a restaurant rating and sharing application. This repository contains
     - Editing user information and photo
 
 3. **Content Presentation**
-    - Display content from an external REST source
+    - Display content from an external REST source of Google Books API. This will include title, author name, and cover image.
 
 4. **Content Sharing**
     - Upload text and picture content
@@ -79,7 +75,7 @@ Foodies is a restaurant rating and sharing application. This repository contains
     - Entire project written in TypeScript
 
 10. **Image Storage**
-    - Images saved on server, not in database or external service, using MongoDB
+    - Images saved on server, not in database or external service, using Multer
 
 11. **Deployment**
     - Application deployed on a server accessible from anywhere
@@ -90,64 +86,6 @@ Foodies is a restaurant rating and sharing application. This repository contains
     - Entry to the application through specified domain
     - No external hosting services used
 
-12. **Design**
-    - Implemented with a reasonable design layout
-
-13. **Additional Content (for 3-4 developers)**
-    - Implemented io.socket for real-time user-to-user communication
-    - Check-ins saved in DB for persistence across sessions
-
-#### Setup Instructions
-1. Clone the repository.
-2. Install dependencies for backend and frontend.
-3. Set up MongoDB instance.
-4. Configure environment variables.
-5. Run backend and frontend servers.
-6. Access the application via the specified domain.
-
-### Screens in Figma
-- [Link to Figma Screens](https://www.figma.com/file/yaZXJ4QHtN2n6gkiTtJEdo/Foodies?type=design&t=28b7JoZKdfAU6kah-6)
-
-### JIRA Tasks
-- **Epics**
-    - User Authentication
-    - User Profile Management
-    - Content Management
-    - Commenting System
-    - Deployment and Hosting
-- **Tasks**
-    - Detailed tasks breakdown available in JIRA
-
-### Work Breakdown
-1. **Backend Development**
-    - User Authentication APIs
-    - User Profile APIs
-    - Content Management APIs
-    - Commenting System APIs
-    - Unit Testing
-    - Swagger Documentation
-2. **Frontend Development**
-    - Authentication UI
-    - User Profile UI
-    - Content Presentation UI
-    - Content Sharing UI
-    - Commenting UI
-    - Integration with Backend APIs
-3. **Design and Styling**
-    - UI/UX Design
-    - Layout Styling
-4. **Deployment and Hosting**
-    - Server Setup
-    - HTTPS Configuration
-    - Domain Configuration
-    - PM2 Setup
-5. **Testing and QA**
-    - Manual Testing
-    - Unit Testing
-    - Bug Fixing
-6. **Additional Features (if applicable)**
-    - Implementation of io.socket
-    - Persistence of Check-ins
 
 ## Contributors
 - [Nitzan Toledo](https://github.com/nitzanto)
