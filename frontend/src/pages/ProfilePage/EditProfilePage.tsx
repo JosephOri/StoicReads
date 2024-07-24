@@ -15,7 +15,7 @@ import { User } from "../../interfaces/User";
 const EditProfilePage = () => {
   const [loading, setLoading] = useState(false);
   const [userLoading, setUserLoading] = useState(true);
-  const [file, setFile] = useState('');
+  const [localFile, setLocalFile] = useState('');
   const { userId } = useParams();
   const navigate = useNavigate();
   const { user, setUser } = useCurrentUser();
@@ -85,7 +85,7 @@ const EditProfilePage = () => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setEditProfileFormData({ ...editProfileFormData, profileImageFile: e.target.files[0] });
-      setFile(URL.createObjectURL(e.target.files[0]));
+      setLocalFile(URL.createObjectURL(e.target.files[0]));
     }
   };
 
@@ -110,8 +110,8 @@ const EditProfilePage = () => {
             hidden 
             onChange={handleImageUpload} />
         </Button>
-          {file && (
-              <img src={`${file}`} 
+          {localFile && (
+              <img src={`${localFile}`} 
                 alt="Profile Preview" 
                 style={{ maxHeight: '200px', maxWidth: '200px', marginTop: '10px' }}
               />
