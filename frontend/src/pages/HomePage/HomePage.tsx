@@ -22,8 +22,10 @@ import axios from "axios";
 import { POSTS_URL, BACKEND_URL } from "../../utils/constants";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { useNavigate } from "react-router-dom";
+import { Book } from "../../interfaces/Book";
+import { Post } from "../../interfaces/Post";
+import { Review } from "../../interfaces/Review";
 
-type Post = Record<string, unknown>;
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -51,12 +53,13 @@ const HomePage = () => {
     const updatedPost = {
       ...selectedPost,
       comments: [
-        ...selectedPost?.comments,
+        ...(selectedPost?.comments || []),
         { username: user?.userName, content: newComment },
       ],
     };
+    console.log("Updated Post:", updatedPost);
     await axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
-    setSelectedPost(updatedPost);
+    setSelectedPost(updatedPost as Post);
     setNewComment("");
   };
 
@@ -68,7 +71,7 @@ const HomePage = () => {
       comments: selectedPost?.comments.filter((comment: any, i: number) => i !== index),
     };
     await axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
-    setSelectedPost(updatedPost);
+    setSelectedPost(updatedPost as Post);
   };
 
   const handleDeletePost = async (id: unknown) => {
@@ -111,7 +114,7 @@ const HomePage = () => {
                   <Typography variant="body2" color="text.secondary">
                     {post?.comments?.length} Comments
                   </Typography>
-                  <Rating value={post?.review.rating} readOnly />
+                  <Rating value={Number(post?.review.rating)} readOnly />
                 </CardContent>
               </Card>
             </Grid>
@@ -181,7 +184,7 @@ const HomePage = () => {
                 </Box>
                 <Box flexGrow={1}>
                   <Typography variant="h6">Posted by</Typography>
-                  <DialogContentText>{selectedPost?.username}</DialogContentText>
+                  <DialogContentText>{selectedPost?.userName}</DialogContentText>
                   <Typography variant="h6">Authors</Typography>
                   <DialogContentText>{selectedPost?.book.authors}</DialogContentText>
                   <Typography variant="h6">Review</Typography>
