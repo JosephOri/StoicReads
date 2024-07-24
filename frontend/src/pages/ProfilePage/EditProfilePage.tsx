@@ -14,7 +14,8 @@ import { User } from "../../interfaces/User";
 
 const EditProfilePage = () => {
   const [loading, setLoading] = useState(false);
-  const [userLoading, setUserLoading] = useState(true)
+  const [userLoading, setUserLoading] = useState(true);
+  const [file, setFile] = useState('');
   const { userId } = useParams();
   const navigate = useNavigate();
   const { user, setUser } = useCurrentUser();
@@ -84,6 +85,7 @@ const EditProfilePage = () => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setEditProfileFormData({ ...editProfileFormData, profileImageFile: e.target.files[0] });
+      setFile(URL.createObjectURL(e.target.files[0]));
     }
   };
 
@@ -91,23 +93,29 @@ const EditProfilePage = () => {
   return (
     <>
       <ToastContainer />
-      <Button component="label" variant="contained" color="success" sx={{ mt: 2, mb: 2 }}>
-        Upload Image
-        <input 
-        type="file" 
-        accept="image/*" 
-        hidden 
-        onChange={handleImageUpload} />
-      </Button>
-      {editProfileFormData.profileImage && (
-            <img src={`${BACKEND_URL}${editProfileFormData.profileImage}`} 
-            alt="Profile Preview" 
-            style={{ maxHeight: '150px', maxWidth: '150px' }}
-             />
-          )}
+      <Typography variant="h3">Edit Profile</Typography> 
+      <Grid item xs={12} sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          mt: 2, 
+          mb: 2 
+        }}>
 
-      <Grid item xs={12}>
-              <Typography variant="h4">Edit Profile</Typography>
+        <Button component="label" variant="contained" color="success">
+          Upload Image
+          <input 
+            type="file" 
+            accept="image/*" 
+            hidden 
+            onChange={handleImageUpload} />
+        </Button>
+          {file && (
+              <img src={`${file}`} 
+                alt="Profile Preview" 
+                style={{ maxHeight: '200px', maxWidth: '200px', marginTop: '10px' }}
+              />
+          )}
       </Grid>
 
       <Box
