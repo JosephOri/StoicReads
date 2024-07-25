@@ -23,6 +23,8 @@
     "bootstrap": "^5.3.3",
     "concurrently": "^8.2.2",
     "react-bootstrap": "^2.10.2",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "zod": "^3.23.7"
   },
   "devDependencies": {

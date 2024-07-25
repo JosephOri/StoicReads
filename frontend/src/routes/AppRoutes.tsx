@@ -12,6 +12,7 @@ import { Layout } from "../components/Layout/Layout";
 import Post from "../pages/CreatePost/Post";
 import User from "../pages/User/User";
 import EditPost from "../pages/EditPost/EditPost";
+import ChatComponent from "../pages/Chat/ChatComponent";
 
 const RequireAuth = () => {
   const { accessToken, refreshToken } = getTokens();
@@ -39,10 +40,14 @@ export const AppRoutes = () => (
       <Route element={<Layout />}>
         <Route path={applicationRoutes.HOME} element={<HomePage />} />
         <Route path={applicationRoutes.PROFILE} element={<ProfilePage />} />
-        <Route path={applicationRoutes.EDIT_PROFILE} element={<EditProfilePage />} />
+        <Route
+          path={applicationRoutes.EDIT_PROFILE}
+          element={<EditProfilePage />}
+        />
         <Route path={applicationRoutes.CREATE_POST} element={<Post />} />
         <Route path={applicationRoutes.USER} element={<User />} />
         <Route path={applicationRoutes.EDIT_POST} element={<EditPost />} />
+        <Route path={applicationRoutes.CHAT} element={<ChatComponent />} />
       </Route>
     </Route>
 
