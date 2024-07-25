@@ -64,7 +64,12 @@ export async function createPost(req: Request, res: Response): Promise<void> {
 
 export async function updatePost(req: Request, res: Response): Promise<void> {
   const postId = req.params.id;
+  const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
   const updatedPostData: Post = req.body;
+  console.log('Updated Post Data:', JSON.stringify(updatedPostData));
+  if (imagePath) {
+    updatedPostData.image = imagePath;
+  }
   try {
     const updatedPost = await postService.updatePost(postId, updatedPostData);
     if (!updatedPost) {

@@ -11,6 +11,7 @@ export interface Post extends Document {
   comments: UserComment[];
   review: Review;
   image?: string;
+  imageFile?: File | null;
 }
 
 const PostSchema: Schema = new Schema({
