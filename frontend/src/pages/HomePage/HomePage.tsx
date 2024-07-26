@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -22,20 +22,26 @@ import axios from "axios";
 import { POSTS_URL, BACKEND_URL } from "../../utils/constants";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { useNavigate } from "react-router-dom";
-import { Book } from "../../interfaces/Book";
 import { Post } from "../../interfaces/Post";
-import { Review } from "../../interfaces/Review";
-
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const HomePage = () => {
-  const { data: posts, error } = useSWR(POSTS_URL, fetcher);
+  const { user } = useCurrentUser();
+  const [showMyPosts, setShowMyPosts] = useState(false);
+  const { data: posts, error } = useSWR(
+    showMyPosts ? `${POSTS_URL}/user/${user?.userName}` : POSTS_URL, 
+    fetcher
+  );
+
   const [open, setOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [newComment, setNewComment] = useState("");
-  const { user } = useCurrentUser();
   const navigate = useNavigate();
+
+  const togglePosts = () => {
+    setShowMyPosts(!showMyPosts);
+  };
 
   const handleClickOpen = (post: Post) => {
     setSelectedPost(post);
@@ -87,10 +93,28 @@ const HomePage = () => {
   return (
     <>
       <h1 style={{ textAlign: "center" }}>{`Welcome Back ${user?.userName}`}</h1>
-      <Grid container spacing={4} direction="row" alignItems="center" justifyContent="center" style={{ marginTop: 20 }}>
+
+      <Grid item xs={12} sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          mt: 2, 
+          mb: 2 
+        }}>
+        <Button onClick={togglePosts} variant="contained" color="primary">
+          {showMyPosts ? "Show All Posts" : "Show My Posts"}
+        </Button>
+      </Grid>
+
+      <Grid 
+        container 
+        spacing={4} 
+        direction="row" 
+        alignItems="center" 
+        justifyContent="center" 
+        style={{ marginTop: 20 }}>
         {posts.map((post: Post, index: number) => {
           const imageUrl = post?.image ? `${BACKEND_URL}${post.image}` : post?.book.image;
-          // console.log('Image URL:', imageUrl);
 
           return (
             <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
