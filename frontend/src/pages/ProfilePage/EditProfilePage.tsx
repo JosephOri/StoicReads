@@ -3,12 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-import {Card, CardContent, CardMedia,TextField, Grid, 
-  Typography, Box, Button }  from "@mui/material";
+import {TextField, Grid, Typography, Box, Button }  from "@mui/material";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import EditProfileFormData from "../../interfaces/EditProfileFormData";
 import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
-import { BACKEND_URL, UPDATE_URL } from "../../utils/constants";
+import { UPDATE_URL } from "../../utils/constants";
 import { User } from "../../interfaces/User";
 
 
