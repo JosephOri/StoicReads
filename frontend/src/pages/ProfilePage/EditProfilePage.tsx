@@ -145,31 +145,31 @@ const EditProfilePage = () => {
               onChange={(e) => handleInputChange("email", e.target.value)}/>
           </Grid>
 
-        <Grid item xs={12}>
-          <TextField
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            value={editProfileFormData.password} 
-            onChange={(e) => handleInputChange("password", e.target.value) }
-          />
-        </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              value={editProfileFormData.password} 
+              onChange={(e) => handleInputChange("password", e.target.value) }
+            />
+          </Grid>
 
-        <Grid item xs={12}>
-          <TextField
-            required
-            fullWidth
-            name="password"
-            label="confirm password"
-            type="password"
-            id="confirmPassword"
-            value={editProfileFormData.confirmPassword}
-            onChange={(e) => handleInputChange("confirmPassword", e.target.value) }
-          />
-        </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              label="confirm password"
+              type="password"
+              id="confirmPassword"
+              value={editProfileFormData.confirmPassword}
+              onChange={(e) => handleInputChange("confirmPassword", e.target.value) }
+            />
+          </Grid>
         </Grid>
         <Button
           type="submit"
