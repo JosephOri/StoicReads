@@ -126,17 +126,6 @@ const EditProfilePage = () => {
             <TextField
               required
               fullWidth
-              id="userName"
-              label="Username"
-              name="userName"
-              value={editProfileFormData.userName}
-              onChange={(e) =>handleInputChange("userName", e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
               id="email"
               label="Email Address"
               name="email"
