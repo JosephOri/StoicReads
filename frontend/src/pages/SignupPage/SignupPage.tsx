@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { AUTH_REGISTER_URL, BACKEND_URL, DEFAULT_IMAGE } from "../../utils/constants";
+import { AUTH_REGISTER_URL, DEFAULT_IMAGE } from "../../utils/constants";
 import SignupFormData from "../../interfaces/SignupFormData";
 import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
 import {
@@ -73,6 +73,7 @@ const SignupPage = () => {
     if (e.target.files && e.target.files[0]) {
       setSignupFormData({ ...signupFormData, profileImageFile: e.target.files[0] });
     }
+    setSignupFormData({ ...signupFormData, profileImage: URL.createObjectURL(e.target.files![0]) });
   };
 
   return (

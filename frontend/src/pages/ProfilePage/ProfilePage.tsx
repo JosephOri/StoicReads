@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import ProfileFormData from "../../interfaces/ProfileFormData";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
