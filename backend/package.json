@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "test": "jest",
+    "test": "tsc && jest --detectOpenHandles --forceExit",
+    "test:user": "tsc && jest --detectOpenHandles --forceExit ./src/tests/services/user.service.test.ts",
+    "test:post": "tsc && jest --detectOpenHandles --forceExit ./src/tests/services/post.service.test.ts",
     "dev": "nodemon src/server.ts",
     "build": "tsc --project ."
   },
