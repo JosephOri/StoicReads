@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as postService from '../services/post.service';
-import { Post } from '../models/Post';
+import { IPost } from '../models/Post';
 import path from 'path';
 
 export async function getAllPosts(req: Request, res: Response): Promise<void> {
@@ -65,7 +65,7 @@ export async function createPost(req: Request, res: Response): Promise<void> {
 export async function updatePost(req: Request, res: Response): Promise<void> {
   const postId = req.params.id;
   const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
-  const updatedPostData: Post = req.body;
+  const updatedPostData: IPost = req.body;
   console.log('Updated Post Data:', JSON.stringify(updatedPostData));
   if (imagePath) {
     updatedPostData.image = imagePath;

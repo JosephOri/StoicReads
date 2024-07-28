@@ -1,4 +1,4 @@
-import PostModel, { Post } from '../models/Post';
+import PostModel, { IPost } from '../models/Post';
 import path from 'path';
 
 interface CreatePostParams {
@@ -15,17 +15,17 @@ interface CreatePostParams {
   image?: string;
 }
 
-export async function getAllPosts(): Promise<Post[]> {
+export async function getAllPosts(): Promise<IPost[]> {
   const posts = await PostModel.find().exec();
   return posts;
 }
 
-export async function getPostById(postId: string): Promise<Post | null> {
+export async function getPostById(postId: string): Promise<IPost | null> {
   const post = await PostModel.findById(postId).exec();
   return post;
 }
 
-export async function createPost(postData: CreatePostParams): Promise<Post> {
+export async function createPost(postData: CreatePostParams): Promise<IPost> {
   try {
     const newPost = new PostModel({
       userName: postData.userName,
@@ -49,8 +49,8 @@ export async function createPost(postData: CreatePostParams): Promise<Post> {
 
 export async function updatePost(
   postId: string,
-  updatedPost: Post
-): Promise<Post | null> {
+  updatedPost: IPost
+): Promise<IPost | null> {
   const updated = await PostModel.findByIdAndUpdate(postId, updatedPost, {
     new: true,
   }).exec();

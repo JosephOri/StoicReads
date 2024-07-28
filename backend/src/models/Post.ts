@@ -3,7 +3,7 @@ import { Book } from '../interfaces/Book';
 import { Review } from '../interfaces/Review';
 import { Comment as UserComment } from '../interfaces/Comment';
 
-export interface Post extends Document {
+export interface IPost extends Document {
   userName: string;
   book: Book;
   title: string;
@@ -26,6 +26,6 @@ const PostSchema: Schema = new Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-const PostModel = mongoose.model<Post>('Post', PostSchema);
+const PostModel = mongoose.model<IPost>('Post', PostSchema);
 
 export default PostModel;
