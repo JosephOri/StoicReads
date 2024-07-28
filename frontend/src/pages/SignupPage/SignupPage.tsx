@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { AUTH_REGISTER_URL } from "../../utils/constants";
+import { AUTH_REGISTER_URL, BACKEND_URL, DEFAULT_IMAGE } from "../../utils/constants";
 import SignupFormData from "../../interfaces/SignupFormData";
 import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
 import {
@@ -24,7 +24,7 @@ const SignupPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    profileImage: "/uploads/defaultImage.jpg",
+    profileImage: `${DEFAULT_IMAGE}`,
     profileImageFile: null,
   });
   const navigate = useNavigate();
@@ -100,7 +100,7 @@ const SignupPage = () => {
             />
           </Button>
           {signupFormData.profileImage && (
-            <img src={signupFormData.profileImage} 
+            <img src={`${signupFormData.profileImage}`} 
             alt="Profile Preview" 
             style={{ maxHeight: '150px', maxWidth: '150px' }}
              />
