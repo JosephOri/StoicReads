@@ -32,7 +32,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   setNewMessage,
 }) => {
   useEffect(() => {
-    console.log("Received messages:", messages);
+    console.log("ChatWindow messages:", messages);
   }, [messages]);
 
   return (

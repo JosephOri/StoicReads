@@ -42,7 +42,7 @@ const ChatComponent = () => {
       setMessages((prevMessages) => {
         const updatedMessages = { ...prevMessages };
         if (!updatedMessages[message.sender]) {
-          updatedMessages[message.sender] = [];
+          return updatedMessages;
         }
         updatedMessages[message.sender] = [
           ...updatedMessages[message.sender],
@@ -62,7 +62,12 @@ const ChatComponent = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    console.log("Messages", messages, "SelectedUser", selectedUser);
+    console.log(
+      "All users messages dict:",
+      messages,
+      "SelectedUser",
+      selectedUser
+    );
   }, [messages, selectedUser]);
 
   const updateSelectedUser = (user: User | null) => {
