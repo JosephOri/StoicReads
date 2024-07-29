@@ -175,11 +175,9 @@ export const getUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   const userid = req.params.userId;
   const updatedUserData = req.body;
-  console.log('updated user data:', updatedUserData);
   const imagePath = req.file
     ? `/uploads/${req.file.filename}`
     : updatedUserData.profileImage;
-  console.log('image path:', imagePath);
   try {
     const { userName, email, password, profileImage } = updatedUserData;
     if (!userName || !email || !password || !profileImage) {
