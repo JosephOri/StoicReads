@@ -66,20 +66,6 @@ import upload from "@config/multer.config";
  */
 router.post("/register", upload.single("profileImage"), register);
 
-/**
- * @swagger
- * /auth/google/login:
- *   post:
- *     summary: Login with Google
- *     tags: [Auth]
- *     responses:
- *       200:
- *         description: Successful login with Google
- *       400:
- *         description: Bad request
- *       500:
- *         description: Internal server error
- */
 router.post("/google/login", googleLogin);
 
 /**
