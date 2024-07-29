@@ -3,12 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-import {Card, CardContent, CardMedia,TextField, Grid, 
-  Typography, Box, Button }  from "@mui/material";
+import {TextField, Grid, Typography, Box, Button }  from "@mui/material";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import EditProfileFormData from "../../interfaces/EditProfileFormData";
 import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
-import { BACKEND_URL, UPDATE_URL } from "../../utils/constants";
+import { UPDATE_URL } from "../../utils/constants";
 import { User } from "../../interfaces/User";
 
 
@@ -123,53 +122,42 @@ const EditProfilePage = () => {
         noValidate onSubmit={handleSubmit} sx={{ mt: 3 }} >
         
         <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <TextField
-            required
-            fullWidth
-            id="userName"
-            label="Username"
-            name="userName"
-            value={editProfileFormData.userName}
-            onChange={(e) =>handleInputChange("userName", e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            value={editProfileFormData.email} 
-            onChange={(e) => handleInputChange("email", e.target.value)}/>
-        </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              value={editProfileFormData.email} 
+              onChange={(e) => handleInputChange("email", e.target.value)}/>
+          </Grid>
 
-        <Grid item xs={12}>
-          <TextField
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            value={editProfileFormData.password} 
-            onChange={(e) => handleInputChange("password", e.target.value) }
-          />
-        </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              value={editProfileFormData.password} 
+              onChange={(e) => handleInputChange("password", e.target.value) }
+            />
+          </Grid>
 
-        <Grid item xs={12}>
-          <TextField
-            required
-            fullWidth
-            name="password"
-            label="confirm password"
-            type="password"
-            id="confirmPassword"
-            value={editProfileFormData.confirmPassword}
-            onChange={(e) => handleInputChange("confirmPassword", e.target.value) }
-          />
-        </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              label="confirm password"
+              type="password"
+              id="confirmPassword"
+              value={editProfileFormData.confirmPassword}
+              onChange={(e) => handleInputChange("confirmPassword", e.target.value) }
+            />
+          </Grid>
         </Grid>
         <Button
           type="submit"

@@ -25,6 +25,12 @@ export async function getPostById(postId: string): Promise<IPost | null> {
   return post;
 }
 
+export async function getPostsByUser(userName: string): Promise<IPost[]> {
+  const posts = await PostModel.find({ userName }).exec();
+  return posts;
+}
+
+
 export async function createPost(postData: CreatePostParams): Promise<IPost> {
   try {
     const newPost = new PostModel({
