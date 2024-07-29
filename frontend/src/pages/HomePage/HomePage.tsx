@@ -15,8 +15,13 @@ import {
   Button,
   Rating,
   Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import {ExpandMore, ExpandLess} from "@mui/icons-material";  
+import CloseIcon from "@mui/icons-material/Close";  
+import { blue, purple, red } from "@mui/material/colors";
 import useSWR from "swr";
 import axios from "axios";
 import { POSTS_URL, BACKEND_URL } from "../../utils/constants";
@@ -87,6 +92,19 @@ const HomePage = () => {
     handleClose();
   };
 
+  const getAuthorLink = (authorName: string) => {
+    const formattedName = authorName.replace(/ /g, '_');
+    const wikiUrl = `https://en.wikipedia.org/wiki/${formattedName}`;
+
+    return (
+      <DialogContentText fontSize="1.25rem" mb={2} color={blue[500]}>
+        <a href={wikiUrl} target="_blank" rel="noopener noreferrer" style={{ color: blue[500], textDecoration: 'underline' }}>
+          {authorName}
+        </a>
+      </DialogContentText>
+    );
+  }
+
   if (error) return <div>Failed to load posts</div>;
   if (!posts) return <CircularProgress />;
 
@@ -133,7 +151,7 @@ const HomePage = () => {
                     {post?.title}
                   </Typography>
                   <Typography variant="subtitle1" color="text.secondary">
-                    Posted by {post?.userName}
+                    Posted by <strong>{post?.userName}</strong>
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {post?.comments?.length} Comments
@@ -159,8 +177,10 @@ const HomePage = () => {
       >
         {open && selectedPost && (
           <>
-            <DialogTitle>
-              {selectedPost?.book.title}
+            <DialogTitle color={purple[500]}>
+              <strong>
+                {selectedPost?.book.title}  
+              </strong> by  {selectedPost?.book.authors}
               {user?.userName === selectedPost?.userName && (
                 <Box
                   sx={{
@@ -203,18 +223,36 @@ const HomePage = () => {
                   <img
                     src={selectedPost?.image ? `${BACKEND_URL}${selectedPost.image}` : selectedPost?.book.image}
                     alt={selectedPost?.book.title}
-                    style={{ maxWidth: "200px", marginRight: "20px" }}
+                    style={{ maxWidth: "200px", marginRight: "20px", borderRadius: "8px" }}
                   />
                 </Box>
-                <Box flexGrow={1}>
-                  <Typography variant="h6">Posted by</Typography>
-                  <DialogContentText>{selectedPost?.userName}</DialogContentText>
-                  <Typography variant="h6">Authors</Typography>
-                  <DialogContentText>{selectedPost?.book.authors}</DialogContentText>
-                  <Typography variant="h6">Review</Typography>
-                  <DialogContentText>
-                    <Rating value={selectedPost?.review.rating} readOnly />
+                <Box flexGrow={1} ml={2}>
+                  <Typography variant="h6" gutterBottom>
+                    Posted by
+                  </Typography>
+                  <DialogContentText fontSize="1.25rem" mb={2} color={blue[900]}>
+                      {selectedPost?.userName}
                   </DialogContentText>
+                  <Typography variant="h6" gutterBottom>
+                    Authors
+                  </Typography>
+                  <DialogContentText fontSize="1.25rem" mb={2} color={blue[500]}>
+                      {
+                        selectedPost && 
+                        selectedPost.book && 
+                        selectedPost.book.authors && 
+                        getAuthorLink(selectedPost.book.authors)
+                      }
+                  </DialogContentText>
+                  <Typography variant="h6" gutterBottom>
+                    Review
+                  </Typography>
+                  <Box display="flex" alignItems="center" mb={2}>
+                    <Rating value={selectedPost?.review.rating} readOnly />
+                    <DialogContentText fontSize="1.25rem" ml={1}>
+                      {selectedPost?.review.rating}
+                    </DialogContentText>
+                  </Box>
                 </Box>
               </Box>
               <Divider sx={{ my: 2 }} />
