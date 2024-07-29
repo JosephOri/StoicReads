@@ -215,28 +215,22 @@ router.get("/user/:userName", postController.getPostsByUser);
  *             properties:
  *               userName:
  *                 type: string
- *               book:
- *                 type: object
- *                 properties:
- *                   title:
- *                     type: string
- *                   authors:
- *                     type: array
- *                     items:
- *                       type: string
- *                   image:
- *                     type: string
+ *               bookTitle:
+ *                 type: string
+ *               bookAuthors:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               bookImage:
+ *                 type: string
  *               title:
  *                 type: string
  *               content:
  *                 type: string
- *               review:
- *                 type: object
- *                 properties:
- *                   rating:
- *                     type: integer
- *                   description:
- *                     type: string
+ *               rating:
+ *                 type: integer
+ *               description:
+ *                 type: string
  *               image:
  *                 type: string
  *                 format: binary
@@ -265,22 +259,10 @@ router.get("/user/:userName", postController.getPostsByUser);
  *                   type: string
  *                 content:
  *                   type: string
- *                 comments:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       userName:
- *                         type: string
- *                         content:
- *                           type: string
- *                 review:
- *                   type: object
- *                   properties:
- *                     rating:
- *                       type: integer
- *                       description:
- *                         type: string
+ *                 rating:
+ *                   type: integer
+ *                 description:
+ *                   type: string
  *                 image:
  *                   type: string
  *                 createdAt:
@@ -308,7 +290,7 @@ router.post("/", upload.single("image"), postController.createPost);
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             properties:
@@ -329,6 +311,15 @@ router.post("/", upload.single("image"), postController.createPost);
  *                 type: string
  *               content:
  *                 type: string
+ *               comments:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     userName:
+ *                       type: string
+ *                     content:
+ *                       type: string
  *               review:
  *                 type: object
  *                 properties:
