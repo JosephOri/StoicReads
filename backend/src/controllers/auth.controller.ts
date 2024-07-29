@@ -240,7 +240,7 @@ export const getOnlineUsers = async (req: Request, res: Response) => {
 
     const onlineUsers = await UserModel.find(
       { socketId: { $exists: true, $ne: null }, _id: { $ne: userId } }, // Exclude user with the specified userId
-      "_id socketId fullName"
+      "_id socketId userName"
     );
 
     res.send(onlineUsers);

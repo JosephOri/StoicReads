@@ -13,6 +13,7 @@ import Post from "../pages/CreatePost/Post";
 import User from "../pages/User/User";
 import EditPost from "../pages/EditPost/EditPost";
 import ChatComponent from "../pages/Chat/ChatComponent";
+import "../pages/Chat/ChatComponent.css";
 
 const RequireAuth = () => {
   const { accessToken, refreshToken } = getTokens();

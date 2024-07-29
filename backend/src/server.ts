@@ -6,15 +6,17 @@ import applicationRouter from "@routes/application.router";
 import connectToDatabase from "@utils/dbConfig";
 import cors from "cors";
 import path from "path";
-import { handleSocket } from "./socketHandler";
-import { createServer } from "http";
-const { Server } = require("socket.io");
+import http from "http";
+import { Server as SocketIOServer } from "socket.io";
+import messageRoutes from "./routes/message.route"; // Message routes
+// import { authenticateSocket } from "./controllers/auth.controller"; // Socket authentication
+import { handleSocket } from "./socketHandler"; // Import the socket handler
 
 const app: Express = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: "*", // http://localhost:5173
     credentials: true,
   })
 );
@@ -26,20 +28,22 @@ app.use(applicationRouter);
 console.log("dirname: " + __dirname);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-const httpServer = createServer(app);
-
-const io = new Server(httpServer, {
+const httpServer = http.createServer(app);
+const io = new SocketIOServer(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
+// io.use(authenticateSocket); // Use socket authentication middleware
+
 connectToDatabase()
   .then(() => {
-    app.listen(process.env.PORT, () => {
-      logger.info(`Server is running in port ${process.env.PORT}`);
-      handleSocket(io);
+    httpServer.listen(process.env.PORT, () => {
+      logger.info(`Server is running on port ${process.env.PORT}`);
     });
+    handleSocket(io);
   })
   .catch((error) => {
     logger.error(`Error connecting to MongoDB: ${error}`);
