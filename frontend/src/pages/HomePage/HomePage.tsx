@@ -15,11 +15,7 @@ import {
   Button,
   Rating,
   Divider,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
 } from "@mui/material";
-import {ExpandMore, ExpandLess} from "@mui/icons-material";  
 import CloseIcon from "@mui/icons-material/Close";  
 import { blue, purple, red } from "@mui/material/colors";
 import useSWR from "swr";
