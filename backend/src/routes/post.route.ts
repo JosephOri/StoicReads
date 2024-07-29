@@ -6,7 +6,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /posts:
+ * /post:
  *   get:
  *     summary: Get all posts
  *     tags: [Posts]
@@ -18,13 +18,55 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Post'
+ *                 type: object
+ *                 properties:
+ *                   userName:
+ *                     type: string
+ *                   book:
+ *                     type: object
+ *                     properties:
+ *                       title:
+ *                         type: string
+ *                       authors:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                       image:
+ *                         type: string
+ *                   title:
+ *                     type: string
+ *                   content:
+ *                     type: string
+ *                   comments:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         userName:
+ *                           type: string
+ *                         content:
+ *                           type: string
+ *                   review:
+ *                     type: object
+ *                     properties:
+ *                       rating:
+ *                         type: integer
+ *                       description:
+ *                         type: string
+ *                   image:
+ *                     type: string
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
  */
 router.get("/", postController.getAllPosts);
 
 /**
  * @swagger
- * /posts/{id}:
+ * /post/{id}:
  *   get:
  *     summary: Get a post by ID
  *     tags: [Posts]
@@ -41,7 +83,49 @@ router.get("/", postController.getAllPosts);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Post'
+ *               type: object
+ *               properties:
+ *                 userName:
+ *                   type: string
+ *                 book:
+ *                   type: object
+ *                   properties:
+ *                     title:
+ *                       type: string
+ *                     authors:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                     image:
+ *                       type: string
+ *                 title:
+ *                   type: string
+ *                 content:
+ *                   type: string
+ *                 comments:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       userName:
+ *                         type: string
+ *                       content:
+ *                         type: string
+ *                 review:
+ *                   type: object
+ *                   properties:
+ *                     rating:
+ *                       type: integer
+ *                     description:
+ *                       type: string
+ *                 image:
+ *                   type: string
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
  *       404:
  *         description: Post not found
  */
@@ -49,7 +133,7 @@ router.get("/:id", postController.getPostById);
 
 /**
  * @swagger
- * /posts/user/{userName}:
+ * /post/user/{userName}:
  *   get:
  *     summary: Get posts by username
  *     tags: [Posts]
@@ -68,7 +152,49 @@ router.get("/:id", postController.getPostById);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Post'
+ *                 type: object
+ *                 properties:
+ *                   userName:
+ *                     type: string
+ *                   book:
+ *                     type: object
+ *                     properties:
+ *                       title:
+ *                         type: string
+ *                       authors:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                       image:
+ *                         type: string
+ *                   title:
+ *                     type: string
+ *                   content:
+ *                     type: string
+ *                   comments:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         userName:
+ *                           type: string
+ *                         content:
+ *                           type: string
+ *                   review:
+ *                     type: object
+ *                     properties:
+ *                       rating:
+ *                         type: integer
+ *                       description:
+ *                         type: string
+ *                   image:
+ *                     type: string
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
  *       404:
  *         description: Posts not found
  */
@@ -76,7 +202,7 @@ router.get("/user/:userName", postController.getPostsByUser);
 
 /**
  * @swagger
- * /posts:
+ * /post:
  *   post:
  *     summary: Create a new post
  *     tags: [Posts]
@@ -90,13 +216,27 @@ router.get("/user/:userName", postController.getPostsByUser);
  *               userName:
  *                 type: string
  *               book:
- *                 $ref: '#/components/schemas/Book'
+ *                 type: object
+ *                 properties:
+ *                   title:
+ *                     type: string
+ *                   authors:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   image:
+ *                     type: string
  *               title:
  *                 type: string
  *               content:
  *                 type: string
  *               review:
- *                 $ref: '#/components/schemas/Review'
+ *                 type: object
+ *                 properties:
+ *                   rating:
+ *                     type: integer
+ *                   description:
+ *                     type: string
  *               image:
  *                 type: string
  *                 format: binary
@@ -106,13 +246,55 @@ router.get("/user/:userName", postController.getPostsByUser);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Post'
+ *               type: object
+ *               properties:
+ *                 userName:
+ *                   type: string
+ *                 book:
+ *                   type: object
+ *                   properties:
+ *                     title:
+ *                       type: string
+ *                     authors:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                     image:
+ *                       type: string
+ *                 title:
+ *                   type: string
+ *                 content:
+ *                   type: string
+ *                 comments:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       userName:
+ *                         type: string
+ *                         content:
+ *                           type: string
+ *                 review:
+ *                   type: object
+ *                   properties:
+ *                     rating:
+ *                       type: integer
+ *                       description:
+ *                         type: string
+ *                 image:
+ *                   type: string
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
  */
 router.post("/", upload.single("image"), postController.createPost);
 
 /**
  * @swagger
- * /posts/{id}:
+ * /post/{id}:
  *   put:
  *     summary: Update a post by ID
  *     tags: [Posts]
@@ -133,13 +315,27 @@ router.post("/", upload.single("image"), postController.createPost);
  *               userName:
  *                 type: string
  *               book:
- *                 $ref: '#/components/schemas/Book'
+ *                 type: object
+ *                 properties:
+ *                   title:
+ *                     type: string
+ *                   authors:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   image:
+ *                     type: string
  *               title:
  *                 type: string
  *               content:
  *                 type: string
  *               review:
- *                 $ref: '#/components/schemas/Review'
+ *                 type: object
+ *                 properties:
+ *                   rating:
+ *                     type: integer
+ *                   description:
+ *                     type: string
  *               image:
  *                 type: string
  *                 format: binary
@@ -149,7 +345,49 @@ router.post("/", upload.single("image"), postController.createPost);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Post'
+ *               type: object
+ *               properties:
+ *                 userName:
+ *                   type: string
+ *                 book:
+ *                   type: object
+ *                   properties:
+ *                     title:
+ *                       type: string
+ *                     authors:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                     image:
+ *                       type: string
+ *                 title:
+ *                   type: string
+ *                 content:
+ *                   type: string
+ *                 comments:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       userName:
+ *                         type: string
+ *                         content:
+ *                           type: string
+ *                 review:
+ *                   type: object
+ *                   properties:
+ *                     rating:
+ *                       type: integer
+ *                     description:
+ *                         type: string
+ *                 image:
+ *                   type: string
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
  *       404:
  *         description: Post not found
  */
@@ -157,7 +395,7 @@ router.put("/:id", upload.single("image"), postController.updatePost);
 
 /**
  * @swagger
- * /posts/{id}:
+ * /post/{id}:
  *   delete:
  *     summary: Delete a post by ID
  *     tags: [Posts]
@@ -178,7 +416,7 @@ router.delete("/:id", postController.deletePost);
 
 /**
  * @swagger
- * /posts/uploads/{filename}:
+ * /post/uploads/{filename}:
  *   get:
  *     summary: Get an uploaded image by filename
  *     tags: [Posts]
