@@ -1,27 +1,49 @@
-import express, { Express } from 'express';
-import bodyParser from 'body-parser';
-import 'dotenv/config';
-import logger from '@utils/logger';
-import applicationRouter from '@routes/application.router';
-import connectToDatabase from '@utils/dbConfig';
-import cors from 'cors';
-import path from 'path';
+import express, { Express } from "express";
+import bodyParser from "body-parser";
+import "dotenv/config";
+import logger from "@utils/logger";
+import applicationRouter from "@routes/application.router";
+import connectToDatabase from "@utils/dbConfig";
+import cors from "cors";
+import path from "path";
+import swaggerUI from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
 
 const app: Express = express();
 
 app.use(
   cors({
-    origin: '*',
+    origin: "*",
     credentials: true,
   })
 );
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Web Advanced Application development 2023 REST API",
+      version: "1.0.1",
+      description:
+        "REST server including authentication using JWT and refresh token",
+    },
+    servers: [
+      {
+        url: "http://localhost:3000",
+      },
+    ],
+  },
+  apis: ["./src/routes/*.ts"],
+};
+const specs = swaggerJsDoc(options);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(applicationRouter);
-console.log('dirname: ' + __dirname);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+console.log("dirname: " + __dirname);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 connectToDatabase()
   .then(() => {
