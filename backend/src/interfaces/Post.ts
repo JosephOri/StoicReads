@@ -1,5 +1,6 @@
-import { Book } from './Book';
-import { Review } from './Review';
+import Book from './Book';
+import Review from './Review';
+import Comment from './Comment';
 
 interface Post {
     userName: string;
