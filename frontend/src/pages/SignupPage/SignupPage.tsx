@@ -27,10 +27,18 @@ const SignupPage = () => {
     profileImage: `${DEFAULT_IMAGE}`,
     profileImageFile: null,
   });
+  const [displayedImage, setDisplayedImage] = useState<string>("");
   const navigate = useNavigate();
 
   const handleInputChange = (fieldName: string, value: string) => {
     setSignupFormData({ ...signupFormData, [fieldName]: value });
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSignupFormData({ ...signupFormData, profileImageFile: e.target.files[0] });
+    }
+    setDisplayedImage(URL.createObjectURL(e.target.files![0]));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -54,7 +62,7 @@ const SignupPage = () => {
         email: "",
         password: "",
         confirmPassword: "",
-        profileImage: "",
+        profileImage: `${DEFAULT_IMAGE}`,
       });
       navigate("/login");
     } catch (err: unknown) {
@@ -69,12 +77,6 @@ const SignupPage = () => {
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSignupFormData({ ...signupFormData, profileImageFile: e.target.files[0] });
-    }
-    setSignupFormData({ ...signupFormData, profileImage: URL.createObjectURL(e.target.files![0]) });
-  };
 
   return (
     <>
@@ -100,8 +102,8 @@ const SignupPage = () => {
             onChange={handleImageUpload} 
             />
           </Button>
-          {signupFormData.profileImage && (
-            <img src={`${signupFormData.profileImage}`} 
+          {displayedImage && (
+            <img src={`${displayedImage}`} 
             alt="Profile Preview" 
             style={{ maxHeight: '150px', maxWidth: '150px' }}
              />
