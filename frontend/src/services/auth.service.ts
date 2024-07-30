@@ -3,15 +3,17 @@ import {
   REFRESH_TOKEN_KEY,
   AUTH_GOOGLE_LOGIN_URL,
   USER_IDENTIFIER_KEY,
+  AUTH_ONLINEUSERS_URL,
+  MESSAGE_GETCONVERSATION_URL,
+
 } from "../utils/constants";
 import AuthTokens from "../interfaces/AuthTokens";
 import { User } from "../interfaces/User";
 import { CredentialResponse } from "@react-oauth/google";
 import axios, { AxiosError } from "axios";
 
-// Define the types for the responses
+
 interface OnlineUsersResponse {
-  // Define the shape of the response data
   users: User[];
 }
 
@@ -56,12 +58,12 @@ export const googleLogin = async (
   }
 };
 
-// Convert fetchOnlineUsers to TypeScript
+
 export const fetchOnlineUsers = async (
   userId: string
 ): Promise<OnlineUsersResponse | null> => {
   try {
-    const response = await fetch("http://localhost:3000/auth/online-users", {
+    const response = await fetch(AUTH_ONLINEUSERS_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -81,14 +83,14 @@ export const fetchOnlineUsers = async (
   }
 };
 
-// Convert getHistoryMessages to TypeScript
+
 export const getHistoryMessages = async (
   sender: string,
   receiver: string
 ): Promise<ConversationResponse | null> => {
   try {
     const response = await fetch(
-      "http://localhost:3000/message/getConversation",
+      MESSAGE_GETCONVERSATION_URL,
       {
         method: "POST",
         headers: {

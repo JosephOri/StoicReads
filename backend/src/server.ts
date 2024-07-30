@@ -8,9 +8,7 @@ import cors from "cors";
 import path from "path";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
-import messageRoutes from "./routes/message.route"; // Message routes
-// import { authenticateSocket } from "./controllers/auth.controller"; // Socket authentication
-import { handleSocket } from "./socketHandler"; // Import the socket handler
+import { handleSocket } from "./socketHandler"; 
 
 const app: Express = express();
 
@@ -36,7 +34,6 @@ const io = new SocketIOServer(httpServer, {
     credentials: true,
   },
 });
-// io.use(authenticateSocket); // Use socket authentication middleware
 
 connectToDatabase()
   .then(() => {

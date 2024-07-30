@@ -1,11 +1,8 @@
 import * as UserController from "./controllers/auth.controller";
 import * as MessageController from "./controllers/message.contoller";
-import User from "./interfaces/User"; // Replace "./path/to/user.module" with the actual path to the User module
-
 import { Server } from "socket.io";
 
 export function handleSocket(io: Server) {
-  // Middleware for socket authentication
   io.on("connection", handleConnection);
 
   async function handleConnection(socket: any) {

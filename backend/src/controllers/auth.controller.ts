@@ -8,8 +8,6 @@ import { HttpStatusCode } from "axios";
 import jwt from "jsonwebtoken";
 import logger from "../utils/logger";
 import { errorMessages } from "../utils/constants";
-import { OAuth2Client } from "google-auth-library";
-import { log } from "console";
 import mongoose from "mongoose";
 
 export const register = async (req: Request, res: Response) => {
@@ -239,7 +237,7 @@ export const getOnlineUsers = async (req: Request, res: Response) => {
     const userId = req.body.userId;
 
     const onlineUsers = await UserModel.find(
-      { socketId: { $exists: true, $ne: null }, _id: { $ne: userId } }, // Exclude user with the specified userId
+      { socketId: { $exists: true, $ne: null }, _id: { $ne: userId } }, 
       "_id socketId userName"
     );
 
@@ -257,36 +255,6 @@ export const getAll = async (req: Request, res: Response) => {
   } catch (err) {
     console.error(err);
     res.status(500).send({ error: "Internal Server Error" });
-  }
-};
-
-export const getById = async (req: Request, res: Response) => {
-  try {
-    if (req.params.id) {
-      const itemId = req.params.id;
-      const itemById = await UserModel.findById(itemId);
-      return res.send(itemById);
-    } else {
-    }
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send({ error: "Internal Server Error" });
-  }
-};
-
-export const updateById = async (req: Request, res: Response) => {
-  try {
-    const itemId = req.params.id;
-    const updatedItem = await UserModel.findByIdAndUpdate(itemId, req.body, {
-      new: true,
-    });
-    if (!updatedItem) {
-      return res.status(404).send({ error: "Item not found" });
-    }
-    return res.status(200).send(updatedItem);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).send({ error: "Internal Server Error" });
   }
 };
 
@@ -326,7 +294,7 @@ export const removeSocketId = async (socketId: string) => {
       return user._id;
     } else {
       console.log(`User with socket ID ${socketId} not found`);
-      return null; // Maybe throw an error here? return user._id
+      return null;
     }
   } catch (error) {
     console.error("Error removing user socket ID:", error);

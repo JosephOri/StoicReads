@@ -10,9 +10,12 @@ export const AUTH_GOOGLE_URL = `${AUTH_URL}/google`;
 export const USERS_URL = `${AUTH_URL}/user`;
 export const UPDATE_URL = `${AUTH_URL}/update`;
 export const AUTH_GOOGLE_LOGIN_URL = `${AUTH_URL}/google/login`;
+export const AUTH_ONLINEUSERS_URL = `${AUTH_URL}/online-users`;
 export const POSTS_URL = `${BACKEND_URL}/post`;
 export const COMMENTS_URL = `${BACKEND_URL}/comment`;
 export const DEFAULT_IMAGE = "/uploads/defaultImage.jpg";
+export const MESSAGE_URL = `${BACKEND_URL}/message`;
+export const MESSAGE_GETCONVERSATION_URL = `${MESSAGE_URL}/getConversation`;
 
 export const applicationRoutes = {
   HOME: "/",

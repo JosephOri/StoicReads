@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { fetchOnlineUsers } from "../../services/auth.service";
-import { Socket } from "socket.io-client"; // Import Socket type if you're using socket.io
+import { Socket } from "socket.io-client"; 
 import { User } from "../../interfaces/User";
 
 interface OnlineUsersProps {
   startChat: (user: User) => void;
   updateSelectedUser: (user: User | null) => void;
   userId: string;
-  socket: Socket; // Ensure you have the correct type for socket
+  socket: Socket; 
 }
 
 const OnlineUsers: React.FC<OnlineUsersProps> = ({

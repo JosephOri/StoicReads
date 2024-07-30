@@ -16,7 +16,7 @@ export const getConversation = async (req: Request, res: Response) => {
         ],
       },
       { _id: 0 }
-    ); // Exclude the _id field from the returned documents
+    ); // Exclude _id field
     res.send(conversation);
   } catch (error) {
     console.error("Error fetching conversation:", error);

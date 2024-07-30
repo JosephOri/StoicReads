@@ -5,6 +5,6 @@ import {
     getConversation,
 } from "@controllers/message.contoller";
 
-router.post("/getConversation", getConversation);//auth?
+router.post("/getConversation", getConversation);
 
 export default router;

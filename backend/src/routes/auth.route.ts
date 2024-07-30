@@ -9,18 +9,13 @@ import {
   updateUser,
   deleteUser,
   getAll,
-  updateById,
-  getById,
   getOnlineUsers,
 } from "@controllers/auth.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import upload from "@config/multer.config";
 
 router.get("/", getAll);
-router.post("/online-users", getOnlineUsers); //auth?
-// router.get("/:id", getById);
-// router.put("/:id", updateById);
-// router.delete("/:id", deleteById);
+router.post("/online-users", getOnlineUsers); 
 router.post("/register", upload.single("image"), register);
 router.post("/google/login", googleLogin);
 router.post("/login", login);

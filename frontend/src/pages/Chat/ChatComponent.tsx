@@ -5,6 +5,7 @@ import { getHistoryMessages } from "../../services/auth.service";
 import io, { Socket } from "socket.io-client";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { User } from "../../interfaces/User";
+import { BACKEND_URL } from "../../utils/constants";
 
 interface Message {
   sender: string;
@@ -27,7 +28,7 @@ const ChatComponent = () => {
       return;
     }
 
-    const newSocket = io("http://localhost:3000", {
+    const newSocket = io(BACKEND_URL, {
       query: { userId: String(currentUser?._id) },
     });
 
