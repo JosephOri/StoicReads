@@ -290,43 +290,20 @@ router.post("/", upload.single("image"), postController.createPost);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
  *               userName:
  *                 type: string
- *               book:
- *                 type: object
- *                 properties:
- *                   title:
- *                     type: string
- *                   authors:
- *                     type: array
- *                     items:
- *                       type: string
- *                   image:
- *                     type: string
  *               title:
  *                 type: string
  *               content:
  *                 type: string
- *               comments:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     userName:
- *                       type: string
- *                     content:
- *                       type: string
- *               review:
- *                 type: object
- *                 properties:
- *                   rating:
- *                     type: integer
- *                   description:
- *                     type: string
+ *               rating:
+ *                 type: integer
+ *               description:
+ *                 type: string
  *               image:
  *                 type: string
  *                 format: binary
@@ -340,38 +317,15 @@ router.post("/", upload.single("image"), postController.createPost);
  *               properties:
  *                 userName:
  *                   type: string
- *                 book:
- *                   type: object
- *                   properties:
- *                     title:
- *                       type: string
- *                     authors:
- *                       type: array
- *                       items:
- *                         type: string
- *                     image:
- *                       type: string
  *                 title:
  *                   type: string
  *                 content:
  *                   type: string
- *                 comments:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       userName:
- *                         type: string
- *                         content:
- *                           type: string
- *                 review:
- *                   type: object
- *                   properties:
- *                     rating:
- *                       type: integer
- *                     description:
- *                         type: string
- *                 image:
+ *                 rating:
+ *                   type: integer
+ *                 description:
+ *                     type: string
+ *                 imagePath:
  *                   type: string
  *                 createdAt:
  *                   type: string
