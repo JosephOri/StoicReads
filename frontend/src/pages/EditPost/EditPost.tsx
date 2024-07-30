@@ -30,6 +30,7 @@ const EditPost = () => {
         console.log("postId "+ postId);
         const response = await axios.get(`${POSTS_URL}/${postId}`);
         setPost(response.data);
+        console.log("response.data "+ JSON.stringify(response.data));
       } catch (error) {
         console.error("Failed to fetch post", error);
       }
@@ -51,7 +52,9 @@ const EditPost = () => {
 
     try {
       const formData = new FormData();
-      formData.append("post", post);
+      formData.append("post", JSON.stringify(post));
+      console.log("formData "+ JSON.stringify(post));
+      console.log("post "+ JSON.stringify(post));
       if(imageFile) {
         formData.append("image", imageFile);
       }
