@@ -26,6 +26,19 @@ export async function getPostById(req: Request, res: Response): Promise<void> {
   }
 }
 
+export async function getPostsByUser(req: Request, res: Response): Promise<void> {
+  const userName = req.params.userName;
+  try {
+    const posts = await postService.getPostsByUser(userName);
+    if(posts.length === 0) {
+      res.status(404).json({ message: 'Posts not found' });
+    }
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json('Error getting posts');
+  }
+}
+
 export async function createPost(req: Request, res: Response): Promise<void> {
   try {
     const {
@@ -64,7 +77,12 @@ export async function createPost(req: Request, res: Response): Promise<void> {
 
 export async function updatePost(req: Request, res: Response): Promise<void> {
   const postId = req.params.id;
+  const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
   const updatedPostData: Post = req.body;
+  console.log('Updated Post Data:', JSON.stringify(updatedPostData));
+  if (imagePath) {
+    updatedPostData.image = imagePath;
+  }
   try {
     const updatedPost = await postService.updatePost(postId, updatedPostData);
     if (!updatedPost) {
