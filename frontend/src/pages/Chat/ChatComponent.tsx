@@ -77,32 +77,41 @@ const ChatComponent = () => {
 
   const startChat = async (user: User) => {
     if (!user) return;
-
+  
     const userId = String(user._id);
     if (!(userId in messages)) {
       setSelectedUser(user);
-
-      const historyMessages = await getHistoryMessages(
-        String(currentUser?._id),
-        userId
-      );
-
-      console.log("historyMessages", historyMessages),
-        setMessages((prevMessages) => {
-          if (!historyMessages) {
-            return prevMessages;
-          } else {
-            return {
-              ...prevMessages,
-              [userId]: historyMessages,
-            };
-          }
-        });
+  
+      try {
+        const response = await getHistoryMessages(
+          String(currentUser?._id),
+          userId
+        );
+  
+        if (response === null || response === undefined) {
+          console.error("Error: No message history found.");
+          return;
+        }
+  
+        const historyMessages = Array.isArray(response) 
+          ? response 
+          : ('messages' in response && Array.isArray(response.messages)) 
+            ? response.messages 
+            : [];
+  
+        setMessages((prevMessages) => ({
+          ...prevMessages,
+          [userId]: historyMessages,
+        }));
+      } catch (error) {
+        console.error("Error fetching message history:", error);
+      }
     } else if (String(selectedUser?._id) !== userId) {
       setSelectedUser(user);
     }
     setNewMessage("");
   };
+  
 
   const sendMessage = () => {
     if (socket && selectedUser) {
