@@ -52,10 +52,7 @@ export async function createPost(postData: CreatePostParams): Promise<Post> {
   }
 }
 
-export async function updatePost(
-  postId: string,
-  updatedPost: Post
-): Promise<Post | null> {
+export async function updatePost(postId: string, updatedPost: any) {
   const updated = await PostModel.findByIdAndUpdate(postId, updatedPost, {
     new: true,
   }).exec();
