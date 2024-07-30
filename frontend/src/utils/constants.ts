@@ -12,7 +12,7 @@ export const UPDATE_URL = `${AUTH_URL}/update`;
 export const AUTH_GOOGLE_LOGIN_URL = `${AUTH_URL}/google/login`;
 export const POSTS_URL = `${BACKEND_URL}/post`;
 export const COMMENTS_URL = `${BACKEND_URL}/comment`;
-export const DEFAULT_IMAGE = '/uploads/defaultImage.jpg';
+export const DEFAULT_IMAGE = `${BACKEND_URL}/uploads/defaultImage.jpg`;
 
 export const applicationRoutes = {
   HOME: '/',
