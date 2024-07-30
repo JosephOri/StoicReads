@@ -102,7 +102,7 @@ export const logout = async (req: Request, res: Response) => {
         if (!userDb?.tokens || !userDb.tokens.includes(refreshToken)) {
           return res
             .status(HttpStatusCode.Unauthorized)
-            .json({ message: errorMessages.NOT_FOUND_USER_ID });
+            .json({ message: errorMessages.FAILED_TO_GET_USER_BY_ID });
         }
         userDb.tokens = userDb.tokens.filter((token) => token !== refreshToken);
         await userDb.save();
@@ -159,7 +159,7 @@ export const getUser = async (req: Request, res: Response) => {
         if (!userDb) {
           return res
             .status(HttpStatusCode.NotFound)
-            .json({ message: errorMessages.NOT_FOUND_USER_ID });
+            .json({ message: errorMessages.FAILED_TO_GET_USER_BY_ID });
         }
         return res.status(HttpStatusCode.Ok).json(userDb);
       } catch (error: any) {

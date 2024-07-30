@@ -32,7 +32,7 @@ export const getUserByIdentifier = async (identifier: string) => {
     return user;
   } catch (error: any) {
     logger.error(`Error getting user by identifier: ${error.message}`);
-    throw new Error(errorMessages.NOT_FOUND_USER_IDENTIFIER);
+    throw new Error(errorMessages.FAILED_TO_GET_USER_BY_IDENTIFIER);
   }
 };
 
@@ -42,7 +42,7 @@ export const getUserById = async (id: mongoose.Types.ObjectId) => {
     return user;
   } catch (error: any) {
     logger.error(`Error getting user by id: ${error.message}`);
-    throw new Error(errorMessages.NOT_FOUND_USER_ID);
+    throw new Error(errorMessages.FAILED_TO_GET_USER_BY_ID);
   }
 };
 
@@ -80,7 +80,7 @@ export const updateUser = async (
     return updatedUser;
   } catch (error: any) {
     logger.error(`Error updating user by email or username: ${error.message}`);
-    throw new Error(errorMessages.ERROR_UPDATING_USER);
+    throw new Error(errorMessages.FAILED_TO_UPDATE_USER);
   }
 };
 
@@ -93,6 +93,6 @@ export const deleteUser = async (identifier: string): Promise<IUser | null> => {
     return deletedUser;
   } catch (error) {
     logger.error(`Error deleting user by email or username: ${error}`);
-    throw new Error(errorMessages.ERROR_DELETING_USER);
+    throw new Error(errorMessages.FAILED_TO_DELETE_USER);
   }
 };

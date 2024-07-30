@@ -1,4 +1,4 @@
-import mongoose, { connect } from 'mongoose';
+import mongoose from 'mongoose';
 import { createUser, getUserByIdentifier } from '../../services/user.service';
 import UserModel, { IUser } from '../../models/User';
 import User from '../../interfaces/User';
