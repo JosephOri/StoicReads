@@ -26,8 +26,16 @@ export async function getPostById(postId: string): Promise<IPost | null> {
 }
 
 export async function getPostsByUser(userName: string): Promise<IPost[]> {
-  const posts = await PostModel.find({ userName }).exec();
-  return posts;
+  try {
+    const posts = await PostModel.find({ userName }).exec();
+    if (posts.length === 0) {
+      return [];
+    }
+    return posts;
+  } catch (error) {
+    console.error('Error fetching posts by user:', error);
+    throw new Error('Error fetching posts by user');
+  }
 }
 
 

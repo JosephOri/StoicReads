@@ -17,10 +17,10 @@ export async function getPostById(req: Request, res: Response): Promise<void> {
   try {
     const post = await postService.getPostById(postId);
     if (!post) {
-      res.status(404).json({ message: 'Post not found' });
-    } else {
-      res.status(200).json(post);
+      res.status(200).json('Post not found');
+      return;
     }
+    res.status(200).json(post);
   } catch (error) {
     res.status(500).json('Error getting post');
   }
@@ -30,8 +30,10 @@ export async function getPostsByUser(req: Request, res: Response): Promise<void>
   const userName = req.params.userName;
   try {
     const posts = await postService.getPostsByUser(userName);
+    console.log('Posts:', posts);
     if(posts.length === 0) {
-      res.status(404).json({ message: 'Posts not found' });
+      res.status(200).json({ message: 'Posts not found' });
+      return;
     }
     res.status(200).json(posts);
   } catch (error) {

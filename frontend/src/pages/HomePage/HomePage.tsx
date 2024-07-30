@@ -102,7 +102,7 @@ const HomePage = () => {
   }
 
   if (error) return <div>Failed to load posts</div>;
-  if (!posts) return <CircularProgress />;
+  if (!posts) return <div>Loading ......</div>;
 
   return (
     <>
@@ -120,7 +120,12 @@ const HomePage = () => {
         </Button>
       </Grid>
 
-      <Grid 
+      {(!Array.isArray(posts) || posts.length === 0) ? (
+        <Typography variant="h4" align="center" color="textSecondary" style={{ textAlign: "center" }}>
+          You haven't posted anything yet!
+        </Typography>
+      ) : (
+        <Grid 
         container 
         spacing={4} 
         direction="row" 
@@ -159,6 +164,7 @@ const HomePage = () => {
           );
         })}
       </Grid>
+      )}
       <Dialog
         open={open}
         onClose={handleClose}
