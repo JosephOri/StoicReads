@@ -8,9 +8,8 @@ import { HttpStatusCode } from "axios";
 import jwt from "jsonwebtoken";
 import logger from "../utils/logger";
 import { errorMessages } from "../utils/constants";
-import { OAuth2Client } from "google-auth-library";
-import { log } from "console";
 import { DEFAULT_IMAGE } from "src/constants/constants";
+import mongoose from "mongoose";
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -22,7 +21,9 @@ export const register = async (req: Request, res: Response) => {
         .status(HttpStatusCode.BadRequest)
         .json({ message: "Please provide all required fields" });
     }
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : DEFAULT_IMAGE;
+    const imagePath = req.file
+      ? `/uploads/${req.file.filename}`
+      : DEFAULT_IMAGE;
     const user: User = { userName, email, password, profileImage: imagePath };
     const newUser = await userService.createUser(user);
     res.status(HttpStatusCode.Created).json(newUser);
@@ -178,9 +179,7 @@ export const getUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   const userid = req.params.userId;
   const updatedUserData = req.body;
-  const imagePath = req.file
-    ? `/uploads/${req.file.filename}`
-    : DEFAULT_IMAGE;
+  const imagePath = req.file ? `/uploads/${req.file.filename}` : DEFAULT_IMAGE;
   try {
     const { userName, email, password } = updatedUserData;
     if (!userName || !email || !password) {
@@ -238,7 +237,7 @@ export const getOnlineUsers = async (req: Request, res: Response) => {
     const userId = req.body.userId;
 
     const onlineUsers = await UserModel.find(
-      { socketId: { $exists: true, $ne: null }, _id: { $ne: userId } }, 
+      { socketId: { $exists: true, $ne: null }, _id: { $ne: userId } },
       "_id socketId userName"
     );
 
