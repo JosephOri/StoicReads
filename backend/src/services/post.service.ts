@@ -25,7 +25,7 @@ export async function getPostById(postId: string): Promise<IPost | null> {
   return post;
 }
 
-export async function getPostsByUser(userName: string): Promise<IPost[]> {
+export async function getPostsByUserName(userName: string): Promise<IPost[]> {
   try {
     const posts = await PostModel.find({ userName }).exec();
     if (posts.length === 0) {
@@ -61,10 +61,7 @@ export async function createPost(postData: CreatePostParams): Promise<IPost> {
   }
 }
 
-export async function updatePost(
-  postId: string,
-  updatedPost: IPost
-): Promise<IPost | null> {
+export async function updatePost(postId: string, updatedPost: any) {
   const updated = await PostModel.findByIdAndUpdate(postId, updatedPost, {
     new: true,
   }).exec();

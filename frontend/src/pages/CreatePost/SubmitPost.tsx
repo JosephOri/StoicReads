@@ -159,12 +159,12 @@ const SubmitPost = () => {
                     >
                       Upload Image
                     </Button>
+
                   </label>
                   {localImage && (
                     <img
-                    
                       src={localImage}
-                      alt="'Preview"
+                      alt="Preview"
                       style={{ maxWidth: "100%", height: "auto" }}
                     />
                   )}
