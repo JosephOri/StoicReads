@@ -8,7 +8,7 @@ import { HttpStatusCode } from "axios";
 import jwt from "jsonwebtoken";
 import logger from "../utils/logger";
 import { errorMessages } from "../utils/constants";
-import { DEFAULT_IMAGE } from "src/constants/constants";
+import { DEFAULT_IMAGE } from "../constants/constants";
 import mongoose from "mongoose";
 
 export const register = async (req: Request, res: Response) => {
@@ -189,7 +189,9 @@ export const updateUser = async (req: Request, res: Response) => {
         .json({ message: "Please provide all required fields" });
     }
 
-    const newUser = await userService.updateUser(userid, {
+    // convert userId to ObjectId
+    const userID = new mongoose.Types.ObjectId(userid);
+    const newUser = await userService.updateUser(userID, {
       userName,
       email,
       password,
