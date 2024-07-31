@@ -1,6 +1,7 @@
-import { errorMessages } from '@utils/constants';
+import { errorMessages } from '../utils/constants';
 import PostModel, { IPost } from '../models/Post';
-import isFormDataValidCheck from '@utils/isFormDataValidCheck';
+import isPostFormDataValid from '../utils/isPostFormDataValid';
+import logger from '../utils/logger';
 import path from 'path';
 
 export interface CreatePostParams {
@@ -17,13 +18,24 @@ export interface CreatePostParams {
 }
 
 export async function getAllPosts(): Promise<IPost[]> {
-  const posts = await PostModel.find().exec();
-  return posts;
+  
+  try{
+    const posts = await PostModel.find().exec();
+    return posts;
+  } catch (error) {
+    logger.error(`Error getting all posts: ${error}`);
+    throw new Error(errorMessages.FAILED_TO_GET_ALL_POSTS);
+  }
 }
 
 export async function getPostById(postId: string): Promise<IPost | null> {
-  const post = await PostModel.findById(postId).exec();
-  return post;
+  try{
+    const post = await PostModel.findById(postId).exec();
+    return post;
+  } catch (error) {
+    logger.error(`Error getting post by identifier: ${error}`);
+    throw new Error(errorMessages.FAILED_TO_GET_POST_BY_ID);
+  }
 }
 
 export async function getPostsByUserName(userName: string): Promise<IPost[]> {
@@ -46,7 +58,7 @@ export async function createPost(postData: CreatePostParams): Promise<IPost> {
     throw new Error(errorMessages.POST_ALREADY_EXISTS);
   }
   // console.log('postData', postData);
-  if (!isFormDataValidCheck(postData)) {
+  if (!isPostFormDataValid(postData)) {
     throw new Error(errorMessages.INVALID_FORM_DATA);
   }
 
@@ -78,6 +90,12 @@ export async function updatePost(postId: string, updatedPost: any) {
 }
 
 export async function deletePost(postId: string): Promise<boolean> {
-  const result = await PostModel.findByIdAndDelete(postId).exec();
-  return !!result;
+  
+  try{
+    const deletedPost = await PostModel.findByIdAndDelete(postId).exec();
+    return !!deletedPost;
+  } catch (error) {
+    logger.error(`Error deleting post: ${error}`);
+    throw new Error(errorMessages.FAILED_TO_DELETE_POST);
+  }
 }

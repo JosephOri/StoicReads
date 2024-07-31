@@ -7,10 +7,6 @@ import {
         deletePost,
        } from '../../services/post.service';
 import PostModel, { IPost } from '../../models/Post';
-import Post from '../../interfaces/Post';
-import Book from '@interfaces/Book';
-import Review from '@interfaces/Review';
-import Comment from '@interfaces/Comment';
 
 import 'dotenv/config';
 import connectToDatabase from '../../utils/dbConfig';
