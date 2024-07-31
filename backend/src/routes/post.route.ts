@@ -278,8 +278,6 @@ router.post("/", upload.single("image"), postController.createPost);
  *           schema:
  *             type: object
  *             properties:
- *               userName:
- *                 type: string
  *               title:
  *                 type: string
  *               rating:
@@ -297,8 +295,6 @@ router.post("/", upload.single("image"), postController.createPost);
  *             schema:
  *               type: object
  *               properties:
- *                 userName:
- *                   type: string
  *                 title:
  *                   type: string
  *                 rating:
