@@ -50,8 +50,8 @@ const SignupPage = () => {
     formData.append("email", signupFormData.email);
     formData.append("password", signupFormData.password);
     formData.append("profileImage", signupFormData.profileImage);
-    if(signupFormData.profileImageFile) {
-      formData.append("image", signupFormData.profileImageFile);
+    if(signupFormData.profileImageFile) {      
+      formData.append("profileImage", signupFormData.profileImageFile);
     }
     try {
       const response = await axios.post(AUTH_REGISTER_URL, formData);

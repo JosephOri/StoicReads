@@ -15,10 +15,14 @@ import {
   Button,
   Rating,
   Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";  
+import { ExpandMore, ExpandLess, FilterAlt } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 import { blue, purple, red } from "@mui/material/colors";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import axios from "axios";
 import { POSTS_URL, BACKEND_URL } from "../../utils/constants";
 import useCurrentUser from "../../hooks/useCurrentUser";
@@ -31,7 +35,7 @@ const HomePage = () => {
   const { user } = useCurrentUser();
   const [showMyPosts, setShowMyPosts] = useState(false);
   const { data: posts, error } = useSWR(
-    showMyPosts ? `${POSTS_URL}/user/${user?.userName}` : POSTS_URL, 
+    showMyPosts ? `${POSTS_URL}/user/${user?.userName}` : POSTS_URL,
     fetcher
   );
 
@@ -70,53 +74,88 @@ const HomePage = () => {
   };
 
   const handleDeleteComment = async (index: number) => {
-    const isConfirmed = window.confirm("Are you sure you want to delete this comment?");
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this comment?"
+    );
     if (!isConfirmed) return;
     const updatedPost = {
       ...selectedPost,
-      comments: selectedPost?.comments.filter((comment: any, i: number) => i !== index),
+      comments: selectedPost?.comments.filter(
+        (comment: any, i: number) => i !== index
+      ),
     };
     await axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
     setSelectedPost(updatedPost as Post);
   };
 
   const handleDeletePost = async (id: unknown) => {
-    const isConfirmed = window.confirm("Are you sure you want to delete this post?");
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
     if (!isConfirmed) return;
     await axios.delete(`${POSTS_URL}/${id}`);
     handleClose();
+    mutate(showMyPosts ? `${POSTS_URL}/user/${user?.userName}` : POSTS_URL);
   };
 
   const getAuthorLink = (authorName: string) => {
-    const formattedName = authorName.replace(/ /g, '_');
+    const formattedName = authorName.replace(/ /g, "_");
     const wikiUrl = `https://en.wikipedia.org/wiki/${formattedName}`;
 
     return (
       <DialogContentText fontSize="1.25rem" mb={2} color={blue[500]}>
-        <a href={wikiUrl} target="_blank" rel="noopener noreferrer" style={{ color: blue[500], textDecoration: 'underline' }}>
+        <a
+          href={wikiUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: blue[500], textDecoration: "underline" }}
+        >
           {authorName}
         </a>
       </DialogContentText>
     );
-  }
+  };
 
   if (error) return <div>Failed to load posts</div>;
   if (!posts) return <div>Loading ......</div>;
 
   return (
     <>
-      <h1 style={{ textAlign: "center" }}>{`Welcome Back ${user?.userName}`}</h1>
-
-      <Grid item xs={12} sx={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          mt: 2, 
-          mb: 2 
-        }}>
-        <Button onClick={togglePosts} variant="contained" color="primary">
-          {showMyPosts ? "Show All Posts" : "Show My Posts"}
-        </Button>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 2,
+          mb: 2,
+        }}
+      >
+        <Accordion sx={{ width: "300px", margin: "0 auto" }}>
+          <AccordionSummary
+            expandIcon={<FilterAlt />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography variant="h6">Filter Items</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Button onClick={togglePosts} variant="contained" color="primary">
+                {showMyPosts ? "Show All Posts" : "Show My Posts"}
+              </Button>
+            </Grid>
+          </AccordionDetails>
+        </Accordion>
       </Grid>
 
       {(!Array.isArray(posts) || posts.length === 0) ? (
@@ -182,9 +221,8 @@ const HomePage = () => {
         {open && selectedPost && (
           <>
             <DialogTitle color={purple[500]}>
-              <strong>
-                {selectedPost?.book.title}  
-              </strong> by  {selectedPost?.book.authors}
+              <strong>{selectedPost?.book.title}</strong> by{" "}
+              {selectedPost?.book.authors}
               {user?.userName === selectedPost?.userName && (
                 <Box
                   sx={{
@@ -225,28 +263,42 @@ const HomePage = () => {
               <Box display="flex" flexDirection="row" mb={2}>
                 <Box>
                   <img
-                    src={selectedPost?.image ? `${BACKEND_URL}${selectedPost.image}` : selectedPost?.book.image}
+                    src={
+                      selectedPost?.image
+                        ? `${BACKEND_URL}${selectedPost.image}`
+                        : selectedPost?.book.image
+                    }
                     alt={selectedPost?.book.title}
-                    style={{ maxWidth: "200px", marginRight: "20px", borderRadius: "8px" }}
+                    style={{
+                      maxWidth: "200px",
+                      marginRight: "20px",
+                      borderRadius: "8px",
+                    }}
                   />
                 </Box>
                 <Box flexGrow={1} ml={2}>
                   <Typography variant="h6" gutterBottom>
                     Posted by
                   </Typography>
-                  <DialogContentText fontSize="1.25rem" mb={2} color={blue[900]}>
-                      {selectedPost?.userName}
+                  <DialogContentText
+                    fontSize="1.25rem"
+                    mb={2}
+                    color={blue[900]}
+                  >
+                    {selectedPost?.userName}
                   </DialogContentText>
                   <Typography variant="h6" gutterBottom>
                     Authors
                   </Typography>
-                  <DialogContentText fontSize="1.25rem" mb={2} color={blue[500]}>
-                      {
-                        selectedPost && 
-                        selectedPost.book && 
-                        selectedPost.book.authors && 
-                        getAuthorLink(selectedPost.book.authors)
-                      }
+                  <DialogContentText
+                    fontSize="1.25rem"
+                    mb={2}
+                    color={blue[500]}
+                  >
+                    {selectedPost &&
+                      selectedPost.book &&
+                      selectedPost.book.authors &&
+                      getAuthorLink(selectedPost.book.authors)}
                   </DialogContentText>
                   <Typography variant="h6" gutterBottom>
                     Review
@@ -261,7 +313,11 @@ const HomePage = () => {
               </Box>
               <Divider sx={{ my: 2 }} />
               <Box mb={2}>
-                <DialogContentText color="black" fontSize="1.25rem" sx={{ ml: 2 }}>
+                <DialogContentText
+                  color="black"
+                  fontSize="1.25rem"
+                  sx={{ ml: 2 }}
+                >
                   {selectedPost?.review.description}
                 </DialogContentText>
                 <Divider sx={{ my: 2 }} />
@@ -269,12 +325,23 @@ const HomePage = () => {
               <Typography variant="h5">Comments:</Typography>
               <Divider sx={{ my: 2 }} />
               {selectedPost?.comments.map((comment: any, index: number) => (
-                <Box key={index} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 1 }}>
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: 1,
+                  }}
+                >
                   <DialogContentText>
                     <strong>{comment?.username}:</strong> {comment?.content}
                   </DialogContentText>
                   {comment?.username === user?.userName && (
-                    <Button onClick={() => handleDeleteComment(index)} sx={{ marginLeft: 1 }}>
+                    <Button
+                      onClick={() => handleDeleteComment(index)}
+                      sx={{ marginLeft: 1 }}
+                    >
                       <CloseIcon style={{ color: "red", fontSize: 24 }} />
                     </Button>
                   )}
@@ -288,7 +355,12 @@ const HomePage = () => {
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                 />
-                <Button variant="contained" color="primary" onClick={handleAddComment} sx={{ marginTop: 1 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleAddComment}
+                  sx={{ marginTop: 1 }}
+                >
                   Submit
                 </Button>
               </Box>
