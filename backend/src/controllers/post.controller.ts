@@ -82,7 +82,6 @@ export async function updatePost(req: Request, res: Response): Promise<void> {
   try {
     const postId = req.params.id;
     const { title, rating, description } = req.body;
-
     const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
 
     const updatedPostData = {

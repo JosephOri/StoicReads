@@ -6,7 +6,6 @@ interface Post {
     userName: string;
     book: Book;
     title: string;
-    content: string;
     comments: Comment[];
     review: Review;
     image?: string;

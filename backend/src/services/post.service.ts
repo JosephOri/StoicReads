@@ -1,4 +1,6 @@
+import { errorMessages } from '@utils/constants';
 import PostModel, { IPost } from '../models/Post';
+import isFormDataValidCheck from '@utils/isFormDataValidCheck';
 import path from 'path';
 
 export interface CreatePostParams {
@@ -39,6 +41,15 @@ export async function getPostsByUserName(userName: string): Promise<IPost[]> {
 
 
 export async function createPost(postData: CreatePostParams): Promise<IPost> {
+
+  if(await PostModel.findOne({userName: postData.userName, title: postData.title})) {
+    throw new Error(errorMessages.POST_ALREADY_EXISTS);
+  }
+  // console.log('postData', postData);
+  if (!isFormDataValidCheck(postData)) {
+    throw new Error(errorMessages.INVALID_FORM_DATA);
+  }
+
   try {
     const newPost = new PostModel({
       userName: postData.userName,

@@ -19,7 +19,7 @@ const PostSchema: Schema = new Schema({
   title: { type: String, required: true },
   comments: [{ type: Object, required: true }],
   review: { type: Object, required: true },
-  image: { type: String }, // New field for storing image path
+  image: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
