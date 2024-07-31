@@ -44,7 +44,6 @@ const SubmitPost = () => {
     formData.append("bookAuthors", selectedBook?.volumeInfo.authors?.join(", ") || "Sample Author");
     formData.append("bookImage", selectedBook?.volumeInfo.imageLinks.thumbnail || "https://example.com/sample-image.jpg");
     formData.append("title", postTitle || "Sample Post Title");
-    formData.append("content", "This is a sample post content.");
     formData.append("rating", (rating || 3).toString());
     formData.append("description", review || "This is a sample review.");
     if (imageFile) {
