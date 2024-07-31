@@ -1,0 +1,124 @@
+/* styles.css */
+
+.chat-container {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  border: 1px solid #4caf50;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.online-users {
+  width: 150px;
+  max-height: calc(100vh - 94px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-right: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.online-users li {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  color: #555;
+  font-size: 14px;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s ease;
+}
+
+.online-users li:hover {
+  background-color: #f9f9f9;
+}
+
+.chat-window {
+  flex: 1;
+  height: calc(100vh - 94px);
+  min-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chat-window h3 {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.chat-messages {
+  height: calc(100vh - 254px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px;
+}
+
+.title-bar {
+  background-color: #eee;
+  padding: 5px;
+  text-align: center;
+}
+
+.sent,
+.received {
+  margin: 5px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.sent {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.received {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.message-input {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.message-input button {
+  padding: 8px;
+  margin-left: 5px;
+  border: 1px solid #4caf50;
+  background-color: #4caf50;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.message-input button:hover {
+  background-color: #45a049;
+}

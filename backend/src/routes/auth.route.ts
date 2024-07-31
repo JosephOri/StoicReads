@@ -8,9 +8,15 @@ import {
   getUser,
   updateUser,
   deleteUser,
+  getAll,
+  getOnlineUsers,
+
 } from "@controllers/auth.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import upload from "@config/multer.config";
+
+router.get("/", getAll);
+router.post("/online-users", getOnlineUsers); 
 
 /**
  * @swagger

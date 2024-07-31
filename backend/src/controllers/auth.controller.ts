@@ -3,6 +3,7 @@ import * as userService from "../services/user.service";
 import { googleLoginService } from "../services/auth.service";
 import { getUserTokens, extractToken } from "../services/auth.service";
 import User from "../interfaces/User";
+import UserModel from "../models/User";
 import { HttpStatusCode } from "axios";
 import jwt from "jsonwebtoken";
 import logger from "../utils/logger";
@@ -229,5 +230,74 @@ export const deleteUser = async (req: Request, res: Response) => {
     return res
       .status(HttpStatusCode.InternalServerError)
       .json({ message: error.message });
+  }
+};
+
+export const getOnlineUsers = async (req: Request, res: Response) => {
+  try {
+    const userId = req.body.userId;
+
+    const onlineUsers = await UserModel.find(
+      { socketId: { $exists: true, $ne: null }, _id: { $ne: userId } }, 
+      "_id socketId userName"
+    );
+
+    res.send(onlineUsers);
+  } catch (error) {
+    console.error("Error fetching online users:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const getAll = async (req: Request, res: Response) => {
+  try {
+    const items = await UserModel.find();
+    return res.send(items);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
+export const updateSocketId = async (
+  userId: mongoose.Types.ObjectId,
+  socketId: string
+) => {
+  try {
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { _id: userId },
+      { $set: { socketId } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      console.log(`User with ID ${userId} not found.`);
+    } else {
+      console.log(`Socket ID ${socketId} associated with user ID ${userId}`);
+    }
+
+    return updatedUser;
+  } catch (error) {
+    console.error("Error updating user socket ID:", error);
+  }
+};
+
+export const removeSocketId = async (socketId: string) => {
+  try {
+    const user = await UserModel.findOneAndUpdate(
+      { socketId },
+      { $set: { socketId: null } },
+      { new: true }
+    );
+
+    if (user) {
+      console.log(`Socket ID ${socketId} removed from user ID ${user._id}`);
+      return user._id;
+    } else {
+      console.log(`User with socket ID ${socketId} not found`);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error removing user socket ID:", error);
   }
 };

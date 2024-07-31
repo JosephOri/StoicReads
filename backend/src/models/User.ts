@@ -1,15 +1,16 @@
-import mongoose, { Schema, Document } from 'mongoose';
-import validator from 'validator';
+import mongoose, { Schema, Document } from "mongoose";
+import validator from "validator";
 
 const isEmail = validator.isEmail;
 
 export interface IUser extends Document {
-  _id: mongoose.Types.ObjectId; 
+  _id: mongoose.Types.ObjectId;
   userName: string;
   email: string;
   password: string;
   profileImage: string;
   tokens: string[];
+  socketId: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -22,9 +23,9 @@ const UserSchema: Schema = new Schema({
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
+    required: [true, "Email is required"],
     unique: true,
-    validate: [isEmail, 'Invalid email'],
+    validate: [isEmail, "Invalid email"],
   },
   password: {
     type: String,
@@ -33,12 +34,15 @@ const UserSchema: Schema = new Schema({
   profileImage: {
     type: String,
     default:
-      'https://www.iprcenter.gov/image-repository/blank-profile-picture.png/@@images/image.png',
+      "https://www.iprcenter.gov/image-repository/blank-profile-picture.png/@@images/image.png",
   },
   tokens: {
     type: [String],
     default: [],
     required: false,
+  },
+  socketId: {
+    type: String,
   },
   createdAt: {
     type: Date,
@@ -50,5 +54,5 @@ const UserSchema: Schema = new Schema({
   },
 });
 
-const UserModel = mongoose.model<IUser>('User', UserSchema);
+const UserModel = mongoose.model<IUser>("User", UserSchema);
 export default UserModel;
