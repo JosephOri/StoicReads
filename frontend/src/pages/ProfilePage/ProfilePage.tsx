@@ -78,7 +78,7 @@ const ProfilePage = () => {
                             component="img"
                             height="300"
                             width="300"
-                            image= {profileData.profileImage.includes("googleusercontent")? profileData.profileImage: `${BACKEND_URL}${profileData.profileImage}`}
+                            image= {profileData.profileImage}
                             alt="green iguana"
                         />
                         <CardContent>
