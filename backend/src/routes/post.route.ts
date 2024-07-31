@@ -35,16 +35,12 @@ const router = express.Router();
  *                         type: string
  *                   title:
  *                     type: string
- *                   content:
- *                     type: string
  *                   comments:
  *                     type: array
  *                     items:
  *                       type: object
  *                       properties:
  *                         userName:
- *                           type: string
- *                         content:
  *                           type: string
  *                   review:
  *                     type: object
@@ -100,16 +96,12 @@ router.get("/", postController.getAllPosts);
  *                       type: string
  *                 title:
  *                   type: string
- *                 content:
- *                   type: string
  *                 comments:
  *                   type: array
  *                   items:
  *                     type: object
  *                     properties:
  *                       userName:
- *                         type: string
- *                       content:
  *                         type: string
  *                 review:
  *                   type: object
@@ -169,16 +161,12 @@ router.get("/:id", postController.getPostById);
  *                         type: string
  *                   title:
  *                     type: string
- *                   content:
- *                     type: string
  *                   comments:
  *                     type: array
  *                     items:
  *                       type: object
  *                       properties:
  *                         userName:
- *                           type: string
- *                         content:
  *                           type: string
  *                   review:
  *                     type: object
@@ -225,8 +213,6 @@ router.get("/user/:userName", postController.getPostsByUser);
  *                 type: string
  *               title:
  *                 type: string
- *               content:
- *                 type: string
  *               rating:
  *                 type: integer
  *               description:
@@ -256,8 +242,6 @@ router.get("/user/:userName", postController.getPostsByUser);
  *                     image:
  *                       type: string
  *                 title:
- *                   type: string
- *                 content:
  *                   type: string
  *                 rating:
  *                   type: integer
@@ -298,8 +282,6 @@ router.post("/", upload.single("image"), postController.createPost);
  *                 type: string
  *               title:
  *                 type: string
- *               content:
- *                 type: string
  *               rating:
  *                 type: integer
  *               description:
@@ -318,8 +300,6 @@ router.post("/", upload.single("image"), postController.createPost);
  *                 userName:
  *                   type: string
  *                 title:
- *                   type: string
- *                 content:
  *                   type: string
  *                 rating:
  *                   type: integer

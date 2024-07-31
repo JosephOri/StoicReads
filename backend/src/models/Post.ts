@@ -7,7 +7,6 @@ export interface Post extends Document {
   userName: string;
   book: Book;
   title: string;
-  content: string;
   comments: UserComment[];
   review: Review;
   image?: string;
@@ -18,7 +17,6 @@ const PostSchema: Schema = new Schema({
   userName: { type: String, required: true },
   book: { type: Object, required: true },
   title: { type: String, required: true },
-  content: { type: String, required: true },
   comments: [{ type: Object, required: true }],
   review: { type: Object, required: true },
   image: { type: String }, // New field for storing image path

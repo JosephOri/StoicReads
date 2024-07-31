@@ -27,7 +27,6 @@ const EditPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        console.log("postId "+ postId);
         const response = await axios.get(`${POSTS_URL}/${postId}`);
         setPost(response.data);
       } catch (error) {

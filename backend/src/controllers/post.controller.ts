@@ -51,7 +51,6 @@ export async function createPost(req: Request, res: Response): Promise<void> {
       bookAuthors,
       bookImage,
       title,
-      content,
       rating,
       description,
     } = req.body;
@@ -66,7 +65,6 @@ export async function createPost(req: Request, res: Response): Promise<void> {
         image: bookImage,
       },
       title,
-      content,
       rating,
       description,
       image: imagePath,
@@ -82,14 +80,13 @@ export async function createPost(req: Request, res: Response): Promise<void> {
 export async function updatePost(req: Request, res: Response): Promise<void> {
   try {
     const postId = req.params.id;
-    const { userName, title, content, rating, description } = req.body;
+    const { userName, title, rating, description } = req.body;
 
     const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
 
     const updatedPostData = {
       userName,
       title,
-      content,
       review: {
         rating,
         description,
