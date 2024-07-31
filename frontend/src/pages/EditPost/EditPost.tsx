@@ -51,7 +51,10 @@ const EditPost = () => {
 
     try {
       const formData = new FormData();
-      formData.append("post", post);
+      formData.append("userName", post.userName);
+      formData.append("title", post.title);
+      formData.append("rating", post.review.rating);
+      formData.append("description", post.review.description);
       if(imageFile) {
         formData.append("image", imageFile);
       }
