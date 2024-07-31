@@ -1,10 +1,31 @@
 import UserModel, { IUser } from '../models/User';
 import bcrypt from 'bcryptjs';
-import User from '@interfaces/User';
+import User from '../interfaces/User';
 import logger from '../utils/logger';
 import { errorMessages } from '../utils/constants';
+import isUserFormDataValid from '../utils/isUserFormDataValid';
 import mongoose from 'mongoose';
+
 export const createUser = async (user: User): Promise<IUser> => {
+
+  const existingUser = await UserModel.findOne({
+    $or: [{ email: user.email }, { userName: user.userName }]
+  });
+  
+  if (existingUser) {
+    if (existingUser.email === user.email) {
+      throw new Error(errorMessages.EMAIL_ALREADY_EXISTS);
+    }
+    if (existingUser.userName === user.userName) {
+      throw new Error(errorMessages.USERNAME_ALREADY_EXISTS);
+    }
+  }
+
+  // console.log('user', user);
+  if (!isUserFormDataValid(user)) {
+    throw new Error(errorMessages.INVALID_FORM_DATA);
+  }
+
   try {
     const salt = await bcrypt.genSalt(
       parseInt(process.env.SALT_ROUNDS as string)
@@ -19,8 +40,8 @@ export const createUser = async (user: User): Promise<IUser> => {
     const savedUser = await newUser.save();
     return savedUser;
   } catch (error: any) {
-    logger.error(`Error creating user: ${error.message}`);
-    throw new Error(`failed to create user: ${error.message}`);
+    logger.error(`Error creating user: ${errorMessages.FAILED_TO_CREATE_USER}`);
+    throw new Error(`failed to create user: ${errorMessages.FAILED_TO_CREATE_USER}`);
   }
 };
 
@@ -60,7 +81,7 @@ export const validatePassword = async (
 };
 
 export const updateUser = async (
-  _id: string,
+  _id: mongoose.Types.ObjectId,
   user: User
 ): Promise<User | null> => {
   const salt = await bcrypt.genSalt(
@@ -84,13 +105,12 @@ export const updateUser = async (
   }
 };
 
-export const deleteUser = async (identifier: string): Promise<IUser | null> => {
+export const deleteUser = async (identifier: string): Promise<boolean> => {
   try {
     const deletedUser = await UserModel.findOneAndDelete({
       $or: [{ email: identifier }, { userName: identifier }],
     });
-    logger.info(`Deleted user: ${deletedUser}`);
-    return deletedUser;
+    return !!deletedUser;
   } catch (error) {
     logger.error(`Error deleting user by email or username: ${error}`);
     throw new Error(errorMessages.FAILED_TO_DELETE_USER);
