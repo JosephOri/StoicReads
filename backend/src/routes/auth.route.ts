@@ -10,13 +10,93 @@ import {
   deleteUser,
   getAll,
   getOnlineUsers,
-
 } from "@controllers/auth.controller";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import upload from "@config/multer.config";
 
+/**
+ * @swagger
+ * /auth:
+ *   get:
+ *     summary: Get all users
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: List of all users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The user ID
+ *                   userName:
+ *                     type: string
+ *                     description: The user's name
+ *                   email:
+ *                     type: string
+ *                     description: The user's email address
+ *                   profileImage:
+ *                     type: string
+ *                     format: uri
+ *                     description: URL to the user's profile image
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: Date and time when the user was created
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: Date and time when the user was last updated
+ *       500:
+ *         description: Internal server error
+ */
 router.get("/", getAll);
-router.post("/online-users", getOnlineUsers); 
+/**
+ * @swagger
+ * /auth/online-users:
+ *   post:
+ *     summary: Get all online users
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 description: The ID of the requesting user
+ *                 example: 60c72b2f9b1d4b001f8d4d29
+ *     responses:
+ *       200:
+ *         description: List of online users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The user ID
+ *                   userName:
+ *                     type: string
+ *                     description: The user's name
+ *                   socketId:
+ *                     type: string
+ *                     description: The user's socket ID
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+router.post("/online-users", getOnlineUsers);
 
 /**
  * @swagger
