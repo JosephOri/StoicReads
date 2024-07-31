@@ -6,6 +6,8 @@ export const errorMessages = {
   PASSWORDS_DONT_MATCH: 'Passwords do not match',
   USER_NOT_FOUND: 'User not found',
   USER_ALREADY_EXISTS: 'User already exists',
+  USERNAME_ALREADY_EXISTS: 'Username already exists',
+  EMAIL_ALREADY_EXISTS: 'Email already exists',
   USER_ALREADY_LOGGED_IN: 'User is already logged in',
   SERVER_ERROR: 'Server error occurred, please try again later',
   NULL_RESPONSE: 'Null response',
