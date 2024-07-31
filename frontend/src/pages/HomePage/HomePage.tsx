@@ -28,6 +28,7 @@ import { POSTS_URL, BACKEND_URL } from "../../utils/constants";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { useNavigate } from "react-router-dom";
 import { Post } from "../../interfaces/Post";
+import { toast, ToastContainer } from "react-toastify";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -38,13 +39,19 @@ const HomePage = () => {
     showMyPosts ? `${POSTS_URL}/user/${user?.userName}` : POSTS_URL,
     fetcher
   );
-
   const [open, setOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [newComment, setNewComment] = useState("");
   const navigate = useNavigate();
 
   const togglePosts = () => {
+    if(!showMyPosts){
+      const found = posts.find((post: Post) => post.userName === user?.userName);
+      if (!found) {
+        toast.error("You haven't posted anything yet!");
+        return;
+      }
+    }
     setShowMyPosts(!showMyPosts);
   };
 
@@ -369,6 +376,7 @@ const HomePage = () => {
           </>
         )}
       </Dialog>
+      <ToastContainer />
     </>
   );
 };
