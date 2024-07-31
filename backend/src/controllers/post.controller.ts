@@ -34,12 +34,12 @@ export async function getPostsByUser(
   try {
     const posts = await postService.getPostsByUser(userName);
     if (posts.length === 0) {
-      res.status(404).json({ message: 'Posts not found' });
+      res.status(404).json({ message: "Posts not found" });
     } else {
       res.status(200).json(posts);
     }
   } catch (error) {
-    res.status(500).json('Error getting posts');
+    res.status(500).json("Error getting posts");
   }
 }
 
@@ -51,7 +51,6 @@ export async function createPost(req: Request, res: Response): Promise<void> {
       bookAuthors,
       bookImage,
       title,
-      content,
       rating,
       description,
     } = req.body;
@@ -66,7 +65,6 @@ export async function createPost(req: Request, res: Response): Promise<void> {
         image: bookImage,
       },
       title,
-      content,
       rating,
       description,
       image: imagePath,
@@ -82,20 +80,20 @@ export async function createPost(req: Request, res: Response): Promise<void> {
 export async function updatePost(req: Request, res: Response): Promise<void> {
   try {
     const postId = req.params.id;
-    const { userName, title, content, rating, description } = req.body;
+    const { title, rating, description } = req.body;
 
     const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
 
     const updatedPostData = {
-      userName,
       title,
-      content,
-      rating,
-      description,
+      review: {
+        rating,
+        description,
+      },
       image: imagePath,
     };
 
-    console.log('Updated Post Data:', JSON.stringify(updatedPostData));
+    console.log("Updated Post Data:", JSON.stringify(updatedPostData));
 
     const updatedPost = await postService.updatePost(postId, updatedPostData);
 
@@ -105,6 +103,7 @@ export async function updatePost(req: Request, res: Response): Promise<void> {
       res.status(200).json(updatedPost);
     }
   } catch (error) {
+    console.log(error, "updatePost error");
     res.status(500).json("Error updating post");
   }
 }

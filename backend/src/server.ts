@@ -9,15 +9,41 @@ import path from "path";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { handleSocket } from "./socketHandler"; 
+import swaggerUI from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
+
 
 const app: Express = express();
 
 app.use(
   cors({
-    origin: "*", // http://localhost:5173
+    origin: "*",
     credentials: true,
   })
 );
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "StoicReads",
+      version: "1.0.1",
+      description:
+        "REST server including authentication using JWT and refresh token",
+    },
+    servers: [
+      {
+        url:
+          process.env.NODE_ENV === "production"
+            ? "https://node07.cs.colman.ac.il"
+            : "http://localhost:" + process.env.PORT,
+      },
+    ],
+  },
+  apis: ["./src/routes/*.ts"],
+};
+const specs = swaggerJsDoc(options);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -34,7 +60,6 @@ const io = new SocketIOServer(httpServer, {
     credentials: true,
   },
 });
-
 connectToDatabase()
   .then(() => {
     httpServer.listen(process.env.PORT, () => {
