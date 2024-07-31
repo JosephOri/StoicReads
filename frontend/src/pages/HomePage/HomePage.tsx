@@ -130,7 +130,7 @@ const HomePage = () => {
         direction="row" 
         alignItems="center" 
         justifyContent="center" 
-        style={{ marginTop: 20 }}>
+        style={{ marginTop: 20, padding: '0 32px' }}>
         {posts.map((post: Post, index: number) => {
           const imageUrl = post?.image ? `${BACKEND_URL}${post.image}` : post?.book.image;
 
@@ -138,13 +138,14 @@ const HomePage = () => {
             <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
               <Card
                 onClick={() => handleClickOpen(post)}
-                style={{ width: "100%", height: "100%", position: "relative" }}
+                style={{ width: "100%", height: "100%", position: "relative", margin: '16px'}}
               >
                 <CardMedia
                   component="img"
                   height="200"
                   image={post?.book.image}
                   alt={post?.book.title}
+                  style={{ borderRadius: '8px 8px 0 0' }}
                 />
                 <CardContent>
                   <Typography variant="h5" component="div">
