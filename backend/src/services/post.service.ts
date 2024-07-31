@@ -9,7 +9,6 @@ interface CreatePostParams {
     image: string;
   };
   title: string;
-  content: string;
   rating: number;
   description: string;
   image?: string;
@@ -45,7 +44,6 @@ export async function createPost(postData: CreatePostParams): Promise<IPost> {
       userName: postData.userName,
       book: postData.book,
       title: postData.title,
-      content: postData.content,
       comments: [],
       review: {
         rating: postData.rating,
