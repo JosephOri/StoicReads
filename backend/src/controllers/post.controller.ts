@@ -90,8 +90,10 @@ export async function updatePost(req: Request, res: Response): Promise<void> {
       userName,
       title,
       content,
-      rating,
-      description,
+      review: {
+        rating,
+        description,
+      },
       image: imagePath,
     };
 
