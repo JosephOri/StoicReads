@@ -3,30 +3,30 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-import {TextField, Grid, Typography, Box, Button }  from "@mui/material";
+import { TextField, Grid, Typography, Box, Button } from "@mui/material";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import EditProfileFormData from "../../interfaces/EditProfileFormData";
 import isFormDataValidCheck from "../../utils/isFormDataValidCheck";
 import { UPDATE_URL } from "../../utils/constants";
 import { User } from "../../interfaces/User";
 
-
 const EditProfilePage = () => {
   const [loading, setLoading] = useState(false);
   const [userLoading, setUserLoading] = useState(true);
-  const [localFile, setLocalFile] = useState('');
+  const [localFile, setLocalFile] = useState("");
   const { userId } = useParams();
   const navigate = useNavigate();
   const { user, setUser } = useCurrentUser();
 
-  const [editProfileFormData, setEditProfileFormData] = useState<EditProfileFormData>({
+  const [editProfileFormData, setEditProfileFormData] =
+    useState<EditProfileFormData>({
       userName: "",
       email: "",
       password: "",
       confirmPassword: "",
       profileImage: "",
       profileImageFile: null,
-  });
+    });
 
   useEffect(() => {
     if (user) {
@@ -38,7 +38,7 @@ const EditProfilePage = () => {
         profileImage: user?.profileImage || "",
         profileImageFile: null,
       });
-      setUserLoading(false); 
+      setUserLoading(false);
     }
   }, [user]);
 
@@ -52,7 +52,7 @@ const EditProfilePage = () => {
     if (!isFormDataValid) return;
     setLoading(true);
 
-    try{      
+    try {
       const formData = new FormData();
       formData.append("userName", editProfileFormData.userName);
       formData.append("email", editProfileFormData.email);
@@ -60,9 +60,12 @@ const EditProfilePage = () => {
       formData.append("confirmPassword", editProfileFormData.confirmPassword);
       formData.append("profileImage", editProfileFormData.profileImage);
       if (editProfileFormData.profileImageFile) {
-        formData.append("image", editProfileFormData.profileImageFile);
+        formData.append("profileImage", editProfileFormData.profileImageFile);
       }
-      const updatedUser: User = await axios.put(`${UPDATE_URL}/${userId}`, formData);
+      const updatedUser: User = await axios.put(
+        `${UPDATE_URL}/${userId}`,
+        formData
+      );
       setUser(updatedUser);
       setLoading(false);
       toast.success("User updated successfully");
@@ -78,49 +81,53 @@ const EditProfilePage = () => {
       } else {
         toast.error("Something went wrong. Please try again later");
       }
-    };
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setEditProfileFormData({ ...editProfileFormData, profileImageFile: e.target.files[0] });
+      setEditProfileFormData({
+        ...editProfileFormData,
+        profileImageFile: e.target.files[0],
+      });
       setLocalFile(URL.createObjectURL(e.target.files[0]));
     }
   };
 
-
   return (
     <>
       <ToastContainer />
-      <Typography variant="h3">Edit Profile</Typography> 
-      <Grid item xs={12} sx={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          mt: 2, 
-          mb: 2 
-        }}>
-
+      <Typography variant="h3">Edit Profile</Typography>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 2,
+          mb: 2,
+        }}
+      >
         <Button component="label" variant="contained" color="success">
           Upload Image
-          <input 
-            type="file" 
-            accept="image/*" 
-            hidden 
-            onChange={handleImageUpload} />
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={handleImageUpload}
+          />
         </Button>
-          {localFile && (
-              <img src={`${localFile}`} 
-                alt="Profile Preview" 
-                style={{ maxHeight: '200px', maxWidth: '200px', marginTop: '10px' }}
-              />
-          )}
+        {localFile && (
+          <img
+            src={`${localFile}`}
+            alt="Profile Preview"
+            style={{ maxHeight: "200px", maxWidth: "200px", marginTop: "10px" }}
+          />
+        )}
       </Grid>
 
-      <Box
-        component="form"
-        noValidate onSubmit={handleSubmit} sx={{ mt: 3 }} >
-        
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
@@ -129,8 +136,9 @@ const EditProfilePage = () => {
               id="email"
               label="Email Address"
               name="email"
-              value={editProfileFormData.email} 
-              onChange={(e) => handleInputChange("email", e.target.value)}/>
+              value={editProfileFormData.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
+            />
           </Grid>
 
           <Grid item xs={12}>
@@ -141,8 +149,8 @@ const EditProfilePage = () => {
               label="Password"
               type="password"
               id="password"
-              value={editProfileFormData.password} 
-              onChange={(e) => handleInputChange("password", e.target.value) }
+              value={editProfileFormData.password}
+              onChange={(e) => handleInputChange("password", e.target.value)}
             />
           </Grid>
 
@@ -155,7 +163,9 @@ const EditProfilePage = () => {
               type="password"
               id="confirmPassword"
               value={editProfileFormData.confirmPassword}
-              onChange={(e) => handleInputChange("confirmPassword", e.target.value) }
+              onChange={(e) =>
+                handleInputChange("confirmPassword", e.target.value)
+              }
             />
           </Grid>
         </Grid>
@@ -163,17 +173,18 @@ const EditProfilePage = () => {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }} >
+          sx={{ mt: 3, mb: 2 }}
+        >
           Save
         </Button>
         <Button
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }} >
+          sx={{ mt: 3, mb: 2 }}
+        >
           Cancel
         </Button>
-      
       </Box>
     </>
   );
