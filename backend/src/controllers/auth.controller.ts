@@ -195,8 +195,6 @@ export const updateUser = async (req: Request, res: Response) => {
     });
     res.status(HttpStatusCode.Created).json(newUser);
   } catch (error: any) {
-    console.log(error.message);
-    console.log(error);
     logger.error('Error updating user: ', error.message);
     if (error.message.includes('duplicate key error')) {
       logger.error('Username already in use');

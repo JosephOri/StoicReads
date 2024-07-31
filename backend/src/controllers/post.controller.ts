@@ -33,7 +33,7 @@ export async function getPostsByUserName(
   const userName = req.params.userName;
   try {
     const posts = await postService.getPostsByUserName(userName);
-    console.log('Posts:', posts);
+    // console.log('Posts:', posts);
     if (posts.length === 0) {
       res.status(404).json({ message: "Posts not found" });
     } else {
