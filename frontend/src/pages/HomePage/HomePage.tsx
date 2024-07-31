@@ -22,7 +22,7 @@ import {
 import {ExpandMore, ExpandLess} from "@mui/icons-material";  
 import CloseIcon from "@mui/icons-material/Close";  
 import { blue, purple, red } from "@mui/material/colors";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import axios from "axios";
 import { POSTS_URL, BACKEND_URL } from "../../utils/constants";
 import useCurrentUser from "../../hooks/useCurrentUser";
@@ -90,6 +90,7 @@ const HomePage = () => {
     if (!isConfirmed) return;
     await axios.delete(`${POSTS_URL}/${id}`);
     handleClose();
+    mutate(showMyPosts ? `${POSTS_URL}/user/${user?.userName}` : POSTS_URL);
   };
 
   const getAuthorLink = (authorName: string) => {
