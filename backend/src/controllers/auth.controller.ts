@@ -8,18 +8,21 @@ import { HttpStatusCode } from "axios";
 import jwt from "jsonwebtoken";
 import logger from "../utils/logger";
 import { errorMessages } from "../utils/constants";
-import mongoose from "mongoose";
+import { OAuth2Client } from "google-auth-library";
+import { log } from "console";
+import { DEFAULT_IMAGE } from "src/constants/constants";
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { userName, email, password, profileImage } = req.body;
-    if (!userName || !email || !password || !profileImage) {
+    const { userName, email, password } = req.body;
+
+    if (!userName || !email || !password) {
       logger.error("Required fields werent provided.");
       return res
         .status(HttpStatusCode.BadRequest)
         .json({ message: "Please provide all required fields" });
     }
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : profileImage;
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : DEFAULT_IMAGE;
     const user: User = { userName, email, password, profileImage: imagePath };
     const newUser = await userService.createUser(user);
     res.status(HttpStatusCode.Created).json(newUser);
@@ -177,10 +180,10 @@ export const updateUser = async (req: Request, res: Response) => {
   const updatedUserData = req.body;
   const imagePath = req.file
     ? `/uploads/${req.file.filename}`
-    : updatedUserData.profileImage;
+    : DEFAULT_IMAGE;
   try {
-    const { userName, email, password, profileImage } = updatedUserData;
-    if (!userName || !email || !password || !profileImage) {
+    const { userName, email, password } = updatedUserData;
+    if (!userName || !email || !password) {
       logger.error("Required fields werent provided.");
       return res
         .status(HttpStatusCode.BadRequest)
