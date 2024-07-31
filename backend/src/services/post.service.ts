@@ -78,7 +78,7 @@ export async function createPost(postData: CreatePostParams): Promise<IPost> {
     return await newPost.save();
   } catch (err) {
     console.log('err', err);
-    throw new Error('Error creating post ' + err);
+    throw new Error('Error creating post ' + errorMessages.FAILED_TO_CREATE_POST);
   }
 }
 
@@ -90,10 +90,12 @@ export async function updatePost(postId: string, updatedPost: any) {
 }
 
 export async function deletePost(postId: string): Promise<boolean> {
-  
   try{
-    const deletedPost = await PostModel.findByIdAndDelete(postId).exec();
-    return !!deletedPost;
+    const deletePostResult = await PostModel.deleteOne({ _id: postId });
+    if (deletePostResult.deletedCount === 0) {
+      return false;
+    }
+    return true;
   } catch (error) {
     logger.error(`Error deleting post: ${error}`);
     throw new Error(errorMessages.FAILED_TO_DELETE_POST);

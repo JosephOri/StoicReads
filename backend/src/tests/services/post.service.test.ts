@@ -120,5 +120,10 @@ describe('Post Service', () => {
             const deletedPost = await deletePost(newPost._id as string);
             expect(deletedPost).toBe(true);
         });
+
+        it('should throw an error if post is not found', async () => {
+            const postId = 'nonexistent';
+            await expect(deletePost(postId)).rejects.toThrow(errorMessages.FAILED_TO_DELETE_POST);
+        });
     });
 });
