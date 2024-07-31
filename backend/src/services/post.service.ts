@@ -1,7 +1,7 @@
 import PostModel, { IPost } from '../models/Post';
 import path from 'path';
 
-interface CreatePostParams {
+export interface CreatePostParams {
   userName: string;
   book: {
     title: string;
