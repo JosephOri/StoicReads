@@ -9,7 +9,10 @@
     "backend": "cd backend && npm run dev",
     "install": "cd frontend && npm install && cd ../backend && npm install",
     "update": "cd frontend && npm update && cd ../backend && npm update",
-    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "prod": "concurrently \"npm run frontend:prod\" \"npm run backend:prod\"",
+    "frontend:prod": "cd frontend && npm run prod",
+    "backend:prod": "cd backend && npm run prod"
   },
   "keywords": [],
   "author": "",

@@ -1,12 +1,14 @@
 import express, { Express } from "express";
 import bodyParser from "body-parser";
 import "dotenv/config";
-import logger from "@utils/logger";
-import applicationRouter from "@routes/application.router";
-import connectToDatabase from "@utils/dbConfig";
+import logger from "./utils/logger";
+import applicationRouter from "./routes/application.router";
+import connectToDatabase from "./utils/dbConfig";
 import cors from "cors";
 import path from "path";
 import http from "http";
+import https from "https";
+import fs from "fs";
 import { Server as SocketIOServer } from "socket.io";
 import { handleSocket } from "./socketHandler"; 
 import swaggerUI from "swagger-ui-express";
@@ -36,7 +38,7 @@ const options = {
         url:
           process.env.NODE_ENV === "production"
             ? "https://node07.cs.colman.ac.il"
-            : "http://localhost:" + process.env.PORT,
+            : "https://10.10.248.167",
       },
     ],
   },
@@ -52,19 +54,32 @@ app.use(applicationRouter);
 console.log("dirname: " + __dirname);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-const httpServer = http.createServer(app);
+let port;
+let httpServer;
+
+if (process.env.NODE_ENV !== "production") {
+  console.log("development");
+  port = process.env.PORT || 4000;
+  httpServer = http.createServer(app).listen(port);
+} else {
+  console.log("production");
+  port = process.env.HTTPS_PORT;
+  const options2 = {
+    key: fs.readFileSync("../../client-key.pem"),
+    cert: fs.readFileSync("../../client-cert.pem"),
+  };
+  httpServer = https.createServer(options2, app).listen(port);
+}
 const io = new SocketIOServer(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "*",
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
 connectToDatabase()
   .then(() => {
-    httpServer.listen(process.env.PORT, () => {
-      logger.info(`Server is running on port ${process.env.PORT}`);
-    });
+    logger.info(`Server is running on port ${port}`);
     handleSocket(io);
   })
   .catch((error) => {

@@ -1,13 +1,13 @@
-import { IUser } from '@models/User';
+import { IUser } from '../models/User';
 import User from '../interfaces/User';
-import logger from '@utils/logger';
+import logger from '../utils/logger';
 import { Request, Response } from 'express';
 import { createUser, getUserByIdentifier } from './user.service';
 import jwt from 'jsonwebtoken';
 import { HttpStatusCode } from 'axios';
-import { errorMessages } from '@utils/constants';
+import { errorMessages } from '../utils/constants';
 import mongoose, { Document } from 'mongoose';
-import getRandomNumber from '@utils/getRandomNumber';
+import getRandomNumber from '../utils/getRandomNumber';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
 import axios from 'axios';
 import * as fs from 'fs';

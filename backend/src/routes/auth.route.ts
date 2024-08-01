@@ -10,9 +10,9 @@ import {
   deleteUser,
   getAll,
   getOnlineUsers,
-} from "@controllers/auth.controller";
-import { authMiddleware } from "@middlewares/auth.middleware";
-import upload from "@config/multer.config";
+} from "../controllers/auth.controller";
+import { authMiddleware } from "../middlewares/auth.middleware";
+import upload from "../config/multer.config";
 
 /**
  * @swagger

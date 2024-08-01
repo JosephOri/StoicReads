@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -19,7 +19,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import { ExpandMore, ExpandLess, FilterAlt } from "@mui/icons-material";
+import { FilterAlt } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { blue, purple, red } from "@mui/material/colors";
 import useSWR, { mutate } from "swr";

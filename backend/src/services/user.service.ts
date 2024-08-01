@@ -1,6 +1,6 @@
 import UserModel, { IUser } from '../models/User';
 import bcrypt from 'bcryptjs';
-import User from '@interfaces/User';
+import User from '../interfaces/User';
 import logger from '../utils/logger';
 import { errorMessages } from '../utils/constants';
 import mongoose from 'mongoose';

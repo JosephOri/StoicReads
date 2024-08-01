@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest",
     "dev": "nodemon src/server.ts",
-    "build": "tsc --project ."
+    "build": "tsc --project .",
+    "prod": "tsc -p tsconfig_prod.json && pm2 restart ecosystem.config.js --env production",
+    "prod1": "tsc -p tsconfig_prod.json && node dist/server.js"
   },
   "keywords": [],
   "author": "",

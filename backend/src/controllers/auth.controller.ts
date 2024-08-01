@@ -8,7 +8,7 @@ import { HttpStatusCode } from "axios";
 import jwt from "jsonwebtoken";
 import logger from "../utils/logger";
 import { errorMessages } from "../utils/constants";
-import { DEFAULT_IMAGE } from "src/constants/constants";
+import { DEFAULT_IMAGE } from "../constants/constants";
 import mongoose from "mongoose";
 
 export const register = async (req: Request, res: Response) => {

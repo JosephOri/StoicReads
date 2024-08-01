@@ -1,7 +1,7 @@
 export const ACCESS_TOKEN_KEY = "access-token";
 export const REFRESH_TOKEN_KEY = "refresh-token";
 export const USER_IDENTIFIER_KEY = "userIdentifier";
-export const BACKEND_URL = "http://localhost:3000";
+export const BACKEND_URL = "https://node07.cs.colman.ac.il";
 export const AUTH_URL = `${BACKEND_URL}/auth`;
 export const AUTH_LOGIN_URL = `${AUTH_URL}/login`;
 export const AUTH_REGISTER_URL = `${AUTH_URL}/register`;
