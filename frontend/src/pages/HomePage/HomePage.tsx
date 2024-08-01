@@ -28,6 +28,7 @@ import { POSTS_URL, BACKEND_URL } from "../../utils/constants";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import { useNavigate } from "react-router-dom";
 import { Post } from "../../interfaces/Post";
+import { toast, ToastContainer } from "react-toastify";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -38,13 +39,19 @@ const HomePage = () => {
     showMyPosts ? `${POSTS_URL}/user/${user?.userName}` : POSTS_URL,
     fetcher
   );
-
   const [open, setOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [newComment, setNewComment] = useState("");
   const navigate = useNavigate();
 
   const togglePosts = () => {
+    if(!showMyPosts){
+      const found = posts.find((post: Post) => post.userName === user?.userName);
+      if (!found) {
+        toast.error("You haven't posted anything yet!");
+        return;
+      }
+    }
     setShowMyPosts(!showMyPosts);
   };
 
@@ -68,7 +75,6 @@ const HomePage = () => {
         { username: user?.userName, content: newComment },
       ],
     };
-    console.log("Updated Post:", updatedPost);
     await axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
     setSelectedPost(updatedPost as Post);
     setNewComment("");
@@ -118,7 +124,7 @@ const HomePage = () => {
   };
 
   if (error) return <div>Failed to load posts</div>;
-  if (!posts) return <CircularProgress />;
+  if (!posts) return <div>Loading ......</div>;
 
   return (
     <>
@@ -159,54 +165,54 @@ const HomePage = () => {
         </Accordion>
       </Grid>
 
-      <Grid
-        container
-        spacing={4}
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        style={{ marginTop: 20, padding: "0 32px" }}
-      >
-        {posts.map((post: Post, index: number) => {
-          const imageUrl = post?.image
-            ? `${BACKEND_URL}${post.image}`
-            : post?.book.image;
-
-          return (
-            <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
-              <Card
-                onClick={() => handleClickOpen(post)}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  position: "relative",
-                  margin: "16px",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={post?.book.image}
-                  alt={post?.book.title}
-                  style={{ borderRadius: "8px 8px 0 0" }}
-                />
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    {post?.title}
-                  </Typography>
-                  <Typography variant="subtitle1" color="text.secondary">
-                    Posted by <strong>{post?.userName}</strong>
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {post?.comments?.length} Comments
-                  </Typography>
-                  <Rating value={Number(post?.review.rating)} readOnly />
-                </CardContent>
-              </Card>
-            </Grid>
-          );
-        })}
+      {(!Array.isArray(posts) || posts.length === 0) ? (
+        <Typography variant="h4" align="center" color="textSecondary" style={{ textAlign: "center" }}>
+          You haven't posted anything yet!
+        </Typography>
+      ) : (
+        <Grid 
+        container 
+        spacing={4} 
+        direction="row" 
+        alignItems="center" 
+        justifyContent="center" 
+        style={{ marginTop: 20 }}>
+        {posts.length === 0 ? (
+          <Typography variant="h6">No posts available</Typography>
+        ) : (
+          posts.map((post: Post, index: number) => {
+            const imageUrl = post?.image ? `${BACKEND_URL}${post.image}` : post?.book.image;
+            return (
+              <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
+                <Card
+                  onClick={() => handleClickOpen(post)}
+                  style={{ width: "100%", height: "100%", position: "relative" }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={post?.book.image}
+                    alt={post?.book.title}
+                  />
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      {post?.title}
+                    </Typography>
+                    <Typography variant="subtitle1" color="text.secondary">
+                      Posted by <strong>{post?.userName}</strong>
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {post?.comments?.length} Comments
+                    </Typography>
+                    <Rating value={Number(post?.review.rating)} readOnly />
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })
+        )}
       </Grid>
+      )}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -305,7 +311,7 @@ const HomePage = () => {
                     Review
                   </Typography>
                   <Box display="flex" alignItems="center" mb={2}>
-                    <Rating value={selectedPost?.review.rating} readOnly />
+                    <Rating value={Number(selectedPost?.review.rating)} readOnly />
                     <DialogContentText fontSize="1.25rem" ml={1}>
                       {selectedPost?.review.rating}
                     </DialogContentText>
@@ -369,6 +375,7 @@ const HomePage = () => {
           </>
         )}
       </Dialog>
+      <ToastContainer />
     </>
   );
 };

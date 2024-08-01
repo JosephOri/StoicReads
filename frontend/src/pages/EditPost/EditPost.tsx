@@ -29,6 +29,7 @@ const EditPost = () => {
       try {
         const response = await axios.get(`${POSTS_URL}/${postId}`);
         setPost(response.data);
+        console.log("response.data "+ JSON.stringify(response.data));
       } catch (error) {
         console.error("Failed to fetch post", error);
       }

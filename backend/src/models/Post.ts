@@ -1,13 +1,13 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { Book } from '../interfaces/Book';
-import { Review } from '../interfaces/Review';
-import { Comment as UserComment } from '../interfaces/Comment';
+import Book  from '../interfaces/Book';
+import  Review  from '../interfaces/Review';
+import  Comment from '../interfaces/Comment';
 
-export interface Post extends Document {
+export interface IPost extends Document {
   userName: string;
   book: Book;
   title: string;
-  comments: UserComment[];
+  comments: Comment[];
   review: Review;
   image?: string;
   imageFile?: File | null;
@@ -19,11 +19,11 @@ const PostSchema: Schema = new Schema({
   title: { type: String, required: true },
   comments: [{ type: Object, required: true }],
   review: { type: Object, required: true },
-  image: { type: String }, // New field for storing image path
+  image: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
 
-const PostModel = mongoose.model<Post>('Post', PostSchema);
+const PostModel = mongoose.model<IPost>('Post', PostSchema);
 
 export default PostModel;
