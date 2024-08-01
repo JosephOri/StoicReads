@@ -50,7 +50,7 @@ const SignupPage = () => {
     formData.append("email", signupFormData.email);
     formData.append("password", signupFormData.password);
     formData.append("profileImage", signupFormData.profileImage);
-    if(signupFormData.profileImageFile) {      
+    if(signupFormData.profileImageFile) {
       formData.append("profileImage", signupFormData.profileImageFile);
     }
     try {

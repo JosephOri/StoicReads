@@ -62,6 +62,8 @@ const EditProfilePage = () => {
       if (editProfileFormData.profileImageFile) {
         formData.append("profileImage", editProfileFormData.profileImageFile);
       }
+      console.log("formData JSON", JSON.stringify(formData));
+      console.log("formData", formData);
       const updatedUser: User = await axios.put(`${UPDATE_URL}/${userId}`, formData);
       setUser(updatedUser);
       setLoading(false);

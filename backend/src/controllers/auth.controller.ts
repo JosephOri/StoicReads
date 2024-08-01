@@ -8,7 +8,7 @@ import { HttpStatusCode } from "axios";
 import jwt from "jsonwebtoken";
 import logger from "../utils/logger";
 import { errorMessages } from "../utils/constants";
-import { DEFAULT_IMAGE } from "src/constants/constants";
+import { DEFAULT_IMAGE } from "../constants/constants";
 import mongoose from "mongoose";
 
 export const register = async (req: Request, res: Response) => {
@@ -106,7 +106,7 @@ export const logout = async (req: Request, res: Response) => {
         if (!userDb?.tokens || !userDb.tokens.includes(refreshToken)) {
           return res
             .status(HttpStatusCode.Unauthorized)
-            .json({ message: errorMessages.NOT_FOUND_USER_ID });
+            .json({ message: errorMessages.FAILED_TO_GET_USER_BY_ID });
         }
         userDb.tokens = userDb.tokens.filter((token) => token !== refreshToken);
         await userDb.save();
@@ -163,7 +163,7 @@ export const getUser = async (req: Request, res: Response) => {
         if (!userDb) {
           return res
             .status(HttpStatusCode.NotFound)
-            .json({ message: errorMessages.NOT_FOUND_USER_ID });
+            .json({ message: errorMessages.FAILED_TO_GET_USER_BY_ID });
         }
         return res.status(HttpStatusCode.Ok).json(userDb);
       } catch (error: any) {
@@ -189,7 +189,9 @@ export const updateUser = async (req: Request, res: Response) => {
         .json({ message: "Please provide all required fields" });
     }
 
-    const newUser = await userService.updateUser(userid, {
+    // convert userId to ObjectId
+    const userID = new mongoose.Types.ObjectId(userid);
+    const newUser = await userService.updateUser(userID, {
       userName,
       email,
       password,

@@ -186,7 +186,7 @@ router.get("/:id", postController.getPostById);
  *       404:
  *         description: Posts not found
  */
-router.get("/user/:userName", postController.getPostsByUser);
+router.get("/user/:userName", postController.getPostsByUserName);
 
 /**
  * @swagger

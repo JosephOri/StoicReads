@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as postService from "../services/post.service";
-import { Post } from "../models/Post";
+import { IPost } from "../models/Post";
 import path from "path";
 
 export async function getAllPosts(req: Request, res: Response): Promise<void> {
@@ -26,13 +26,14 @@ export async function getPostById(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function getPostsByUser(
+export async function getPostsByUserName(
   req: Request,
   res: Response
 ): Promise<void> {
   const userName = req.params.userName;
   try {
-    const posts = await postService.getPostsByUser(userName);
+    const posts = await postService.getPostsByUserName(userName);
+    // console.log('Posts:', posts);
     if (posts.length === 0) {
       res.status(404).json({ message: "Posts not found" });
     } else {
@@ -81,7 +82,6 @@ export async function updatePost(req: Request, res: Response): Promise<void> {
   try {
     const postId = req.params.id;
     const { title, rating, description } = req.body;
-
     const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
 
     const updatedPostData = {

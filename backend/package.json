@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "test": "jest",
+    "test": "tsc && jest --detectOpenHandles --forceExit",
+    "test:user": "tsc && jest --detectOpenHandles --forceExit ./src/tests/services/user.service.test.ts",
+    "test:post": "tsc && jest --detectOpenHandles --forceExit ./src/tests/services/post.service.test.ts",
     "dev": "nodemon src/server.ts",
     "build": "tsc --project ."
   },
@@ -43,6 +45,7 @@
     "body-parser": "^1.20.2",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
+    "email-validator": "^2.0.4",
     "express": "^4.19.2",
     "is-email": "^1.0.2",
     "jsonwebtoken": "^9.0.2",
@@ -52,6 +55,7 @@
     "path": "^0.12.7",
     "pino": "^8.19.0",
     "pino-pretty": "^11.0.0",
+    "socket.io": "^4.7.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "ts-node": "^10.9.2",
