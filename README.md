@@ -11,7 +11,7 @@ To install the project dependencies, you can run the following command:
 
 4. Install the dependencies for both the frontend and backend:  <pre><code>npm run install</code></pre>
 
-5. Run the app - This command will start both the frontend and backend servers concurrently: <pre><code>npm run start</code></pre>
+5. Run the app - This command will start both the frontend and backend servers concurrently: <pre><code>npm run dev</code></pre>
 
 ## StoicReads App
 
