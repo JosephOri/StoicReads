@@ -185,11 +185,10 @@ const HomePage = () => {
               <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
                 <Card
                   onClick={() => handleClickOpen(post)}
-                  style={{ width: "100%", height: "100%", position: "relative" }}
+                  style={{ width: "75%", height: "75%", position: "relative" }}
                 >
                   <CardMedia
                     component="img"
-                    height="200"
                     image={post?.book.image}
                     alt={post?.book.title}
                   />
