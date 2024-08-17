@@ -20,7 +20,8 @@ StoicReads is a book rating and sharing application. This repository contains bo
 
 ## Video Demo
 
-[![Watch the video](assets/thumbnail.png)](assets/signup%20and%20commenting.mp4)
+[![Watch the video](assets/tumbnail.png)](https://youtu.be/TeoeFkO_GTg)
+
 
 #### Technologies Used
 
