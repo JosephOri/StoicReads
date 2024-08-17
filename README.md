@@ -18,10 +18,9 @@ To install the project dependencies, you can run the following command:
 #### Overview
 StoicReads is a book rating and sharing application. This repository contains both the backend and frontend code for the application.
 
-## Video Demo
+#### Video Demo
 
-[![Watch the video](assets/tumbnail.png)](https://youtu.be/TeoeFkO_GTg)
-
+https://www.youtube.com/watch?v=TeoeFkO_GTg
 
 #### Technologies Used
 
