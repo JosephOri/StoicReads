@@ -361,4 +361,5 @@ router.delete("/:id", postController.deletePost);
  */
 router.get("/uploads/:filename", postController.getImage);
 
+router.patch("/:id", postController.addComment);
 export default router;

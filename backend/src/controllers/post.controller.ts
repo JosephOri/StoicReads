@@ -122,6 +122,21 @@ export async function deletePost(req: Request, res: Response): Promise<void> {
   }
 }
 
+export async function addComment(req: Request, res: Response): Promise<void> {
+  try {
+    const postId = req.params.id;
+    const { userName, content } = req.body;
+    const post = await postService.addComment(postId, { userName, content });
+
+    if (!post) {
+      res.status(404).json({ message: "Post not found" });
+    } else {
+      res.status(201).json(post);
+    }
+  } catch (error) {
+    res.status(500).json("Error adding comment");
+  }
+}
 export const getImage = (req: Request, res: Response) => {
   const { filename } = req.params;
   const filePath = path.join(__dirname, "..", "uploads", filename);

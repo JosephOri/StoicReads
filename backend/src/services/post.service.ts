@@ -18,8 +18,7 @@ export interface CreatePostParams {
 }
 
 export async function getAllPosts(): Promise<IPost[]> {
-  
-  try{
+  try {
     const posts = await PostModel.find().exec();
     return posts;
   } catch (error) {
@@ -29,7 +28,7 @@ export async function getAllPosts(): Promise<IPost[]> {
 }
 
 export async function getPostById(postId: string): Promise<IPost | null> {
-  try{
+  try {
     const post = await PostModel.findById(postId).exec();
     return post;
   } catch (error) {
@@ -51,10 +50,13 @@ export async function getPostsByUserName(userName: string): Promise<IPost[]> {
   }
 }
 
-
 export async function createPost(postData: CreatePostParams): Promise<IPost> {
-
-  if(await PostModel.findOne({userName: postData.userName, title: postData.title})) {
+  if (
+    await PostModel.findOne({
+      userName: postData.userName,
+      title: postData.title,
+    })
+  ) {
     throw new Error(errorMessages.POST_ALREADY_EXISTS);
   }
   // console.log('postData', postData);
@@ -78,7 +80,9 @@ export async function createPost(postData: CreatePostParams): Promise<IPost> {
     return await newPost.save();
   } catch (err) {
     console.log('err', err);
-    throw new Error('Error creating post ' + errorMessages.FAILED_TO_CREATE_POST);
+    throw new Error(
+      'Error creating post ' + errorMessages.FAILED_TO_CREATE_POST
+    );
   }
 }
 
@@ -90,7 +94,7 @@ export async function updatePost(postId: string, updatedPost: any) {
 }
 
 export async function deletePost(postId: string): Promise<boolean> {
-  try{
+  try {
     const deletePostResult = await PostModel.deleteOne({ _id: postId });
     if (deletePostResult.deletedCount === 0) {
       return false;
@@ -99,5 +103,23 @@ export async function deletePost(postId: string): Promise<boolean> {
   } catch (error) {
     logger.error(`Error deleting post: ${error}`);
     throw new Error(errorMessages.FAILED_TO_DELETE_POST);
+  }
+}
+
+export async function addComment(
+  postId: string,
+  comment: any
+): Promise<IPost | null> {
+  try {
+    const post = await PostModel.findById(postId);
+    if (!post) {
+      return null;
+    }
+    post.comments.push(comment);
+    const updatedPost = await post.save();
+    return updatedPost;
+  } catch (error) {
+    logger.error(`Error adding comment: ${error}`);
+    throw new Error('Error adding comment');
   }
 }

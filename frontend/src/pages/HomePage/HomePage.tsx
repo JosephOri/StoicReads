@@ -68,14 +68,13 @@ const HomePage = () => {
 
   const handleAddComment = async () => {
     if (newComment.trim() === "") return;
-    const updatedPost = {
-      ...selectedPost,
-      comments: [
-        ...(selectedPost?.comments || []),
-        { username: user?.userName, content: newComment },
-      ],
+    const newCommentObj = {
+      userName: user?.userName,
+      content: newComment,
     };
-    await axios.put(`${POSTS_URL}/${selectedPost?._id}`, updatedPost);
+    const response = await axios.patch(`${POSTS_URL}/${selectedPost?._id}`, newCommentObj);
+    console.log(response.data);
+    const updatedPost = response.data
     setSelectedPost(updatedPost as Post);
     setNewComment("");
   };
@@ -342,9 +341,9 @@ const HomePage = () => {
                   }}
                 >
                   <DialogContentText>
-                    <strong>{comment?.username}:</strong> {comment?.content}
+                    <strong>{comment?.userName}:</strong> {comment?.content}
                   </DialogContentText>
-                  {comment?.username === user?.userName && (
+                  {comment?.userName === user?.userName && (
                     <Button
                       onClick={() => handleDeleteComment(index)}
                       sx={{ marginLeft: 1 }}
